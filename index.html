@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>최봉석 ♥ 김가율 결혼식 초대장</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=YOUR_CLIENT_ID"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- 벚꽃 애니메이션 1-->
+    <div class="sakura-container">
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+        <div class="sakura">🌸</div>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <section class="header fade-section" id="header">
+            <div class="header-content">
+                <i class="fas fa-heart heart-icon"></i>
+                <h1 class="names">최봉석 & 김가율</h1>
+                <div class="divider"></div>
+                <p class="wedding-date">2026년 3월 14일 토요일</p>
+                <div class="dday-card">
+                    <p class="dday-label">우리의 특별한 날까지</p>
+                    <p class="dday-number" id="dday">D-0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intro Section -->
+        <section class="intro fade-section" id="intro">
+            <div class="intro-content">
+                
+                <h2 class="section-title">초대의 말씀</h2>
+                <div class="intro-text">
+                    <p>따스한 봄날, 벚꽃이 피어나듯<br>
+                        서로에게 없어서는 안 될 소중한 사람이 되어<br>
+                        이제 한 걸음 한 걸음 함께 걸어가려 합니다.</p>
+                </div>
+                <div class="intro-text">
+                    <p>저희 두 사람이 사랑의 결실을 맺는<br>
+                        아름다운 봄날의 자리에 오셔서<br>
+                        축복해 주시면 감사하겠습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="info fade-section" id="info">
+            <div class="info-content">
+                <h2 class="section-title">예식 정보</h2>
+
+                <div class="info-card">
+                    <div class="info-item">
+                        <i class="fas fa-calendar info-icon"></i>
+                        <div class="info-details">
+                            <h3>2026년 3월 14일 토요일</h3>
+                            <p>오후 2시</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt info-icon"></i>
+                        <div class="info-details">
+                            <h3>구미 토미스퀘어가든</h3>
+                            <p>경상북도 구미시 인동35길 46</p>
+                            <p style="color: #9c8882; font-size: 0.75rem;">4F 스퀘어가든 홀</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 지도 표시 -->
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.0847!2d128.43579320597706!3d36.09768151561699!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDA1JzUxLjciTiAxMjjCsDI2JzA4LjkiRQ!5e0!3m2!1sko!2skr!4v1234567890"
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+                <div class="map-buttons">
+                    <button class="map-button" onclick="openNaverMap()">
+                        <i class="fas fa-map"></i>
+                        네이버 지도
+                    </button>
+                    <button class="map-button" onclick="openKakaoMap()">
+                        <i class="fas fa-map-marked-alt"></i>
+                        카카오맵
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="gallery fade-section" id="gallery">
+            <div class="gallery-content">
+                <h2 class="section-title">갤러리</h2>
+
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop"
+                            alt="Gallery 1">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=600&fit=crop"
+                            alt="Gallery 2">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=400&h=600&fit=crop"
+                            alt="Gallery 3">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&h=600&fit=crop"
+                            alt="Gallery 4">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&h=600&fit=crop"
+                            alt="Gallery 5">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=400&h=600&fit=crop"
+                            alt="Gallery 6">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact fade-section" id="contact">
+            <div class="contact-content">
+                <h2 class="section-title">연락처</h2>
+
+                <div class="contact-card">
+                    <h3>혼주 연락처</h3>
+                    <div class="contact-item">
+                        <div class="contact-info">
+                            <h4>석명순</h4>
+                            <p>신랑측 어머니</p>
+                        </div>
+                        <a href="tel:010-1234-5679" class="contact-phone">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-info">
+                            <h4>김상준</h4>
+                            <p>신부측 아버지</p>
+                        </div>
+                        <a href="tel:010-6600-4422" class="contact-phone">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3>마음 전할 곳</h3>
+                    <div class="account-item">
+                        <div class="account-header">
+                            <div class="account-info">
+                                <h4>최봉석</h4>
+                                <p>기업은행</p>
+                            </div>
+                        </div>
+                        <div class="account-footer">
+                            <span class="account-number">01044041519</span>
+                            <button class="copy-button" onclick="copyToClipboard('01044041519')">복사</button>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-header">
+                            <div class="account-info">
+                                <h4>김가율</h4>
+                                <p>기업은행</p>
+                            </div>
+                        </div>
+                        <div class="account-footer">
+                            <span class="account-number">01087901519</span>
+                            <button class="copy-button" onclick="copyToClipboard('01087901519')">복사</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Thank you for celebrating with us</p>
+            <i class="fas fa-heart footer-heart"></i>
+        </footer>
+    </div>
+</body>
+
+</html>
