@@ -16,19 +16,6 @@ body {
     min-height: 100vh;
 }
 
-/* 벚꽃 애니메이션 */
-@keyframes fall {
-    0% {
-        transform: translateY(-100vh) rotate(0deg);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-    }
-}
-
 .sakura-container {
     position: fixed;
     top: 0;
@@ -223,9 +210,8 @@ body {
 }
 
 .section-title::after {
-    content: '🌸';
     position: absolute;
-    top: -20px;
+    top: -30px;
     left: 50%;
     transform: translateX(-50%);
     font-size: 1.5rem;
