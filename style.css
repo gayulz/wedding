@@ -12,503 +12,175 @@ body {
     min-height: 100vh;
 }
 
-.container {
-    min-height: 100vh;
-}
-
-.sakura-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.sakura {
-    position: absolute;
-    color: #ffb7c5;
-    font-size: 1.5rem;
-    animation: fall linear infinite;
-}
-
-.sakura:nth-child(1) {
-    left: 10%;
-    animation-duration: 15s;
-    animation-delay: 0s;
-}
-
-.sakura:nth-child(2) {
-    left: 20%;
-    animation-duration: 18s;
-    animation-delay: 2s;
-}
-
-.sakura:nth-child(3) {
-    left: 30%;
-    animation-duration: 20s;
-    animation-delay: 4s;
-}
-
-.sakura:nth-child(4) {
-    left: 40%;
-    animation-duration: 16s;
-    animation-delay: 1s;
-}
-
-.sakura:nth-child(5) {
-    left: 50%;
-    animation-duration: 22s;
-    animation-delay: 3s;
-}
-
-.sakura:nth-child(6) {
-    left: 60%;
-    animation-duration: 19s;
-    animation-delay: 5s;
-}
-
-.sakura:nth-child(7) {
-    left: 70%;
-    animation-duration: 17s;
-    animation-delay: 2s;
-}
-
-.sakura:nth-child(8) {
-    left: 80%;
-    animation-duration: 21s;
-    animation-delay: 0s;
-}
-
-.sakura:nth-child(9) {
-    left: 90%;
-    animation-duration: 15s;
-    animation-delay: 3s;
-}
-
-.sakura:nth-child(10) {
-    left: 95%;
-    animation-duration: 18s;
-    animation-delay: 4s;
-}
-
-/* 페이드인 애니메이션 */
-.fade-section {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 1s ease-out;
-    position: relative;
-    z-index: 2;
-}
-
-.fade-section.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Header 스타일 */
-.header {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 240, 245, 0.8)), url('src/img/main.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-}
-
-.header-content {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 3rem 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(255, 183, 197, 0.2);
-}
-
-.heart-icon {
-    font-size: 3rem;
-    color: #ff6b9d;
-    margin-bottom: 1.5rem;
-    animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-
-    0%,
-    100% {
-        transform: scale(1);
+/* 다크모드 스타일 */
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #f5f5dc;
+        background: linear-gradient(135deg, #1a2332 0%, #2c3e50 50%, #34495e 100%);
     }
 
-    50% {
-        transform: scale(1.1);
+    .header {
+        background: linear-gradient(rgba(26, 35, 50, 0.9), rgba(44, 62, 80, 0.8)), url('src/img/main.png');
     }
-}
 
-.names {
-    font-size: 2.5rem;
-    font-weight: 300;
-    background: linear-gradient(135deg, #ff6b9d, #feca57);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.5rem;
-}
+    .header-content {
+        background: rgba(26, 35, 50, 0.95);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
 
-.divider {
-    width: 6rem;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ffb7c5, transparent);
-    margin: 2rem auto;
-}
+    .heart-icon {
+        color: #87ceeb;
+    }
 
-.wedding-date {
-    font-size: 1.125rem;
-    color: #8b7a75;
-    margin-bottom: 2rem;
-}
-
-.dday-card {
-    background: linear-gradient(135deg, #fff0f3, #ffe4e8);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.3);
-    padding: 1.5rem;
-    display: inline-block;
-    border: 1px solid rgba(255, 183, 197, 0.2);
-}
-
-.dday-label {
-    font-size: 0.875rem;
-    color: #9c8882;
-    margin-bottom: 0.5rem;
-}
-
-.dday-number {
-    font-size: 2rem;
-    font-weight: 300;
-    color: #ff6b9d;
-}
-
-/* Intro 스타일 */
-.intro {
-    padding: 4rem 1.5rem;
-    background: rgba(255, 255, 255, 0.95);
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: #5a4a42;
-    text-align: center;
-    margin-bottom: 2rem;
-    position: relative;
-}
-
-.section-title::after {
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 1.5rem;
-}
-
-.intro-content {
-    max-width: 32rem;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.intro-text {
-    color: #6b5d57;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-}
-
-/* Info 스타일 */
-.info {
-    padding: 4rem 1.5rem;
-    background: linear-gradient(135deg, #fff5f7, #fff0f3);
-}
-
-.info-content {
-    max-width: 32rem;
-    margin: 0 auto;
-}
-
-.info-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
-    padding: 2rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(255, 183, 197, 0.1);
-}
-
-.info-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-}
-
-.info-item:last-child {
-    margin-bottom: 0;
-}
-
-.info-icon {
-    font-size: 1.25rem;
-    color: #ff6b9d;
-    margin-right: 0.75rem;
-    margin-top: 0.125rem;
-    width: 1.25rem;
-}
-
-.info-details h3 {
-    color: #5a4a42;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
-}
-
-.info-details p {
-    color: #8b7a75;
-    font-size: 0.875rem;
-}
-
-/* 지도 스타일 */
-.map-container {
-    margin-top: 2rem;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
-    height: 300px;
-    position: relative;
-    background: #f0f0f0;
-}
-
-#map {
-    width: 100%;
-    height: 100%;
-}
-
-.map-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.map-button {
-    flex: 1;
-    background: linear-gradient(135deg, #ff6b9d, #ff8fab);
-    color: white;
-    padding: 1rem;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.map-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
-}
-
-.map-button i {
-    margin-right: 0.5rem;
-}
-
-/* Gallery 스타일 */
-.gallery {
-    padding: 4rem 1.5rem;
-    background: rgba(255, 255, 255, 0.95);
-}
-
-.gallery-content {
-    max-width: 64rem;
-    margin: 0 auto;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.gallery-item {
-    aspect-ratio: 1;
-    overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
-    position: relative;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-/* Contact 스타일 */
-.contact {
-    padding: 4rem 1.5rem;
-    background: linear-gradient(135deg, #fff5f7, #fff0f3);
-}
-
-.contact-content {
-    max-width: 32rem;
-    margin: 0 auto;
-}
-
-.contact-card {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(255, 183, 197, 0.2);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(255, 183, 197, 0.1);
-}
-
-.contact-card h3 {
-    font-size: 1.125rem;
-    font-weight: 500;
-    color: #5a4a42;
-    margin-bottom: 1.5rem;
-}
-
-.contact-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0;
-}
-
-.contact-info h4 {
-    color: #5a4a42;
-    font-weight: 500;
-    font-size: 1rem;
-}
-
-.contact-info p {
-    color: #9c8882;
-    font-size: 0.875rem;
-}
-
-.contact-phone {
-    color: #ff6b9d;
-    font-size: 1.25rem;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.contact-phone:hover {
-    color: #ff8fab;
-}
-
-.account-item {
-    background: linear-gradient(135deg, #fff5f7, #fff0f3);
-    border-radius: 10px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid rgba(255, 183, 197, 0.1);
-}
-
-.account-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
-}
-
-.account-info h4 {
-    color: #5a4a42;
-    font-weight: 500;
-}
-
-.account-info p {
-    color: #9c8882;
-    font-size: 0.875rem;
-}
-
-.account-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.account-number {
-    color: #6b5d57;
-    font-family: 'Courier New', monospace;
-    font-size: 0.875rem;
-}
-
-.copy-button {
-    background: linear-gradient(135deg, #ffb7c5, #ffd4e1);
-    color: #5a4a42;
-    border: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 5px;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.copy-button:hover {
-    background: linear-gradient(135deg, #ff8fab, #ffb7c5);
-    color: white;
-}
-
-/* Footer 스타일 */
-.footer {
-    padding: 2rem;
-    background: linear-gradient(135deg, #ff6b9d, #ff8fab);
-    text-align: center;
-}
-
-.footer p {
-    color: white;
-    font-size: 0.875rem;
-    margin-bottom: 0.5rem;
-}
-
-.footer-heart {
-    font-size: 1.5rem;
-    color: white;
-}
-
-/* 반응형 디자인 */
-@media (min-width: 768px) {
     .names {
-        font-size: 3rem;
+        background: linear-gradient(135deg, #87ceeb, #b8d4e3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
-    .gallery-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .divider {
+        background: linear-gradient(90deg, transparent, #87ceeb, transparent);
     }
 
-    .intro,
-    .info,
-    .gallery,
+    .wedding-date {
+        color: #d4d4aa;
+    }
+
+    .dday-card {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(135, 206, 235, 0.2);
+    }
+
+    .dday-label {
+        color: #d4d4aa;
+    }
+
+    .dday-number {
+        color: #87ceeb;
+    }
+
+    .intro {
+        background: rgba(26, 35, 50, 0.95);
+    }
+
+    .section-title {
+        color: #f5f5dc;
+    }
+
+    .intro-text {
+        color: #d4d4aa;
+    }
+
+    .intro-text h2 {
+        color: #f5f5dc;
+    }
+
+    .info {
+        background: linear-gradient(135deg, #1a2332, #2c3e50);
+    }
+
+    .info-card {
+        background: rgba(26, 35, 50, 0.95);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(135, 206, 235, 0.1);
+    }
+
+    .info-icon {
+        color: #87ceeb;
+    }
+
+    .info-details h3 {
+        color: #f5f5dc;
+    }
+
+    .info-details p {
+        color: #d4d4aa;
+    }
+
+    .map-container {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .map-button {
+        background: linear-gradient(135deg, #4a6fa5, #87ceeb);
+    }
+
+    .map-button:hover {
+        box-shadow: 0 4px 15px rgba(135, 206, 235, 0.4);
+    }
+
+    .gallery {
+        background: rgba(26, 35, 50, 0.95);
+    }
+
+    .gallery-item {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
     .contact {
-        padding: 4rem 2rem;
+        background: linear-gradient(135deg, #1a2332, #2c3e50);
+    }
+
+    .contact-card {
+        background: rgba(26, 35, 50, 0.95);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(135, 206, 235, 0.1);
+    }
+
+    .contact-card h3 {
+        color: #f5f5dc;
+    }
+
+    .contact-info h4 {
+        color: #f5f5dc;
+    }
+
+    .contact-info p {
+        color: #d4d4aa;
+    }
+
+    .contact-phone {
+        color: #87ceeb;
+    }
+
+    .contact-phone:hover {
+        color: #b8d4e3;
+    }
+
+    .account-item {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        border: 1px solid rgba(135, 206, 235, 0.1);
+    }
+
+    .account-info h4 {
+        color: #f5f5dc;
+    }
+
+    .account-info p {
+        color: #d4d4aa;
+    }
+
+    .account-number {
+        color: #d4d4aa;
+    }
+
+    .copy-button {
+        background: linear-gradient(135deg, #4a6fa5, #87ceeb);
+        color: #f5f5dc;
+    }
+
+    .copy-button:hover {
+        background: linear-gradient(135deg, #87ceeb, #b8d4e3);
+        color: #1a2332;
+    }
+
+    .footer {
+        background: linear-gradient(135deg, #4a6fa5, #87ceeb);
+    }
+
+    .footer p, .footer-heart {
+        color: #f5f5dc;
     }
 }
-
-@media (min-width: 1024px) {
-    .names {
-        font-size: 3.5rem;
-    }
-}
-
-L
