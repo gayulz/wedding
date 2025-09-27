@@ -39,7 +39,7 @@ const WEDDING_CONFIG = {
     hall: "4층 스퀘어가든 홀",
     address: "경상북도 구미시 인동35길 46",
     googleMapEmbedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509374!2d144.9537353153167!3d-37.81720997975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43f1f3b5a7%3A0x5045675218ce7e33!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1635724234567!5m2!1sen!2sus",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3223.8277194096677!2d128.4332375773818!3d36.09768747245584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3565c58fe61ae731%3A0xc044c1ef3023962e!2z7Yag66-47Iqk7YCY7Ja06rCA65Og!5e0!3m2!1sko!2skr!4v1758998723872!5m2!1sko!2skr",
     naverMapUrl: "https://map.naver.com/v5/search/경상북도%20구미시%20인동35길%2046",
     kakaoMapUrl: "https://map.kakao.com/link/search/경상북도%20구미시%20인동35길%2046",
     parking: "제1주차장(야외), 제2주차장(실내)이가 예식홀과 가장 가깝습니다.", // 주차 안내
@@ -392,45 +392,6 @@ export default function WeddingInvitation() {
             </p>
             <p className="text-sm text-muted-foreground">{formatDate(weddingDate)}</p>
           </div>
-
-          <div className="mt-8">
-            {dDay < 0 ? (
-              <div className="text-center">
-                <p className="text-3xl font-semibold text-primary">Our Wedding Day</p>
-                <p className="mt-2 text-lg text-foreground">축복해주셔서 감사합니다</p>
-              </div>
-            ) : dDay === 0 ? (
-              <div className="text-center">
-                <p className="text-5xl font-bold text-primary">D-DAY</p>
-                <p className="mt-2 text-lg text-foreground">드디어 오늘, 저희 결혼합니다</p>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
-                    <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
-                    <span className="relative text-5xl font-bold text-primary-foreground">D</span>
-                    <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
-                  </div>
-                  <span className="text-6xl font-bold text-primary">-</span>
-                  {String(dDay)
-                    .padStart(3, "0")
-                    .split("")
-                    .map((digit, index) => (
-                      <div
-                        key={index}
-                        className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center"
-                      >
-                        <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
-                        <span className="relative text-5xl font-bold text-primary-foreground">{digit}</span>
-                        <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
-                      </div>
-                    ))}
-                </div>
-                <p className="mt-2 text-lg text-foreground">신랑 ♥ 신부의 결혼식까지</p>
-              </div>
-            )}
-          </div>
         </div>
       </section>
 
@@ -490,6 +451,80 @@ export default function WeddingInvitation() {
               ))}
               "
             </p>
+          </div>
+          <div className="mt-16">
+            {dDay < 0 ? (
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
+                    <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                    <span className="relative text-5xl font-bold text-primary-foreground">D</span>
+                    <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                  </div>
+                  <span className="text-6xl font-bold text-primary">+</span>
+                  {String(Math.abs(dDay))
+                    .padStart(3, "0")
+                    .split("")
+                    .map((digit, index) => (
+                      <div
+                        key={index}
+                        className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center"
+                      >
+                        <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                        <span className="relative text-5xl font-bold text-primary-foreground">{digit}</span>
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                      </div>
+                    ))}
+                </div>
+                <p className="mt-2 text-lg text-foreground">저희의 결혼식이 {Math.abs(dDay)}일 지났습니다</p>
+              </div>
+            ) : dDay === 0 ? (
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-2">
+                  {["D", "-", "D", "A", "Y"].map((char, index) =>
+                    char === "-" ? (
+                      <span key={index} className="text-6xl font-bold text-primary">
+                        -
+                      </span>
+                    ) : (
+                      <div
+                        key={index}
+                        className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center"
+                      >
+                        <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                        <span className="relative text-5xl font-bold text-primary-foreground">{char}</span>
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                      </div>
+                    ),
+                  )}
+                </div>
+                <p className="mt-2 text-lg text-foreground">드디어 오늘, 저희 결혼합니다</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
+                    <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                    <span className="relative text-5xl font-bold text-primary-foreground">D</span>
+                    <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                  </div>
+                  <span className="text-6xl font-bold text-primary">-</span>
+                  {String(dDay)
+                    .padStart(3, "0")
+                    .split("")
+                    .map((digit, index) => (
+                      <div
+                        key={index}
+                        className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center"
+                      >
+                        <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                        <span className="relative text-5xl font-bold text-primary-foreground">{digit}</span>
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
