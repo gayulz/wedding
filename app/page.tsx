@@ -13,7 +13,8 @@ const WEDDING_CONFIG = {
   // 👰🤵 신랑신부 정보
   groom: {
     name: "최봉석",
-    englishName: "Choi\nBong Seok",
+    engFirstName : "Choi",
+    englishName: "Bong Seok",
     parents: "석명순의 아들",
     emoji: "👨",
     phone: "010-4404-1519", // 신랑 연락처
@@ -21,7 +22,8 @@ const WEDDING_CONFIG = {
   },
   bride: {
     name: "김가율",
-    englishName: "Kim\nGa Yul",
+    engFirstName : "Kim",
+    englishName: "Ga Yul",
     parents: "김상준의 딸",
     emoji: "👩",
     phone: "010-8790-1519", // 신부 연락처
@@ -408,7 +410,8 @@ export default function WeddingInvitation() {
                   <span className="text-2xl">{WEDDING_CONFIG.groom.emoji}</span>
                 )}
               </div>
-              <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
+              <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
+              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.engFirstName}</p>
               <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.englishName}</p>
               <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.groom.parents}</p>
             </Card>
@@ -426,6 +429,7 @@ export default function WeddingInvitation() {
                 )}
               </div>
               <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
+              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.engFirstName}</p>
               <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.englishName}</p>
               <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.bride.parents}</p>
             </Card>
@@ -467,7 +471,7 @@ export default function WeddingInvitation() {
                 <Clock className="w-6 h-6 text-primary" />
                 <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.time}</h3>
               </div>
-              <p className="text-card-foreground font-medium">오후 {formatTime(weddingDate)}</p>
+              <p className="text-card-foreground font-medium"> {formatTime(weddingDate)}</p>
             </Card>
 
             <Card className="p-6 bg-card border-border">
@@ -781,61 +785,135 @@ export default function WeddingInvitation() {
             </div>
 
             <div className="space-y-4">
-              <div className="bg-muted/50 rounded-lg p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
-                    <span className="font-medium text-card-foreground">
-                      {accountModal === "groom"
-                        ? WEDDING_CONFIG.accounts.groom.bank
-                        : WEDDING_CONFIG.accounts.bride.bank}
-                    </span>
+            {accountModal === "groom" && (
+                <>
+                  {/* 신랑 어머니 계좌 */}
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">
+                          {WEDDING_CONFIG.messages.labels.accountHolder}
+                        </span>
+                        <span className="font-medium text-card-foreground">
+                          {WEDDING_CONFIG.accounts.groomMother.accountHolder} ({WEDDING_CONFIG.messages.labels.mother})
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                        <span className="font-medium text-card-foreground">
+                          {WEDDING_CONFIG.accounts.groomMother.bank}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          {WEDDING_CONFIG.messages.labels.accountNumber}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-sm font-medium text-card-foreground">
+                            {WEDDING_CONFIG.accounts.groomMother.accountNumber}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              copyToClipboard(WEDDING_CONFIG.accounts.groomMother.accountNumber, "groomMother")
+                            }
+                            className="h-6 px-2"
+                          >
+                            {copiedAccount === "groomMother" ? (
+                              <Check className="w-3 h-3 text-green-600" />
+                            ) : (
+                              <Copy className="w-3 h-3" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      {WEDDING_CONFIG.messages.labels.accountHolder}
-                    </span>
-                    <span className="font-medium text-card-foreground">
-                      {accountModal === "groom"
-                        ? WEDDING_CONFIG.accounts.groom.accountHolder
-                        : WEDDING_CONFIG.accounts.bride.accountHolder}
-                    </span>
+                  {/* 신랑 계좌 */}
+                  <div className="bg-muted/50 rounded-lg p-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">
+                          {WEDDING_CONFIG.messages.labels.accountHolder}
+                        </span>
+                        <span className="font-medium text-card-foreground">
+                          {WEDDING_CONFIG.accounts.groom.accountHolder} ({WEDDING_CONFIG.messages.labels.groom})
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                        <span className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.groom.bank}</span>
+                      </div>
+                      <div className="flex justify-between items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          {WEDDING_CONFIG.messages.labels.accountNumber}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-sm font-medium text-card-foreground">
+                            {WEDDING_CONFIG.accounts.groom.accountNumber}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.groom.accountNumber, "groom")}
+                            className="h-6 px-2"
+                          >
+                            {copiedAccount === "groom" ? (
+                              <Check className="w-3 h-3 text-green-600" />
+                            ) : (
+                              <Copy className="w-3 h-3" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                   </div>
                   </div>
+                </>
+              )}
 
-                  <div className="flex justify-between items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      {WEDDING_CONFIG.messages.labels.accountNumber}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm font-medium text-card-foreground">
-                        {accountModal === "groom"
-                          ? WEDDING_CONFIG.accounts.groom.accountNumber
-                          : WEDDING_CONFIG.accounts.bride.accountNumber}
+              {accountModal === "bride" && (
+                <div className="bg-muted/50 rounded-lg p-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                      <span className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.bride.bank}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        {WEDDING_CONFIG.messages.labels.accountHolder}
                       </span>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() =>
-                          copyToClipboard(
-                            accountModal === "groom"
-                              ? WEDDING_CONFIG.accounts.groom.accountNumber
-                              : WEDDING_CONFIG.accounts.bride.accountNumber,
-                            accountModal,
-                          )
-                        }
-                        className="h-6 px-2"
-                      >
-                        {copiedAccount === accountModal ? (
-                          <Check className="w-3 h-3 text-green-600" />
-                        ) : (
-                          <Copy className="w-3 h-3" />
-                        )}
-                      </Button>
+                      <span className="font-medium text-card-foreground">
+                        {WEDDING_CONFIG.accounts.bride.accountHolder}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-sm text-muted-foreground">
+                        {WEDDING_CONFIG.messages.labels.accountNumber}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-sm font-medium text-card-foreground">
+                          {WEDDING_CONFIG.accounts.bride.accountNumber}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.bride.accountNumber, "bride")}
+                          className="h-6 px-2"
+                        >
+                          {copiedAccount === "bride" ? (
+                            <Check className="w-3 h-3 text-green-600" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="text-center">
                 <p className="text-xs text-muted-foreground mb-3">

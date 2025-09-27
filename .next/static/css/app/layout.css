@@ -10,23 +10,11 @@ font-weight: 100 900;
 }.__variable_f910ec {--font-geist-mono: '__GeistMono_f910ec', ui-monospace, SFMono-Regular, Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New, monospace
 }
 
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[3].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[3].use[2]!./node_modules/next/font/local/target.css?{"path":"node_modules/geist/dist/sans.js","import":"","arguments":[{"src":"./fonts/geist-sans/Geist-Variable.woff2","variable":"--font-geist-sans","weight":"100 900"}],"variableName":"GeistSans"} ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-@font-face {
-font-family: '__GeistSans_fb8f2c';
-src: url(/_next/static/media/028c0d39d2e8f589-s.p.woff2) format('woff2');
-font-display: swap;
-font-weight: 100 900;
-}@font-face {font-family: '__GeistSans_Fallback_fb8f2c';src: local("Arial");ascent-override: 85.83%;descent-override: 20.53%;line-gap-override: 9.33%;size-adjust: 107.19%
-}.__className_fb8f2c {font-family: '__GeistSans_fb8f2c', '__GeistSans_Fallback_fb8f2c'
-}.__variable_fb8f2c {--font-geist-sans: '__GeistSans_fb8f2c', '__GeistSans_Fallback_fb8f2c'
-}
-
 /*!*************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./app/globals.css ***!
   \*************************************************************************************************************************************************************************************************************************************************************/
 /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
+@import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -80,7 +68,7 @@ font-weight: 100 900;
     --aspect-video: 16 / 9;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --default-font-family: var(--font-geist-sans);
+    --default-font-family: "Wanted Sans Variable", "Wanted Sans", sans-serif;
     --default-mono-font-family: var(--font-geist-mono);
     --color-border: var(--border);
   }
@@ -1557,7 +1545,7 @@ font-weight: 100 900;
     font-family: var(--font-geist-mono);
   }
   .font-sans {
-    font-family: var(--font-geist-sans);
+    font-family: "Wanted Sans Variable", "Wanted Sans", sans-serif;
   }
   .font-serif {
     font-family: var(--font-serif);
@@ -4970,6 +4958,137 @@ font-weight: 100 900;
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+.cherry-blossom-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+.petal {
+  position: absolute;
+  background-color: oklch(0.9 0.08 340 / 0.7);
+  border-radius: 150% 0 150% 0;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+.petal:nth-child(1) {
+  width: 15px;
+  height: 15px;
+  left: 10%;
+  animation-duration: 15s;
+  animation-delay: -5s;
+}
+.petal:nth-child(2) {
+  width: 10px;
+  height: 10px;
+  left: 20%;
+  animation-duration: 10s;
+  animation-delay: -2s;
+}
+.petal:nth-child(3) {
+  width: 20px;
+  height: 20px;
+  left: 30%;
+  animation-duration: 20s;
+  animation-delay: -10s;
+}
+.petal:nth-child(4) {
+  width: 12px;
+  height: 12px;
+  left: 40%;
+  animation-duration: 12s;
+  animation-delay: -7s;
+}
+.petal:nth-child(5) {
+  width: 18px;
+  height: 18px;
+  left: 50%;
+  animation-duration: 18s;
+  animation-delay: -1s;
+}
+.petal:nth-child(6) {
+  width: 10px;
+  height: 10px;
+  left: 60%;
+  animation-duration: 13s;
+  animation-delay: -8s;
+}
+.petal:nth-child(7) {
+  width: 16px;
+  height: 16px;
+  left: 70%;
+  animation-duration: 16s;
+  animation-delay: -4s;
+}
+.petal:nth-child(8) {
+  width: 8px;
+  height: 8px;
+  left: 80%;
+  animation-duration: 9s;
+  animation-delay: -1s;
+}
+.petal:nth-child(9) {
+  width: 14px;
+  height: 14px;
+  left: 90%;
+  animation-duration: 14s;
+  animation-delay: -9s;
+}
+.petal:nth-child(10) {
+  width: 10px;
+  height: 10px;
+  left: 5%;
+  animation-duration: 11s;
+  animation-delay: -6s;
+}
+.petal:nth-child(11) {
+  width: 15px;
+  height: 15px;
+  left: 25%;
+  animation-duration: 17s;
+  animation-delay: -3s;
+}
+.petal:nth-child(12) {
+  width: 12px;
+  height: 12px;
+  left: 45%;
+  animation-duration: 14s;
+  animation-delay: 0s;
+}
+.petal:nth-child(13) {
+  width: 18px;
+  height: 18px;
+  left: 65%;
+  animation-duration: 22s;
+  animation-delay: -12s;
+}
+.petal:nth-child(14) {
+  width: 9px;
+  height: 9px;
+  left: 85%;
+  animation-duration: 10s;
+  animation-delay: -5s;
+}
+.petal:nth-child(15) {
+  width: 13px;
+  height: 13px;
+  left: 15%;
+  animation-duration: 16s;
+  animation-delay: -11s;
 }
 @property --tw-translate-x {
   syntax: "*";
