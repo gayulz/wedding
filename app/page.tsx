@@ -75,7 +75,17 @@ const WEDDING_CONFIG = {
     mainTitle: "Wedding Invitation",
     subtitle: "저희 두 사람이 사랑으로 하나가 되는\n소중한 순간에 함께해 주세요",
     coupleMessage:
-      "두 사람이 만나 하나의 길을 걸어가려 합니다.\n저희의 새로운 시작을 축복해 주시고\n함께 기뻐해 주세요.",
+      "\n" +
+      "따뜻한 봄에 만난 우리,\n" +
+      "오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고\n" +
+      "이제는 함께 걸어가려 합니다.\n\n" +
+      "봄에는 활짝 핀 벚꽃이 되어주고\n" + 
+      "여름에는 시원한 바람이 되어주겠습니다.\n" +
+      "가을에는 드넓은 하늘이 되어주고\n" +
+      "겨울에는 새하얀 눈이 되어\n" +
+      "평생을 늘 서로에게 버팀목이 되어주겠습니다.\n\n" +
+      "시작의 한 걸음,\n" +
+      "함께 축복해 주시면 감사드립니다.\n",
     footerMessage: "참석이 어려우신 분들은\n마음만이라도 전해주세요",
     // 버튼 텍스트
     viewInvitationButton: "초대장 보기",
@@ -621,8 +631,8 @@ export default function WeddingInvitation() {
 
           {/* 대중교통 안내 */}
           <Card className="p-6 bg-card border-border mb-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-medium text-card-foreground mb-4 flex items-center gap-2">
+            <div>
+              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
                 {WEDDING_CONFIG.messages.sectionTitles.publicTransport}
               </h3>
             </div>
@@ -653,8 +663,8 @@ export default function WeddingInvitation() {
 
           {/* 자가용 안내 */}
           <Card className="p-6 bg-card border-border">
-            <div className="mb-4">
-              <h3 className="text-lg font-medium text-card-foreground mb-4 flex items-center gap-2">
+            <div>
+              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
                 {WEDDING_CONFIG.messages.sectionTitles.carGuide}
               </h3>
             </div>
