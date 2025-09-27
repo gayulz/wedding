@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 // ========================================
 // 🎯 청첩장 설정 - 아래 정보만 수정하세요!
@@ -135,14 +135,14 @@ const DdayCounter = () => {
   const ref = useRef<HTMLDivElement>(null)
   const [isInView, setIsInView] = useState(false)
 
-  const dDay = (() => {
+  const dDay = useMemo(() => {
     const today = new Date()
     const weddingDay = new Date(WEDDING_CONFIG.weddingDateTime)
     today.setHours(0, 0, 0, 0)
     weddingDay.setHours(0, 0, 0, 0)
     const diffTime = weddingDay.getTime() - today.getTime()
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  })()
+  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -152,7 +152,10 @@ const DdayCounter = () => {
           observer.unobserve(entry.target)
         }
       },
-      { threshold: 0.6 },
+      {
+        // threshold 값을 낮춰서 컴포넌트가 조금만 보여도 애니메이션이 시작되도록 수정
+        threshold: 0.3,
+      },
     )
 
     const currentRef = ref.current
@@ -171,7 +174,7 @@ const DdayCounter = () => {
   const dPlusDigits = String(Math.abs(dDay)).padStart(3, "0").split("")
 
   return (
-    <div ref={ref} className="mt-30">
+    <div ref={ref} className="mt-16">
       {dDay < 0 ? (
         <div className="flex flex-col items-center gap-4">
           <p className="mt-2 text-xl text-foreground"> 저희 결혼한지 💍 {Math.abs(dDay)}일 지났습니다 ❤️</p>
@@ -654,7 +657,7 @@ export default function WeddingInvitation() {
               </div>
             </Card>
           </div>
-          <AnimateOnScroll className="py-30">
+          <AnimateOnScroll className="py-16">
         <SectionDivider />
       </AnimateOnScroll>
           <div className="bg-muted/50 rounded-lg p-6 text-center">
@@ -674,7 +677,7 @@ export default function WeddingInvitation() {
         </AnimateOnScroll>
       </section>
       
-      <AnimateOnScroll className="py-30">
+      <AnimateOnScroll className="py-16">
         <SectionDivider />
       </AnimateOnScroll>
 
@@ -720,7 +723,7 @@ export default function WeddingInvitation() {
         </AnimateOnScroll>
       </section>
 
-      <AnimateOnScroll className="py-30">
+      <AnimateOnScroll className="py-16">
         <SectionDivider />
       </AnimateOnScroll>
 
@@ -844,7 +847,7 @@ export default function WeddingInvitation() {
         </AnimateOnScroll>
       </section>
 
-      <AnimateOnScroll className="py-30">
+      <AnimateOnScroll className="py-16">
         <SectionDivider />
       </AnimateOnScroll>
 
@@ -913,7 +916,7 @@ export default function WeddingInvitation() {
         </AnimateOnScroll>
       </section>
 
-      <AnimateOnScroll className="py-30">
+      <AnimateOnScroll className="py-16">
         <SectionDivider />
       </AnimateOnScroll>
 
