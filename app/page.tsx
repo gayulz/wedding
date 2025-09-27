@@ -440,7 +440,7 @@ export default function WeddingInvitation() {
         <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
 
           <div className="grid grid-cols-2 gap-8 mb-12">
-            <Card className="p-6 bg-card border-border">
+          <Card className="p-6 bg-card border-border flex flex-col">
             <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.groomPhoto ? (
                   <img
@@ -452,13 +452,14 @@ export default function WeddingInvitation() {
                   <span className="text-2xl">{WEDDING_CONFIG.groom.emoji}</span>
                 )}
               </div>
-              <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
-              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.engFirstName}</p>
-              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.englishName}</p>
-              <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.groom.parents}</p>
+              <div className="flex flex-col flex-grow">
+                <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
+                <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.groom.engFirstName} ${WEDDING_CONFIG.groom.englishName}`}</p>
+                <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.parents}</p>
+              </div>
             </Card>
 
-            <Card className="p-6 bg-card border-border">
+            <Card className="p-6 bg-card border-border flex flex-col">
             <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.bridePhoto ? (
                   <img
@@ -470,10 +471,11 @@ export default function WeddingInvitation() {
                   <span className="text-2xl">{WEDDING_CONFIG.bride.emoji}</span>
                 )}
               </div>
-              <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
-              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.engFirstName}</p>
-              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.englishName}</p>
-              <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.bride.parents}</p>
+              <div className="flex flex-col flex-grow">
+                <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
+                <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.bride.engFirstName} ${WEDDING_CONFIG.bride.englishName}`}</p>
+                <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.parents}</p>
+              </div>
             </Card>
           </div>
 
