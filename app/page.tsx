@@ -441,7 +441,7 @@ export default function WeddingInvitation() {
 
           <div className="grid grid-cols-2 gap-8 mb-12">
           <Card className="p-6 bg-card border-border flex flex-col">
-            <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
+             <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.groomPhoto ? (
                   <img
                     src={WEDDING_CONFIG.images.groomPhoto || "/placeholder.svg"}
@@ -460,7 +460,7 @@ export default function WeddingInvitation() {
             </Card>
 
             <Card className="p-6 bg-card border-border flex flex-col">
-            <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
+             <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.bridePhoto ? (
                   <img
                     src={WEDDING_CONFIG.images.bridePhoto || "/placeholder.svg"}
