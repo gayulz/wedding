@@ -85,7 +85,7 @@ const WEDDING_CONFIG = {
       couple: "신랑 & 신부",
       details: "Wedding Details",
       location: "오시는 길",
-      gallery: "Gallery",
+      gallery: "사진첩",
       contact: "연락처",
       publicTransport: "대중 교통 안내",
       carGuide: "자가용 안내",
@@ -129,7 +129,7 @@ const WEDDING_CONFIG = {
     // 프로필 사진 (선택사항 - 비워두면 이모지 사용)
     groomPhoto: "", // 신랑 사진 URL
     bridePhoto: "", // 신부 사진 URL
-    couplePhoto: "", // 커플 사진 URL (선택사항)
+    couplePhoto: "/images/wedding-10.jpeg", // 커플 사진 URL (선택사항)
     venuePhoto: "", // 예식장 사진 URL (선택사항)
 
     // 📸 갤러리 사진들 (각 사진의 URL을 개별적으로 설정)
