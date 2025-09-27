@@ -410,8 +410,8 @@ export default function WeddingInvitation() {
         <div className="max-w-md mx-auto text-center">
         <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
 
-          <div className="grid grid-cols-2 gap-8 mb-12">
-          <Card className="p-6 bg-card border-border flex flex-col">
+        <div className="grid grid-cols-2 gap-4 mb-12">
+        <Card className="p-4 bg-card border-border flex flex-col">
              <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.groomPhoto ? (
                   <img
@@ -430,7 +430,7 @@ export default function WeddingInvitation() {
               </div>
             </Card>
 
-            <Card className="p-6 bg-card border-border flex flex-col">
+            <Card className="p-4 bg-card border-border flex flex-col">
              <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.bridePhoto ? (
                   <img
@@ -600,16 +600,6 @@ export default function WeddingInvitation() {
                 referrerPolicy="no-referrer-when-downgrade"
                 className="rounded-lg"
               />
-            </div>
-            <div className="text-center">
-              <a
-                href={WEDDING_CONFIG.venue.googleMapEmbedUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline"
-              >
-                {WEDDING_CONFIG.messages.viewLargerMapText}
-              </a>
             </div>
           </Card>
 
