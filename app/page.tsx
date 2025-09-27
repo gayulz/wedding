@@ -46,6 +46,16 @@ const AnimateOnScroll = ({ children, className }: { children: React.ReactNode; c
   )
 }
 
+const SectionDivider = () => (
+  <div className="px-4">
+    <div className="flex items-center justify-center gap-4 max-w-xs mx-auto">
+      <div className="flex-grow h-px bg-border" />
+      <Heart className="w-5 h-5 text-primary/50" fill="currentColor" />
+      <div className="flex-grow h-px bg-border" />
+    </div>
+  </div>
+);
+
 const WEDDING_CONFIG = {
   // 👰🤵 신랑신부 정보
   groom: {
@@ -111,7 +121,7 @@ const WEDDING_CONFIG = {
   messages: {
     mainTitle: "Wedding Invitation",
     coupleMessage:
-      "\n" +
+      "\n\n\n" +
       "따뜻한 봄에 만난 우리,\n" +
       "오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고\n" +
       "이제는 함께 걸어가려 합니다.\n\n" +
@@ -121,7 +131,7 @@ const WEDDING_CONFIG = {
       "겨울에는 새하얀 눈이 되어\n" +
       "평생을 늘 서로에게 버팀목이 되어주겠습니다.\n\n" +
       "시작의 한 걸음,\n" +
-      "함께 축복해 주시면 감사드립니다.\n",
+      "함께 축복해 주시면 감사드립니다.\n\n\n",
     footerMessage: "참석이 어려우신 분들은\n마음만이라도 전해주세요",
     // 버튼 텍스트
     viewInvitationButton: "초대장 보기",
@@ -429,6 +439,7 @@ export default function WeddingInvitation() {
         </div>
       </section>
 
+
       {/* Couple Section */}
       <section id="couple" className="py-16 px-4 overflow-hidden">
         <AnimateOnScroll>
@@ -473,17 +484,19 @@ export default function WeddingInvitation() {
               </div>
             </Card>
           </div>
-
+          <AnimateOnScroll className="py-30">
+        <SectionDivider />
+      </AnimateOnScroll>
           <div className="bg-muted/50 rounded-lg p-6 text-center">
             <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
-              "
+              . . .
               {WEDDING_CONFIG.messages.coupleMessage.split("\n").map((line, index) => (
                 <span className="text-foreground" key={index}>
                   {line}
                   {index < WEDDING_CONFIG.messages.coupleMessage.split("\n").length - 1 && <br />}
                 </span>
               ))}
-              "
+               . . . 
             </p>
           </div>
           <div className="mt-16">
@@ -563,6 +576,11 @@ export default function WeddingInvitation() {
         </div>
         </AnimateOnScroll>
       </section>
+      
+      <AnimateOnScroll className="py-30">
+        <SectionDivider />
+      </AnimateOnScroll>
+
 
       {/* Wedding Details */}
       <section id="details" className="py-16 px-4 bg-muted/30 overflow-hidden">
@@ -604,6 +622,10 @@ export default function WeddingInvitation() {
         </div>
         </AnimateOnScroll>
       </section>
+
+      <AnimateOnScroll className="py-30">
+        <SectionDivider />
+      </AnimateOnScroll>
 
       {/* Location Section */}
       <section id="location" className="py-16 px-4 overflow-hidden">
@@ -725,6 +747,10 @@ export default function WeddingInvitation() {
         </AnimateOnScroll>
       </section>
 
+      <AnimateOnScroll className="py-30">
+        <SectionDivider />
+      </AnimateOnScroll>
+
       <section id="gallery" className="py-16 px-4 bg-muted/30 overflow-hidden">
       <AnimateOnScroll>
         <div className="max-w-md mx-auto">
@@ -789,6 +815,10 @@ export default function WeddingInvitation() {
         </div>
         </AnimateOnScroll>
       </section>
+
+      <AnimateOnScroll className="py-30">
+        <SectionDivider />
+      </AnimateOnScroll>
 
       {/* Contact Section */}
       <section id="contact" className="py-16 px-4 overflow-hidden">
@@ -880,6 +910,10 @@ export default function WeddingInvitation() {
         </div>
         </AnimateOnScroll>
       </section>
+
+      <AnimateOnScroll className="py-8">
+        <SectionDivider />
+      </AnimateOnScroll>
 
       {accountModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
