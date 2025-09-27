@@ -3,11 +3,48 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 // ========================================
 // 🎯 청첩장 설정 - 아래 정보만 수정하세요!
 // ========================================
+
+// 스크롤 애니메이션을 위한 헬퍼 컴포넌트
+const AnimateOnScroll = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null)
+  const [isIntersecting, setIsIntersecting] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsIntersecting(true)
+          observer.unobserve(entry.target)
+        }
+      },
+      {
+        threshold: 0.1, // 요소가 10% 보일 때 애니메이션 시작
+      },
+    )
+
+    const currentRef = ref.current
+    if (currentRef) {
+      observer.observe(currentRef)
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef)
+      }
+    }
+  }, [])
+
+  return (
+    <div ref={ref} className={`${className || ""} ${isIntersecting ? "animate-fade-in-up" : "opacity-0"}`}>
+      {children}
+    </div>
+  )
+}
 
 const WEDDING_CONFIG = {
   // 👰🤵 신랑신부 정보
@@ -73,7 +110,6 @@ const WEDDING_CONFIG = {
   // 💝 메시지
   messages: {
     mainTitle: "Wedding Invitation",
-    subtitle: "저희 두 사람이 사랑으로 하나가 되는\n소중한 순간에 함께해 주세요",
     coupleMessage:
       "\n" +
       "따뜻한 봄에 만난 우리,\n" +
@@ -382,20 +418,8 @@ export default function WeddingInvitation() {
           <div className="mb-8 animate-float">
             <Heart className="w-16 h-16 mx-auto mb-4 text-pink-400" fill="currentColor" />
           </div>
-
-          <h1 className="text-4xl text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
-
-          <div className="w-24 h-px bg-primary mx-auto mb-6" />
-
-          <p className="text-lg mb-8 leading-relaxed text-pretty text-foreground">
-            {WEDDING_CONFIG.messages.subtitle.split("\n").map((line, index) => (
-              <span key={index}>
-                {line}
-                {index < WEDDING_CONFIG.messages.subtitle.split("\n").length - 1 && <br />}
-              </span>
-            ))}
-          </p>
-
+          <h1 className="text-4xl font-serif text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
+          <div className="w-24 h-px bg-primary mx-auto mb-6"/>
           <div className="space-y-2 mb-8">
             <p className="text-2xl text-pink-400">
               {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
@@ -406,10 +430,10 @@ export default function WeddingInvitation() {
       </section>
 
       {/* Couple Section */}
-      <section id="couple" className="py-16 px-4">
-        <div className="max-w-md mx-auto text-center">
-        <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
-
+      <section id="couple" className="py-16 px-4 overflow-hidden">
+        <AnimateOnScroll>
+          <div className="max-w-md mx-auto text-center">
+            <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
         <div className="grid grid-cols-2 gap-4 mb-12">
         <Card className="p-4 bg-card border-border flex flex-col">
              <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
@@ -537,11 +561,13 @@ export default function WeddingInvitation() {
             )}
           </div>
         </div>
+        </AnimateOnScroll>
       </section>
 
       {/* Wedding Details */}
-      <section id="details" className="py-16 px-4 bg-muted/30">
-        <div className="max-w-md mx-auto">
+      <section id="details" className="py-16 px-4 bg-muted/30 overflow-hidden">
+        <AnimateOnScroll>
+          <div className="max-w-md mx-auto">
         <h2 className="text-3xl text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.details}
           </h2>
@@ -576,11 +602,13 @@ export default function WeddingInvitation() {
             </Card>
           </div>
         </div>
+        </AnimateOnScroll>
       </section>
 
       {/* Location Section */}
-      <section id="location" className="py-16 px-4">
-        <div className="max-w-md mx-auto">
+      <section id="location" className="py-16 px-4 overflow-hidden">
+        <AnimateOnScroll>
+          <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-2xl text-foreground mb-2">
               {WEDDING_CONFIG.messages.sectionTitles.location}
@@ -694,9 +722,11 @@ export default function WeddingInvitation() {
             </div>
           </Card>
         </div>
+        </AnimateOnScroll>
       </section>
 
-      <section id="gallery" className="py-16 px-4 bg-muted/30">
+      <section id="gallery" className="py-16 px-4 bg-muted/30 overflow-hidden">
+      <AnimateOnScroll>
         <div className="max-w-md mx-auto">
           <h2 className="text-3xl    text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.gallery}
@@ -757,10 +787,12 @@ export default function WeddingInvitation() {
             </div>
           </Card>
         </div>
+        </AnimateOnScroll>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 px-4">
+      <section id="contact" className="py-16 px-4 overflow-hidden">
+      <AnimateOnScroll>
         <div className="max-w-md mx-auto">
           <h2 className="text-3xl    text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.contact}
@@ -846,6 +878,7 @@ export default function WeddingInvitation() {
             </div>
           </div>
         </div>
+        </AnimateOnScroll>
       </section>
 
       {accountModal && (
@@ -1008,8 +1041,9 @@ export default function WeddingInvitation() {
       )}
 
       {/* Footer */}
-      <footer className="py-8 px-4 text-center">
-        <div className="max-w-md mx-auto">
+      <footer className="py-8 px-4 text-center overflow-hidden">
+        <AnimateOnScroll>
+          <div className="max-w-md mx-auto">
           <div className="space-y-4">
             <h3 className="text-lg font-medium text-foreground mb-4">청첩장 공유하기</h3>
 
@@ -1038,7 +1072,8 @@ export default function WeddingInvitation() {
               <p className="text-xs text-muted-foreground mt-1">{formatDate(weddingDate)}</p>
             </div>
           </div>
-        </div>
+        </div>       
+        </AnimateOnScroll>
       </footer>
 
       {/* Navigation Dots */}
