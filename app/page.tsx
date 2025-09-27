@@ -375,7 +375,7 @@ export default function WeddingInvitation() {
           </p>
 
           <div className="space-y-2 mb-8">
-            <p className="text-2xl font-serif text-pink-400">
+            <p className="text-2xl    text-pink-400">
               {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
             </p>
             <p className="text-sm text-muted-foreground">{formatDate(weddingDate)}</p>
@@ -393,7 +393,7 @@ export default function WeddingInvitation() {
       {/* Couple Section */}
       <section id="couple" className="py-16 px-4">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-3xl font-serif text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
+          <h2 className="text-3xl    text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
 
           <div className="grid grid-cols-2 gap-8 mb-12">
             <Card className="p-6 bg-card border-border">
@@ -408,7 +408,7 @@ export default function WeddingInvitation() {
                   <span className="text-2xl">{WEDDING_CONFIG.groom.emoji}</span>
                 )}
               </div>
-              <h3 className="text-xl font-serif text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
+              <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
               <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.englishName}</p>
               <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.groom.parents}</p>
             </Card>
@@ -425,7 +425,7 @@ export default function WeddingInvitation() {
                   <span className="text-2xl">{WEDDING_CONFIG.bride.emoji}</span>
                 )}
               </div>
-              <h3 className="text-xl font-serif text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
+              <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
               <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.englishName}</p>
               <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.bride.parents}</p>
             </Card>
@@ -449,7 +449,7 @@ export default function WeddingInvitation() {
       {/* Wedding Details */}
       <section id="details" className="py-16 px-4 bg-muted/30">
         <div className="max-w-md mx-auto">
-          <h2 className="text-3xl font-serif text-center text-foreground mb-12">
+          <h2 className="text-3xl    text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.details}
           </h2>
 
@@ -489,7 +489,7 @@ export default function WeddingInvitation() {
       <section id="location" className="py-16 px-4">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-serif text-foreground mb-2">
+            <h2 className="text-2xl    text-foreground mb-2">
               {WEDDING_CONFIG.messages.sectionTitles.location}
             </h2>
           </div>
@@ -615,14 +615,15 @@ export default function WeddingInvitation() {
 
       <section id="gallery" className="py-16 px-4 bg-muted/30">
         <div className="max-w-md mx-auto">
-          <h2 className="text-3xl font-serif text-center text-foreground mb-12">
+          <h2 className="text-3xl    text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.gallery}
           </h2>
 
           {/* 메인 사진 영역 */}
           <Card className="p-4 bg-card border-border mb-6">
             <div className="relative rounded-lg overflow-hidden mb-3">
-              <div className="relative w-full h-80 bg-muted/20 rounded-lg overflow-hidden">
+              {/* <div className="relative w-full h-80 bg-muted/20 rounded-lg overflow-hidden"> */}
+              <div className="relative w-full aspect-[3/4] bg-muted/20 rounded-lg overflow-hidden">
                 <img
                   src={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.url || "/placeholder.svg"}
                   alt={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.alt || "웨딩 사진"}
@@ -678,7 +679,7 @@ export default function WeddingInvitation() {
       {/* Contact Section */}
       <section id="contact" className="py-16 px-4">
         <div className="max-w-md mx-auto">
-          <h2 className="text-3xl font-serif text-center text-foreground mb-12">
+          <h2 className="text-3xl    text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.contact}
           </h2>
 
@@ -868,7 +869,6 @@ export default function WeddingInvitation() {
               </Button>
 
               {/* URL 복사 버튼 */}
-              
 
               {/* 기본 공유 버튼 (Web Share API) */}
               
