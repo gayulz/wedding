@@ -119,7 +119,7 @@ const WEDDING_CONFIG = {
       accountNumber: "계좌번호",
       trainKTX: "기차 KTX",
       busKTX: "버스 KTX",
-      localBus: "자선(초록)",
+      localBus: "지선(초록)",
       expressBus: "간선(파랑)",
       address: "주소",
       southGumiIC: "남구미 IC에서 오실 때",
