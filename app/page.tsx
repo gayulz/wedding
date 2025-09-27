@@ -251,6 +251,16 @@ export default function WeddingInvitation() {
   const [accountModal, setAccountModal] = useState<"groom" | "bride" | null>(null)
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(WEDDING_CONFIG.features.galleryDefaultIndex)
+  /* 디데이 계산기 */
+  const calculateDday = () => {
+    const today = new Date()
+    const weddingDay = new Date(WEDDING_CONFIG.weddingDateTime)
+    today.setHours(0, 0, 0, 0)
+    weddingDay.setHours(0, 0, 0, 0)
+    const diffTime = weddingDay.getTime() - today.getTime()
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  }
+  const dDay = calculateDday()
 
   useEffect(() => {
     setIsVisible(true)
@@ -383,12 +393,44 @@ export default function WeddingInvitation() {
             <p className="text-sm text-muted-foreground">{formatDate(weddingDate)}</p>
           </div>
 
-          <Button
-            onClick={() => scrollToSection(1)}
-            className="hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-full bg-pink-400"
-          >
-            {WEDDING_CONFIG.messages.viewInvitationButton}
-          </Button>
+          <div className="mt-8">
+            {dDay < 0 ? (
+              <div className="text-center">
+                <p className="text-3xl font-semibold text-primary">Our Wedding Day</p>
+                <p className="mt-2 text-lg text-foreground">축복해주셔서 감사합니다</p>
+              </div>
+            ) : dDay === 0 ? (
+              <div className="text-center">
+                <p className="text-5xl font-bold text-primary">D-DAY</p>
+                <p className="mt-2 text-lg text-foreground">드디어 오늘, 저희 결혼합니다</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
+                    <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                    <span className="relative text-5xl font-bold text-primary-foreground">D</span>
+                    <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                  </div>
+                  <span className="text-6xl font-bold text-primary">-</span>
+                  {String(dDay)
+                    .padStart(3, "0")
+                    .split("")
+                    .map((digit, index) => (
+                      <div
+                        key={index}
+                        className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center"
+                      >
+                        <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
+                        <span className="relative text-5xl font-bold text-primary-foreground">{digit}</span>
+                        <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
+                      </div>
+                    ))}
+                </div>
+                <p className="mt-2 text-lg text-foreground">신랑 ♥ 신부의 결혼식까지</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
