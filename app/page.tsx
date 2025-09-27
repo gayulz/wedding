@@ -13,7 +13,7 @@ const WEDDING_CONFIG = {
   // 👰🤵 신랑신부 정보
   groom: {
     name: "최봉석",
-    englishName: "Choi Bong Seok",
+    englishName: "Choi\nBong Seok",
     parents: "석명순의 아들",
     emoji: "👨",
     phone: "010-4404-1519", // 신랑 연락처
@@ -21,7 +21,7 @@ const WEDDING_CONFIG = {
   },
   bride: {
     name: "김가율",
-    englishName: "Kim Ga Yul",
+    englishName: "Kim\nGa Yul",
     parents: "김상준의 딸",
     emoji: "👩",
     phone: "010-8790-1519", // 신부 연락처
@@ -127,8 +127,8 @@ const WEDDING_CONFIG = {
     backgroundPosition: "center 70%", // 배경 이미지 위치 (center top, center center, center bottom 등)
 
     // 프로필 사진 (선택사항 - 비워두면 이모지 사용)
-    groomPhoto: "", // 신랑 사진 URL
-    bridePhoto: "", // 신부 사진 URL
+    groomPhoto: "/images/wedding-99.jpeg", // 신랑 사진 URL
+    bridePhoto: "/images/wedding-98.jpeg", // 신부 사진 URL
     couplePhoto: "/images/wedding-10.jpeg", // 커플 사진 URL (선택사항)
     venuePhoto: "", // 예식장 사진 URL (선택사항)
 
