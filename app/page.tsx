@@ -300,6 +300,7 @@ const WEDDING_CONFIG = {
 // ========================================
 // 🚫 아래 코드는 수정하지 마세요!
 // ========================================
+const sections = ["invitation", "couple", "details", "location", "gallery", "contact"]
 
 export default function WeddingInvitation() {
   const [isVisible, setIsVisible] = useState(false)
@@ -322,6 +323,31 @@ export default function WeddingInvitation() {
     setIsVisible(true)
   }, [])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = sections.findIndex((sectionId) => sectionId === entry.target.id)
+            if (index > -1) {
+              setCurrentSection(index)
+            }
+          }
+        })
+      },
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 },
+    )
+
+    sections.forEach((id) => {
+      const element = document.getElementById(id)
+      if (element) {
+        observer.observe(element)
+      }
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
   const weddingDate = new Date(WEDDING_CONFIG.weddingDateTime)
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("ko-KR", {
@@ -338,8 +364,6 @@ export default function WeddingInvitation() {
       minute: "2-digit",
     })
   }
-
-  const sections = ["invitation", "couple", "details", "location", "gallery", "contact"]
 
   const scrollToSection = (index: number) => {
     setCurrentSection(index)
