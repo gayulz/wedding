@@ -1,4 +1,4 @@
-// File: /Users/focusone/Desktop/mystudy/wedding-invitation/app/layout.tsx
+// File: /Users/focusone/Desktop/mystudy/wedding-invitation/wedding/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

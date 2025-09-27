@@ -123,7 +123,7 @@ const WEDDING_CONFIG = {
   images: {
     // 메인 배경 이미지 (Hero Section)
     heroBackground:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings-rZ4oCUkH3Y9H3ZxCmbnRyHdHc7cP8Y.jpg",
+      "/images/wedding-07.jpeg",
     backgroundPosition: "center 70%", // 배경 이미지 위치 (center top, center center, center bottom 등)
 
     // 프로필 사진 (선택사항 - 비워두면 이모지 사용)
@@ -136,63 +136,63 @@ const WEDDING_CONFIG = {
     gallery: [
       {
         id: 1,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings1-ewI9bjRAF4aIdX4DDmMesRUiYD3HQu.jpg", // 신랑신부가 함께 웃고 있는 밝고 행복한 사진
-        alt: "웨딩 사진 1",
-        description: "행복한 순간",
+        url: "/images/wedding-02.jpeg", 
+        alt: "",
+        description: "for Vietnam",
       },
       {
         id: 2,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings2-ngFSla0zf7id1H6dnNAONPOYwTgwxy.jpg", // 실내에서 촬영된 신랑신부의 로맨틱한 사진
-        alt: "웨딩 사진 2",
-        description: "로맨틱한 순간",
+        url: "/images/wedding-05.jpeg", // 실내에서 촬영된 신랑신부의 로맨틱한 사진
+        alt: "",
+        description: "for Vietnam",
       },
       {
         id: 3,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings3-PWlc1Io3DU3sh6S50LiL6eivxPYpPy.jpg", // 스튜디오에서 촬영된 정식 웨딩 사진
-        alt: "웨딩 사진 3",
-        description: "스튜디오 촬영",
+        url: "/images/wedding-01.jpeg", // 스튜디오에서 촬영된 정식 웨딩 사진
+        alt: "취미생활",
+        description: "골프를 좋아하는 우리",
       },
       {
         id: 4,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings4-wYPGwfNfCCF5JP207qgNTKTba9yzPq.jpg", // 신부가 부케를 들고 있는 클로즈업 사진
-        alt: "웨딩 사진 4",
-        description: "아름다운 부케",
+        url: "/images/wedding-15.jpeg", // 신부가 부케를 들고 있는 클로즈업 사진
+        alt: "반국투어",
+        description: "우리의 추억, 반국투어",
       },
       {
         id: 5,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings-rZ4oCUkH3Y9H3ZxCmbnRyHdHc7cP8Y.jpg", // 기존 배경 이미지 재사용
-        alt: "웨딩 사진 5",
-        description: "야외 촬영",
+        url: "/images/wedding-26.jpeg", // 기존 배경 이미지 재사용
+        alt: "세부여행",
+        description: "오빠의 첫 해외여행",
       },
       {
         id: 6,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings1-ewI9bjRAF4aIdX4DDmMesRUiYD3HQu.jpg", // 첫 번째 사진 반복
-        alt: "웨딩 사진 6",
-        description: "즐거운 시간",
+        url: "/images/wedding-30.jpeg", // 첫 번째 사진 반복
+        alt: "강원도 여행",
+        description: "육백마지기에서 우리",
       },
       {
         id: 7,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings2-ngFSla0zf7id1H6dnNAONPOYwTgwxy.jpg", // 두 번째 사진 반복
-        alt: "웨딩 사진 7",
-        description: "사랑의 약속",
+        url: "/images/wedding-42.jpeg", // 두 번째 사진 반복
+        alt: "오이도에서",
+        description: "살뺀 가율이가 그립다네요",
       },
       {
         id: 8,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings3-PWlc1Io3DU3sh6S50LiL6eivxPYpPy.jpg", // 세 번째 사진 반복
-        alt: "웨딩 사진 8",
-        description: "영원한 사랑",
+        url: "/images/wedding-34.jpeg", // 세 번째 사진 반복
+        alt: "연애 초반의 우리",
+        description: "정말 풋풋했구나.",
       },
       {
         id: 9,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings4-wYPGwfNfCCF5JP207qgNTKTba9yzPq.jpg", // 네 번째 사진 반복
-        alt: "웨딩 사진 9",
-        description: "특별한 날",
+        url: "/images/wedding-46.jpeg", // 네 번째 사진 반복
+        alt: "벚꽃",
+        description: "벚꽃을 보러 간 저녁",
       },
       {
         id: 10,
-        url: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/weddings-rZ4oCUkH3Y9H3ZxCmbnRyHdHc7cP8Y.jpg", // 다섯 번째 사진 반복
-        alt: "웨딩 사진 10",
-        description: "소중한 추억",
+        url: "/images/wedding-43.jpeg", // 다섯 번째 사진 반복
+        alt: "파주데이트",
+        description: "눈이 엄청 많이왔지",
       },
     ],
   },
