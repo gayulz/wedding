@@ -64,8 +64,8 @@ const WEDDING_CONFIG = {
       address: "경상북도 구미시 인동35길 46",
       routes: {
         southGumi:
-          "남구미 IC에서 오실 때\n녹동강 변도로(좌회전) → 구미대교 → 인동광장 → 대구,가산 방향 → 롯데리아 사거리(좌회전)",
-        gumiIC: "구미 IC에서 오실 때\nIC사거리(우회전) → 인동광장 → 대구, 가산 방향 → 롯데리아 사거리(좌회전)",
+          "녹동강 변도로(좌회전) → 구미대교 → 인동광장 → 대구,가산 방향 → 롯데리아 사거리(좌회전)",
+        gumiIC: "IC사거리(우회전) → 인동광장 → 대구, 가산 방향 → 롯데리아 사거리(좌회전)",
       },
     },
   },
@@ -84,7 +84,7 @@ const WEDDING_CONFIG = {
     viewLargerMapText: "View larger map",
     // 섹션 제목들
     sectionTitles: {
-      couple: "신랑 & 신부",
+      couple: "🤵🏻 신랑  &  신부 👰🏻‍♀️",
       details: "Wedding Details",
       location: "오시는 길",
       gallery: "사진첩",
@@ -126,7 +126,7 @@ const WEDDING_CONFIG = {
     // 메인 배경 이미지 (Hero Section)
     heroBackground:
       "/images/wedding-07.jpeg",
-    backgroundPosition: "center 70%", // 배경 이미지 위치 (center top, center center, center bottom 등)
+    backgroundPosition: "center bottom", // 배경 이미지 위치 (center top, center center, center bottom 등)
 
     // 프로필 사진 (선택사항 - 비워두면 이모지 사용)
     groomPhoto: "/images/wedding-99.jpeg", // 신랑 사진 URL
@@ -363,7 +363,7 @@ export default function WeddingInvitation() {
             <Heart className="w-16 h-16 mx-auto mb-4 text-pink-400" fill="currentColor" />
           </div>
 
-          <h1 className="text-4xl font-serif text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
+          <h1 className="text-4xl text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
 
           <div className="w-24 h-px bg-primary mx-auto mb-6" />
 
@@ -377,7 +377,7 @@ export default function WeddingInvitation() {
           </p>
 
           <div className="space-y-2 mb-8">
-            <p className="text-2xl    text-pink-400">
+            <p className="text-2xl text-pink-400">
               {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
             </p>
             <p className="text-sm text-muted-foreground">{formatDate(weddingDate)}</p>
@@ -395,11 +395,11 @@ export default function WeddingInvitation() {
       {/* Couple Section */}
       <section id="couple" className="py-16 px-4">
         <div className="max-w-md mx-auto text-center">
-          <h2 className="text-3xl    text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
+        <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
 
           <div className="grid grid-cols-2 gap-8 mb-12">
             <Card className="p-6 bg-card border-border">
-              <div className="w-20 h-20 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
+            <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.groomPhoto ? (
                   <img
                     src={WEDDING_CONFIG.images.groomPhoto || "/placeholder.svg"}
@@ -417,7 +417,7 @@ export default function WeddingInvitation() {
             </Card>
 
             <Card className="p-6 bg-card border-border">
-              <div className="w-20 h-20 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
+            <div className="w-32 h-40 bg-secondary rounded-lg mx-auto mb-4 flex items-center justify-center overflow-hidden">
                 {WEDDING_CONFIG.images.bridePhoto ? (
                   <img
                     src={WEDDING_CONFIG.images.bridePhoto || "/placeholder.svg"}
@@ -429,7 +429,7 @@ export default function WeddingInvitation() {
                 )}
               </div>
               <h3 className="text-xl    text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
-              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.groom.engFirstName}</p>
+              <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.engFirstName}</p>
               <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.bride.englishName}</p>
               <p className="text-xs text-muted-foreground">{WEDDING_CONFIG.bride.parents}</p>
             </Card>
@@ -453,13 +453,13 @@ export default function WeddingInvitation() {
       {/* Wedding Details */}
       <section id="details" className="py-16 px-4 bg-muted/30">
         <div className="max-w-md mx-auto">
-          <h2 className="text-3xl    text-center text-foreground mb-12">
+        <h2 className="text-3xl text-center text-foreground mb-12">
             {WEDDING_CONFIG.messages.sectionTitles.details}
           </h2>
 
           <div className="space-y-6">
             <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-0">
                 <Calendar className="w-6 h-6 text-primary" />
                 <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.date}</h3>
               </div>
@@ -467,7 +467,7 @@ export default function WeddingInvitation() {
             </Card>
 
             <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-0">
                 <Clock className="w-6 h-6 text-primary" />
                 <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.time}</h3>
               </div>
@@ -475,7 +475,7 @@ export default function WeddingInvitation() {
             </Card>
 
             <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4 mb-0">
                 <MapPin className="w-6 h-6 text-primary" />
                 <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.location}</h3>
               </div>
@@ -493,7 +493,7 @@ export default function WeddingInvitation() {
       <section id="location" className="py-16 px-4">
         <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h2 className="text-2xl    text-foreground mb-2">
+            <h2 className="text-2xl text-foreground mb-2">
               {WEDDING_CONFIG.messages.sectionTitles.location}
             </h2>
           </div>
