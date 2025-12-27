@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import Image from "next/image"
 
 // ========================================
@@ -11,7 +11,7 @@ import Image from "next/image"
 // ========================================
 
 // 스크롤 애니메이션을 위한 헬퍼 컴포넌트
-const AnimateOnScroll = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+const AnimateOnScroll = ({ children, className }: { children: ReactNode; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
@@ -561,7 +561,7 @@ export default function WeddingInvitation() {
         content: {
           title: "💒 최봉석 ♥ 김가율 결혼식에 초대합니다",
           description: "2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀",
-          imageUrl: "https://bong-yul-invitation.netlify.app",
+          imageUrl: "https://bong-yul-invitation.netlify.app/images/wedding-07.jpeg",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -1241,7 +1241,7 @@ export default function WeddingInvitation() {
                               <Button
                                   onClick={() => {
                                       // 실제 카카오톡 SDK 연동 시 위의 shareToKakao() 함수 호출
-                                      alert("카카오톡 SDK 연동 후 사용 가능합니다.\n위의 주석 가이드라인을 참고해주세요.")
+                                      shareToKakao();
                                   }}
                                   className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 rounded-lg"
                               >

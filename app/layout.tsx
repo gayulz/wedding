@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import { GeistMono } from 'geist/font/mono'
+import Script from 'next/script'
 
 import type { Metadata } from 'next'
 import './globals.css'
@@ -38,7 +39,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistMono.variable}`}>
-      <CherryBlossomEffect />
+        <Script
+          src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+          integrity="sha384-DKYJZ8NLiK8MN4/C5ONxIi7650uE9MNAS53W29vIKG4/2boW32fKqQ3e0J8D7j76"
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+        <Script id="kakao-init" strategy="afterInteractive">
+          {`
+            if (window.Kakao && !window.Kakao.isInitialized()) {
+              window.Kakao.init('${process.env.NEXT_PUBLIC_KAKAO_API_KEY}');
+            }
+          `}
+        </Script>
+        <CherryBlossomEffect />
         {children}
         <Analytics />
       </body>
