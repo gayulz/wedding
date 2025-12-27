@@ -12,6 +12,7 @@ export const WEDDING_CONFIG = {
     emoji: "👨",
     phone: "010-4404-1519",
     motherPhone: "010-5232-9720",
+    mbti:"ESTJ",
   },
   bride: {
     name: "김가율",
@@ -21,6 +22,7 @@ export const WEDDING_CONFIG = {
     emoji: "👩",
     phone: "010-8790-1519",
     fatherPhone: "010-6600-4422",
+    mbti:"ISTP",
   },
 
   // 📅 결혼식 날짜 및 시간
@@ -126,16 +128,21 @@ export const WEDDING_CONFIG = {
     couplePhoto: "/images/wedding-10.jpeg",
     venuePhoto: "",
     gallery: [
-      { id: 1, url: "/images/wedding-02.jpeg", alt: "", description: "for Vietnam" },
-      { id: 2, url: "/images/wedding-05.jpeg", alt: "", description: "for Vietnam" },
-      { id: 3, url: "/images/wedding-01.jpeg", alt: "취미생활", description: "골프를 좋아하는 우리" },
-      { id: 4, url: "/images/wedding-15.jpeg", alt: "반국투어", description: "우리의 추억, 반국투어" },
-      { id: 5, url: "/images/wedding-26.jpeg", alt: "세부여행", description: "오빠의 첫 해외여행" },
-      { id: 6, url: "/images/wedding-30.jpeg", alt: "강원도 여행", description: "육백마지기에서 우리" },
-      { id: 7, url: "/images/wedding-42.jpeg", alt: "오이도에서", description: "살뺀 가율이가 그립다네요" },
-      { id: 8, url: "/images/wedding-34.jpeg", alt: "연애 초반의 우리", description: "정말 풋풋했구나." },
-      { id: 9, url: "/images/wedding-46.jpeg", alt: "벚꽃", description: "벚꽃을 보러 간 저녁" },
-      { id: 10, url: "/images/wedding-43.jpeg", alt: "파주데이트", description: "눈이 엄청 많이왔지" },
+      { id: 1, url: "/images/wedding-01.jpeg", alt: "웨딩 사진 1", description: "" },
+      { id: 2, url: "/images/wedding-02.jpeg", alt: "웨딩 사진 2", description: "" },
+      { id: 3, url: "/images/wedding-03.jpeg", alt: "웨딩 사진 3", description: "" },
+      { id: 4, url: "/images/wedding-04.jpeg", alt: "웨딩 사진 4", description: "" },
+      { id: 5, url: "/images/wedding-05.jpeg", alt: "웨딩 사진 5", description: "" },
+      { id: 6, url: "/images/wedding-06.jpeg", alt: "웨딩 사진 6", description: "" },
+      { id: 7, url: "/images/wedding-07.jpeg", alt: "웨딩 사진 7", description: "" },
+      { id: 8, url: "/images/wedding-08.jpeg", alt: "웨딩 사진 8", description: "" },
+      { id: 9, url: "/images/wedding-09.jpeg", alt: "웨딩 사진 9", description: "" },
+      { id: 10, url: "/images/wedding-10.jpeg", alt: "웨딩 사진 10", description: "" },
+      { id: 11, url: "/images/wedding-20.jpeg", alt: "웨딩 사진 11", description: "" },
+      { id: 12, url: "/images/wedding-21.jpeg", alt: "웨딩 사진 12", description: "" },
+      { id: 13, url: "/images/wedding-23.jpeg", alt: "웨딩 사진 13", description: "" },
+      { id: 14, url: "/images/wedding-14.jpeg", alt: "웨딩 사진 14", description: "" },
+      { id: 15, url: "/images/wedding-15.jpeg", alt: "웨딩 사진 15", description: "" },
     ],
   },
 
@@ -170,7 +177,7 @@ export const WEDDING_CONFIG = {
     showNavigationDots: true,
     smoothScroll: true,
     copySuccessTimeout: 2000,
-    galleryDefaultIndex: 0,
+    galleryDefaultIndex: -1,
   },
 }
 

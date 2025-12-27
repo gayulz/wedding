@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { WEDDING_CONFIG, sections } from "@/config/wedding-config"
 import { AnimateOnScroll } from "@/components/wedding/AnimateOnScroll"
@@ -18,30 +18,10 @@ export default function WeddingInvitation() {
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(WEDDING_CONFIG.features.galleryDefaultIndex)
   const [showFooter, setShowFooter] = useState(false)
-  const thumbnailContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
-
-  // 썸네일 자동 스크롤
-  useEffect(() => {
-    if (thumbnailContainerRef.current) {
-      const container = thumbnailContainerRef.current
-      const thumbnail = container.children[selectedImageIndex] as HTMLElement
-      if (thumbnail) {
-        const containerWidth = container.offsetWidth
-        const thumbnailLeft = thumbnail.offsetLeft
-        const thumbnailWidth = thumbnail.offsetWidth
-        const scrollPosition = thumbnailLeft - (containerWidth / 2) + (thumbnailWidth / 2)
-        
-        container.scrollTo({
-          left: scrollPosition,
-          behavior: 'smooth'
-        })
-      }
-    }
-  }, [selectedImageIndex])
 
   // 스크롤 시 푸터 표시 (단, 마지막 섹션에서는 숨김)
   useEffect(() => {
@@ -115,10 +95,6 @@ export default function WeddingInvitation() {
   const closeModal = () => {
     setAccountModal(null)
     setCopiedAccount(null)
-  }
-
-  const selectImage = (index: number) => {
-    setSelectedImageIndex(index)
   }
 
   const nextImage = () => {
@@ -240,6 +216,13 @@ export default function WeddingInvitation() {
                               <h3 className="text-xl text-card-foreground font-medium mb-2">{WEDDING_CONFIG.groom.name}</h3>
                               <p className="text-sm text-muted-foreground mb-1">{WEDDING_CONFIG.groom.engFirstName} {WEDDING_CONFIG.groom.englishName}</p>
                               <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.parents}</p>
+                              <br/>
+                              .
+                              <br />
+                              .
+                              <br />
+                              <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.mbti}</p>
+                              <p className="text-xs text-muted-foreground mt-2">골프를 사랑하는 신랑</p>
                           </div>
 
                           {/* 신부 */}
@@ -264,8 +247,18 @@ export default function WeddingInvitation() {
                               <h3 className="text-xl text-card-foreground font-medium mb-2">{WEDDING_CONFIG.bride.name}</h3>
                               <p className="text-sm text-muted-foreground mb-1">{WEDDING_CONFIG.bride.engFirstName} {WEDDING_CONFIG.bride.englishName}</p>
                               <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.parents}</p>
+                              <br/>
+                              .
+                              <br />
+                              .
+                              <br />
+                              <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.mbti}</p>
+                              <p className="text-xs text-muted-foreground mt-2">여행을 좋아하는 신부</p>
                           </div>
                       </div>
+                      <br/>
+                      <p className="text-sm text-muted-foreground mt-2">전혀 다른 성격의 두 사람이지만</p>
+                      <p className="text-sm text-muted-foreground mt-2">서로에게 든든한 버팀목과 사랑스러운 동반자가 되겠습니다.</p>
                   </div>
               </AnimateOnScroll>
           </section>
@@ -499,82 +492,96 @@ export default function WeddingInvitation() {
               <SectionDivider/>
           </AnimateOnScroll>
 
-          <section id="gallery" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center">
+          <section id="gallery" className="py-16 overflow-hidden snap-start min-h-screen flex items-center justify-center">
               <AnimateOnScroll>
-                  <div className="mx-auto" style={{width: '55%'}}>
-                      <h2 className="text-3xl text-center text-foreground mb-12">
+                  <div className="w-full px-2">
+                      <h2 className="text-3xl text-center text-foreground mb-12 px-4">
                           {WEDDING_CONFIG.messages.sectionTitles.gallery}
                       </h2>
 
-                      {/* 메인 사진 영역 */}
-                      <Card className="p-4 bg-card border-border mb-6">
-                          <div className="relative rounded-lg overflow-hidden mb-3">
-                              <div className="relative w-full aspect-[3/4] bg-muted/20 rounded-lg overflow-hidden">
+                      {/* 3x5 그리드 사진첩 */}
+                      <div className="grid grid-cols-3 gap-1 md:gap-2">
+                          {WEDDING_CONFIG.images.gallery.map((image, index) => (
+                              <button
+                                  key={image.id || index}
+                                  onClick={() => setSelectedImageIndex(index)}
+                                  className="aspect-square rounded-lg overflow-hidden hover:scale-105 hover:shadow-lg transition-all duration-200 relative group"
+                              >
+                                  <Image
+                                      src={image.url || "/placeholder.svg"}
+                                      alt={image.alt}
+                                      fill
+                                      className="object-cover"
+                                      sizes="(max-width: 640px) 33vw, (max-width: 768px) 33vw, 33vw"
+                                      quality={75}
+                                  />
+                                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
+                              </button>
+                          ))}
+                      </div>
+                      <div className="text-center mt-8 px-4">
+                          <p className="text-sm text-muted-foreground">사진을 클릭하시면 크게 보실 수 있습니다.</p>
+                      </div>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+
+          {/* 사진 모달 팝업 */}
+          {selectedImageIndex !== WEDDING_CONFIG.features.galleryDefaultIndex && (
+              <div 
+                  className="fixed inset-0 bg-white/30 backdrop-blur-md flex items-center justify-center p-4 z-[60]"
+                  onClick={() => setSelectedImageIndex(WEDDING_CONFIG.features.galleryDefaultIndex)}
+              >
+                  <div className="relative w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+                      {/* 닫기 버튼 */}
+                      <button
+                          onClick={() => setSelectedImageIndex(WEDDING_CONFIG.features.galleryDefaultIndex)}
+                          className="absolute -top-12 right-0 text-black hover:text-gray-700 transition-colors z-10 bg-white/80 backdrop-blur-sm rounded-full p-2"
+                      >
+                          <X className="w-8 h-8" />
+                      </button>
+
+                      {/* 메인 사진 컨테이너 */}
+                      <div className="relative w-full max-h-[80vh] flex items-center justify-center">
+                          {/* 이전 버튼 */}
+                          <button
+                              onClick={prevImage}
+                              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white/90 text-black p-3 rounded-full transition-all backdrop-blur-sm z-10 shadow-lg"
+                          >
+                              <ChevronLeft className="w-6 h-6" />
+                          </button>
+
+                          {/* 사진 */}
+                          <div className="relative w-full" style={{maxHeight: '80vh'}}>
+                              <div className="relative w-full aspect-[3/4] max-h-[80vh]">
                                   <Image
                                       src={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.url || "/placeholder.svg"}
                                       alt={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.alt || "웨딩 사진"}
                                       fill
-                                      className="object-cover"
-                                      sizes="(max-width: 768px) 100vw, 400px"
-                                      quality={75}
-                                      priority={selectedImageIndex === 0}
+                                      className="object-contain rounded-lg"
+                                      sizes="(max-width: 1024px) 100vw, 1024px"
+                                      quality={90}
+                                      priority
                                   />
-
-                                  {/* 이전/다음 버튼 */}
-                                  <button
-                                      onClick={prevImage}
-                                      className="absolute left-2 top-1/2 transform -translate-y-1/2 hover:bg-wedding-teal text-white p-2 rounded-full transition-all bg-wedding-green opacity-90"
-                                  >
-                                      <ChevronLeft className="w-4 h-4"/>
-                                  </button>
-                                  <button
-                                      onClick={nextImage}
-                                      className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-wedding-teal text-white p-2 rounded-full transition-all bg-wedding-green opacity-90"
-                                  >
-                                      <ChevronRight className="w-4 h-4"/>
-                                  </button>
-
-                                  {/* 사진 설명 */}
                               </div>
                           </div>
 
-                          {/* 사진 인덱스 표시 */}
-                      </Card>
+                          {/* 다음 버튼 */}
+                          <button
+                              onClick={nextImage}
+                              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white/90 text-black p-3 rounded-full transition-all backdrop-blur-sm z-10 shadow-lg"
+                          >
+                              <ChevronRight className="w-6 h-6" />
+                          </button>
+                      </div>
 
-                      {/* 썸네일 슬라이더 */}
-                      <Card className="p-4 bg-card px-0.5 py-3.5">
-                          <div className="relative">
-                              <div
-                                  ref={thumbnailContainerRef}
-                                  className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-2 flex-row items-center pb-0">
-                                  {WEDDING_CONFIG.images.gallery.map((image, index) => (
-                                      <button
-                                          key={image.id}
-                                          onClick={() => selectImage(index)}
-                                          className={`flex-shrink-0 rounded-lg overflow-hidden transition-all snap-start relative ${
-                                              selectedImageIndex === index
-                                                  ? "w-20 h-24 shadow-lg scale-110"
-                                                  : "w-14 h-18 opacity-70 hover:opacity-100"
-                                          }`}
-                                      >
-                                          <Image
-                                              src={image.url || "/placeholder.svg"}
-                                              alt={image.alt}
-                                              fill
-                                              className="object-cover"
-                                              sizes="80px"
-                                              quality={60}
-                                          />
-                                      </button>
-                                  ))}
-                              </div>
-
-                              <div className="text-center mt-2"></div>
-                          </div>
-                      </Card>
+                      {/* 사진 번호 표시 */}
+                      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/80 text-black px-4 py-2 rounded-full text-sm backdrop-blur-sm font-medium">
+                          {selectedImageIndex + 1} / {WEDDING_CONFIG.images.gallery.length}
+                      </div>
                   </div>
-              </AnimateOnScroll>
-          </section>
+              </div>
+          )}
 
           <AnimateOnScroll className="py-16">
               <SectionDivider/>
