@@ -8,6 +8,12 @@ import './globals.css'
 export const metadata: Metadata = {
   title: '최봉석 ♥ 김가율 모바일 청첩장',
   description: '따뜻한 사랑으로 채워나갈 저희의 새 시작에 오셔서 축복해 주세요.',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
   openGraph: {
     title: '최봉석 ♥ 김가율 결혼식에 초대합니다',
     description: '따뜻한 사랑으로 채워나갈 저희의 새 시작에 오셔서 축복해 주세요.',

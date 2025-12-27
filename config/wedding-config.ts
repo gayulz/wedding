@@ -66,7 +66,7 @@ export const WEDDING_CONFIG = {
   messages: {
     mainTitle: "",
     coupleMessage:
-      "\n\n\n" +
+      "\n\n" +
       "따뜻한 봄에 만난 우리,\n" +
       "오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고\n" +
       "이제는 함께 걸어가려 합니다.\n\n" +
@@ -76,7 +76,7 @@ export const WEDDING_CONFIG = {
       "겨울에는 새하얀 눈이 되어\n" +
       "평생을 늘 서로에게 버팀목이 되어주겠습니다.\n\n" +
       "시작의 한 걸음,\n" +
-      "함께 축복해 주시면 감사드립니다.\n\n\n",
+      "함께 축복해 주시면 감사드립니다.\n\n",
     footerMessage: "참석이 어려우신 분들은\n마음만이라도 전해주세요",
     viewInvitationButton: "초대장 보기",
     naverMapButton: "🗺️ 네이버 지도",

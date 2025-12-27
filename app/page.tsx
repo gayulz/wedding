@@ -21,6 +21,11 @@ export default function WeddingInvitation() {
 
   useEffect(() => {
     setIsVisible(true)
+    
+    // 모바일에서 주소창 자동 숨김
+    setTimeout(() => {
+      window.scrollTo(0, 1)
+    }, 100)
   }, [])
 
   // 스크롤 시 푸터 표시 (단, 마지막 섹션에서는 숨김)
@@ -160,8 +165,8 @@ export default function WeddingInvitation() {
                   {/* 타이틀 조건부 렌더링 */}
                   {WEDDING_CONFIG.messages.mainTitle && (
                       <>
-                          <h1 className="text-4xl font-serif text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
-                          <div className="w-24 h-px bg-primary mx-auto mb-6"/>
+                          <h1 className="text-4xl font-serif text-white mb-2 text-balance drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">{WEDDING_CONFIG.messages.mainTitle}</h1>
+                          <div className="w-24 h-px bg-white mx-auto mb-6"/>
                       </>
                   )}
                   <div className="space-y-4 mb-8">
@@ -218,11 +223,7 @@ export default function WeddingInvitation() {
                               <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.parents}</p>
                               <br/>
                               .
-                              <br />
-                              .
-                              <br />
-                              <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.mbti}</p>
-                              <p className="text-xs text-muted-foreground mt-2">골프를 사랑하는 신랑</p>
+                              <p className="text-xs text-muted-foreground mt-2">골프를 사랑하는 {WEDDING_CONFIG.groom.mbti}</p>
                           </div>
 
                           {/* 신부 */}
@@ -249,16 +250,11 @@ export default function WeddingInvitation() {
                               <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.parents}</p>
                               <br/>
                               .
-                              <br />
-                              .
-                              <br />
-                              <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.mbti}</p>
-                              <p className="text-xs text-muted-foreground mt-2">여행을 좋아하는 신부</p>
+                              <p className="text-xs text-muted-foreground mt-2">여행을 좋아하는 {WEDDING_CONFIG.bride.mbti}</p>
                           </div>
                       </div>
-                      <br/>
-                      <p className="text-sm text-muted-foreground mt-2">전혀 다른 성격의 두 사람이지만</p>
-                      <p className="text-sm text-muted-foreground mt-2">서로에게 든든한 버팀목과 사랑스러운 동반자가 되겠습니다.</p>
+                      <p className="text-xs text-muted-foreground mt-2">서로 다른점이 많지만 서로에게</p>
+                      <p className="text-xs text-muted-foreground mt-2">든든한 버팀목과 사랑스러운 동반자가 되겠습니다.</p>
                   </div>
               </AnimateOnScroll>
           </section>
@@ -360,8 +356,8 @@ export default function WeddingInvitation() {
                       </div>
 
                       {/* 구글 맵 임베드 - 더 크게 */}
-                      <Card className="p-4 bg-card border-border mb-4 w-full">
-                          <div className="rounded-lg overflow-hidden mb-3" style={{height: '450px'}}>
+                      <Card className="p-4 bg-card border-border mb-3 w-full">
+                          <div className="rounded-lg overflow-hidden mb-1" style={{height: '370px'}}>
                               <iframe
                                   src={WEDDING_CONFIG.venue.googleMapEmbedUrl}
                                   width="100%"
@@ -402,17 +398,15 @@ export default function WeddingInvitation() {
           <section id="location2" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto w-full">
-                      <div className="text-center mb-8">
+                      <div className="text-center mb-7">
                           <h2 className="text-2xl text-foreground mb-2">
                               교통 안내
                           </h2>
                       </div>
-
-                      <div className="space-y-6">
-                          {/* 대중교통 안내 */}
+                      <div className="space-y-2">
                           <Card className="p-6 bg-card border-border w-full">
                               <div>
-                                  <h3 className="text-lg font-medium text-card-foreground mb-4 flex items-center gap-2">
+                                  <h3 className="text-base font-medium text-card-foreground mb-0 flex items-center gap-2">
                                       {WEDDING_CONFIG.messages.sectionTitles.publicTransport}
                                   </h3>
                               </div>
@@ -420,14 +414,14 @@ export default function WeddingInvitation() {
                               <div className="space-y-4 text-sm">
                                   {/* 기차 KTX */}
                                   <div>
-                                      <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.trainKTX}</h4>
+                                      <h4 className="font-medium text-card-foreground mb-1 text-xs">{WEDDING_CONFIG.messages.labels.trainKTX}</h4>
                                       <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.publicTransport.train.ktx}</p>
                                   </div>
 
                                   {/* 버스 KTX */}
                                   <div>
-                                      <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.busKTX}</h4>
-                                      <div className="space-y-1">
+                                      <h4 className="font-medium text-card-foreground mb-1 text-xs">{WEDDING_CONFIG.messages.labels.busKTX}</h4>
+                                      <div className="space-y-1 text-xs">
                                           <p className="text-muted-foreground">
                                               <span className="font-medium">{WEDDING_CONFIG.messages.labels.localBus} :</span>{" "}
                                               {WEDDING_CONFIG.transportation.publicTransport.bus.ktx.local}
@@ -444,7 +438,7 @@ export default function WeddingInvitation() {
                           {/* 자가용 안내 */}
                           <Card className="p-6 bg-card border-border w-full">
                               <div>
-                                  <h3 className="text-lg font-medium text-card-foreground mb-4 flex items-center gap-2">
+                                  <h3 className="text-base font-medium text-card-foreground mb-0 flex items-center gap-2">
                                       {WEDDING_CONFIG.messages.sectionTitles.carGuide}
                                   </h3>
                               </div>
@@ -452,14 +446,14 @@ export default function WeddingInvitation() {
                               <div className="space-y-4 text-sm">
                                   {/* 주소 */}
                                   <div>
-                                      <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.address}</h4>
+                                      <h4 className="font-medium text-card-foreground mb-1 text-xs">{WEDDING_CONFIG.messages.labels.address}</h4>
                                       <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.car.address}</p>
                                   </div>
 
                                   {/* 남구미 IC에서 오실 때 */}
                                   <div>
-                                      <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.southGumiIC}</h4>
-                                      <p className="text-muted-foreground leading-relaxed">
+                                      <h4 className="font-medium text-card-foreground mb-1 text-xs">{WEDDING_CONFIG.messages.labels.southGumiIC}</h4>
+                                      <p className="text-muted-foreground leading-relaxed text-xs">
                                           {WEDDING_CONFIG.transportation.car.routes.southGumi.split("\n").map((line, index) => (
                                               <span key={index}>
                                                   {line}
@@ -471,8 +465,8 @@ export default function WeddingInvitation() {
 
                                   {/* 구미 IC에서 오실 때 */}
                                   <div>
-                                      <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.gumiIC}</h4>
-                                      <p className="text-muted-foreground leading-relaxed">
+                                      <h4 className="font-medium text-card-foreground mb-1 text-xs">{WEDDING_CONFIG.messages.labels.gumiIC}</h4>
+                                      <p className="text-muted-foreground leading-relaxed text-xs">
                                           {WEDDING_CONFIG.transportation.car.routes.gumiIC.split("\n").map((line, index) => (
                                               <span key={index}>
                                                   {line}
@@ -675,8 +669,7 @@ export default function WeddingInvitation() {
                           </div>
                       </div>
                   </div>
-                  <br/>
-                  <br/>
+
                   <br/>
                   {/* Footer - 청첩장 공유하기 */}
                   <footer className="py-8 px-4 text-center overflow-hidden">
