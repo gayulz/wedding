@@ -196,12 +196,12 @@ export default function WeddingInvitation() {
           <section id="couple" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto text-center">
-                      <h2 className="text-3xl text-foreground mb-12">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
-                      
-                      <div className="grid grid-cols-2 gap-6 mb-8">
+                      <h2 className="text-3xl text-foreground mb-10">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
+                      <br/>
+                      <div className="grid grid-cols-2 gap-2 mb-5">
                           {/* 신랑 */}
                           <div className="flex flex-col items-center">
-                              <div className="w-40 h-52 mb-6 overflow-hidden rounded-t-full relative">
+                              <div className="w-35 h-50 mb-6 overflow-hidden rounded-t-full relative">
                                   {WEDDING_CONFIG.images.groomPhoto ? (
                                       <Image
                                           src={WEDDING_CONFIG.images.groomPhoto}
@@ -228,7 +228,7 @@ export default function WeddingInvitation() {
 
                           {/* 신부 */}
                           <div className="flex flex-col items-center">
-                              <div className="w-40 h-52 mb-6 overflow-hidden rounded-t-full relative">
+                              <div className="w-35 h-50 mb-6 overflow-hidden rounded-t-full relative">
                                   {WEDDING_CONFIG.images.bridePhoto ? (
                                       <Image
                                           src={WEDDING_CONFIG.images.bridePhoto}
@@ -267,11 +267,10 @@ export default function WeddingInvitation() {
           <section id="message" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto text-center">
+                      <br />
                       <h2 className="text-2xl text-foreground mb-8">💍 Wedding Day 💍</h2>
-                      
                       <DdayCounter/>
-                      
-                      <div className="bg-muted/50 rounded-lg p-6 text-center mt-12">
+                      <div className="bg-muted/50 rounded-lg p-1 text-center mt-5">
                           <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
                               . . .
                               {WEDDING_CONFIG.messages.coupleMessage.split("\n").map((line, index) => (
@@ -293,8 +292,6 @@ export default function WeddingInvitation() {
           <br/>
           <br/>
           <br/>
-          <br/>
-          <br/>
           {/* Wedding Details */}
           <section id="details" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
               <AnimateOnScroll>
@@ -303,9 +300,9 @@ export default function WeddingInvitation() {
                           {WEDDING_CONFIG.messages.sectionTitles.details}
                       </h2>
 
-                      <div className="space-y-6">
+                      <div className="space-y-2">
                           <Card className="p-6 bg-card border-border min-h-[100px] flex flex-col justify-center w-full">
-                              <div className="flex items-center gap-4 mb-2">
+                              <div className="flex items-center gap-4 mb-0">
                                   <Calendar className="w-6 h-6 text-wedding-green"/>
                                   <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.date}</h3>
                               </div>
@@ -313,7 +310,7 @@ export default function WeddingInvitation() {
                           </Card>
 
                           <Card className="p-6 bg-card border-border min-h-[100px] flex flex-col justify-center w-full">
-                              <div className="flex items-center gap-4 mb-2">
+                              <div className="flex items-center gap-4 mb-0">
                                   <Clock className="w-6 h-6 text-wedding-green"/>
                                   <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.time}</h3>
                               </div>
@@ -321,7 +318,7 @@ export default function WeddingInvitation() {
                           </Card>
 
                           <Card className="p-6 bg-card border-border min-h-[100px] flex flex-col justify-center w-full">
-                              <div className="flex items-center gap-4 mb-2">
+                              <div className="flex items-center gap-4 mb-0">
                                   <MapPin className="w-6 h-6 text-wedding-green"/>
                                   <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.location}</h3>
                               </div>
@@ -337,9 +334,7 @@ export default function WeddingInvitation() {
           </section>
           <br/>
           <br/>
-          <br/>
-          <br/>
-          <br/>
+
 
           <AnimateOnScroll className="py-16">
               <SectionDivider/>
@@ -349,15 +344,15 @@ export default function WeddingInvitation() {
           <section id="location1" className="py-16 px-4 overflow-hidden snap-start min-h-screen flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto w-full">
-                      <div className="text-center mb-8">
-                          <h2 className="text-2xl text-foreground mb-2">
+                      <div className="text-center mb-12">
+                          <h2 className="text-2xl text-foreground mb-0">
                               {WEDDING_CONFIG.messages.sectionTitles.location}
                           </h2>
                       </div>
-
+                        <br />
                       {/* 구글 맵 임베드 - 더 크게 */}
-                      <Card className="p-4 bg-card border-border mb-3 w-full">
-                          <div className="rounded-lg overflow-hidden mb-1" style={{height: '370px'}}>
+                      <Card className="p-1 bg-card border-border mb-3 w-full">
+                          <div className="rounded-lg overflow-hidden mb-0" style={{height: '350px'}}>
                               <iframe
                                   src={WEDDING_CONFIG.venue.googleMapEmbedUrl}
                                   width="100%"
@@ -894,11 +889,8 @@ export default function WeddingInvitation() {
               showFooter ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
             }`}
           >
-            <div className="max-w-md mx-auto flex items-center justify-between">
-              <div className="text-sm">
-                <p className="font-medium">{WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}</p>
-                <p className="text-xs opacity-90">{formatDate(weddingDate)}</p>
-              </div>
+            <div className="max-w-md mx-auto flex items-center justify-around">
+
               <Button
                 onClick={shareToKakao}
                 size="sm"

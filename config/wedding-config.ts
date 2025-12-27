@@ -86,7 +86,7 @@ export const WEDDING_CONFIG = {
       couple: "🤵🏻 신랑  &  신부 👰🏻‍♀️",
       details: "Wedding Details",
       location: "오시는 길",
-      gallery: "사진첩",
+      gallery: "Gallery",
       contact: "연락처",
       publicTransport: "대중 교통 안내",
       carGuide: "자가용 안내",
