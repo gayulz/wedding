@@ -41,7 +41,7 @@ export default function RootLayout({
       <body className={`font-sans ${GeistMono.variable}`}>
         <Script
           src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-          integrity="sha384-DKYJZ8NLiK8MN4/C5ONxIi7650uE9MNAS53W29vIKG4/2boW32fKqQ3e0J8D7j76"
+          integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
           crossOrigin="anonymous"
           strategy="beforeInteractive"
         />
