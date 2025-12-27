@@ -1,12 +1,4 @@
-/* TwaySky 폰트 - 제목용 */
-@font-face {
-    font-family: 'TwaySky';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
-    font-weight: normal;
-    font-display: swap;
-}
-
-/* GowunDodum 폰트 - 본문용 */
+/* GowunDodum 폰트 - 모든 텍스트용 */
 @font-face {
     font-family: 'GowunDodum';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
@@ -100,7 +92,6 @@
 
 @theme inline {
   --font-sans: "GowunDodum", "Wanted Sans Variable", "Wanted Sans", sans-serif;
-  --font-heading: "TwaySky", "GowunDodum", sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -149,15 +140,11 @@
     font-family: "GowunDodum", sans-serif;
   }
 
-  /* 제목 태그에 TwaySky 폰트 적용 */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: "TwaySky", "GowunDodum", sans-serif;
-  }
-
   /* 스크롤바 숨김 처리 - 모든 브라우저 지원 */
   html {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scroll-behavior: smooth; /* 부드러운 스크롤 */
   }
 
   html::-webkit-scrollbar {
@@ -232,7 +219,7 @@
   display: none;
 }
 
-/* 벚꽃 흩날리는 효과 */
+/* 개나리꽃 흩날리는 효과 */
 .cherry-blossom-container {
   position: fixed;
   top: 0;
@@ -246,9 +233,35 @@
 
 .petal {
   position: absolute;
-  background-color: oklch(0.9 0.08 340 / 0.7); /* 연한 핑크색, 약간 투명하게 */
-  border-radius: 150% 0 150% 0;
+  width: 16px;
+  height: 16px;
   animation: fall linear infinite;
+}
+
+/* 개나리꽃 모양 (4개 꽃잎) */
+.petal::before,
+.petal::after {
+  content: '';
+  position: absolute;
+  background-color: #ffbe53; /* 노란색 개나리 */
+  border-radius: 50% 0 50% 0;
+  opacity: 0.8;
+}
+
+.petal::before {
+  width: 8px;
+  height: 8px;
+  top: 0;
+  left: 4px;
+  transform: rotate(0deg);
+}
+
+.petal::after {
+  width: 8px;
+  height: 8px;
+  top: 4px;
+  left: 0;
+  transform: rotate(90deg);
 }
 
 @keyframes fall {
@@ -262,19 +275,19 @@
   }
 }
 
-/* 다양한 크기와 애니메이션 시간, 딜레이를 가진 벚꽃잎들 */
-.petal:nth-child(1) { width: 15px; height: 15px; left: 10%; animation-duration: 15s; animation-delay: -5s; }
-.petal:nth-child(2) { width: 10px; height: 10px; left: 20%; animation-duration: 10s; animation-delay: -2s; }
-.petal:nth-child(3) { width: 20px; height: 20px; left: 30%; animation-duration: 20s; animation-delay: -10s; }
-.petal:nth-child(4) { width: 12px; height: 12px; left: 40%; animation-duration: 12s; animation-delay: -7s; }
-.petal:nth-child(5) { width: 18px; height: 18px; left: 50%; animation-duration: 18s; animation-delay: -1s; }
-.petal:nth-child(6) { width: 10px; height: 10px; left: 60%; animation-duration: 13s; animation-delay: -8s; }
-.petal:nth-child(7) { width: 16px; height: 16px; left: 70%; animation-duration: 16s; animation-delay: -4s; }
-.petal:nth-child(8) { width: 8px; height: 8px; left: 80%; animation-duration: 9s; animation-delay: -1s; }
-.petal:nth-child(9) { width: 14px; height: 14px; left: 90%; animation-duration: 14s; animation-delay: -9s; }
-.petal:nth-child(10) { width: 10px; height: 10px; left: 5%; animation-duration: 11s; animation-delay: -6s; }
-.petal:nth-child(11) { width: 15px; height: 15px; left: 25%; animation-duration: 17s; animation-delay: -3s; }
-.petal:nth-child(12) { width: 12px; height: 12px; left: 45%; animation-duration: 14s; animation-delay: 0s; }
-.petal:nth-child(13) { width: 18px; height: 18px; left: 65%; animation-duration: 22s; animation-delay: -12s; }
-.petal:nth-child(14) { width: 9px; height: 9px; left: 85%; animation-duration: 10s; animation-delay: -5s; }
-.petal:nth-child(15) { width: 13px; height: 13px; left: 15%; animation-duration: 16s; animation-delay: -11s; }
+/* 다양한 크기와 애니메이션 시간, 딜레이를 가진 개나리꽃들 */
+.petal:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: -5s; }
+.petal:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: -2s; }
+.petal:nth-child(3) { left: 30%; animation-duration: 20s; animation-delay: -10s; }
+.petal:nth-child(4) { left: 40%; animation-duration: 12s; animation-delay: -7s; }
+.petal:nth-child(5) { left: 50%; animation-duration: 18s; animation-delay: -1s; }
+.petal:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: -8s; }
+.petal:nth-child(7) { left: 70%; animation-duration: 16s; animation-delay: -4s; }
+.petal:nth-child(8) { left: 80%; animation-duration: 9s; animation-delay: -1s; }
+.petal:nth-child(9) { left: 90%; animation-duration: 14s; animation-delay: -9s; }
+.petal:nth-child(10) { left: 5%; animation-duration: 11s; animation-delay: -6s; }
+.petal:nth-child(11) { left: 25%; animation-duration: 17s; animation-delay: -3s; }
+.petal:nth-child(12) { left: 45%; animation-duration: 14s; animation-delay: 0s; }
+.petal:nth-child(13) { left: 65%; animation-duration: 22s; animation-delay: -12s; }
+.petal:nth-child(14) { left: 85%; animation-duration: 10s; animation-delay: -5s; }
+.petal:nth-child(15) { left: 15%; animation-duration: 16s; animation-delay: -11s; }

@@ -22,7 +22,6 @@ export default {
     extend: {
       fontFamily: {
         sans: ['GowunDodum', 'sans-serif'],
-        heading: ['TwaySky', 'GowunDodum', 'sans-serif'],
       },
       colors: {
         // 커스텀 웨딩 색상 팔레트
