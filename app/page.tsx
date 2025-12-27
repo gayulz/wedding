@@ -556,6 +556,10 @@ export default function WeddingInvitation() {
 
   const shareToKakao = () => {
     if (typeof window !== "undefined" && window.Kakao) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init('e967473bf6ff429f49cea2f45e1fa4c0');
+      }
+      
       window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: {
@@ -563,16 +567,16 @@ export default function WeddingInvitation() {
           description: "2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀",
           imageUrl: "https://bong-yul-invitation.netlify.app/images/wedding-07.jpeg",
           link: {
-            mobileWebUrl: window.location.href,
-            webUrl: window.location.href,
+            mobileWebUrl: "https://bong-yul-invitation.netlify.app",
+            webUrl: "https://bong-yul-invitation.netlify.app",
           },
         },
         buttons: [
           {
             title: "청첩장 보기",
             link: {
-              mobileWebUrl: window.location.href,
-              webUrl: window.location.href,
+              mobileWebUrl: "https://bong-yul-invitation.netlify.app",
+              webUrl: "https://bong-yul-invitation.netlify.app",
             },
           },
         ],

@@ -48,7 +48,7 @@ export default function RootLayout({
         <Script id="kakao-init" strategy="afterInteractive">
           {`
             if (window.Kakao && !window.Kakao.isInitialized()) {
-              window.Kakao.init('${process.env.NEXT_PUBLIC_KAKAO_API_KEY}');
+              window.Kakao.init('e967473bf6ff429f49cea2f45e1fa4c0');
             }
           `}
         </Script>
