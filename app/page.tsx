@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import Image from "next/image"
 
 // ========================================
 // 🎯 청첩장 설정 - 아래 정보만 수정하세요!
@@ -49,9 +50,9 @@ const AnimateOnScroll = ({ children, className }: { children: React.ReactNode; c
 const SectionDivider = () => (
   <div className="px-4">
     <div className="flex items-center justify-center gap-4 max-w-xs mx-auto">
-      <div className="flex-grow h-px bg-border" />
-      <Heart className="w-5 h-5 text-primary/50" fill="currentColor" />
-      <div className="flex-grow h-px bg-border" />
+      <div className="flex-grow h-px bg-wedding-lime" />
+      <Heart className="w-5 h-5 text-wedding-gold" fill="currentColor" />
+      <div className="flex-grow h-px bg-wedding-lime" />
     </div>
   </div>
 );
@@ -86,9 +87,9 @@ const FlipChar = ({ char, isInView, delay = 0 }: { char: string; isInView: boole
   }, [isInView, char, delay, alphabet])
 
   return (
-    <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
-      <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
-      <span className="relative text-5xl font-bold text-primary-foreground">{displayChar}</span>
+    <div className="relative w-16 h-20 rounded-lg shadow-lg bg-[#148677] flex items-center justify-center">
+      <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent rounded-t-lg" />
+      <span className="relative text-5xl font-bold text-white">{displayChar}</span>
       <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
     </div>
   )
@@ -123,9 +124,9 @@ const FlipDigit = ({ digit, isInView, delay = 0 }: { digit: string; isInView: bo
   }, [isInView, digit, delay])
 
   return (
-    <div className="relative w-16 h-20 rounded-lg shadow-lg bg-primary flex items-center justify-center">
-      <div className="absolute top-0 left-0 w-full h-1/2 bg-primary/80 rounded-t-lg" />
-      <span className="relative text-5xl font-bold text-primary-foreground">{displayDigit}</span>
+    <div className="relative w-16 h-20 rounded-lg shadow-lg bg-[#148677] flex items-center justify-center">
+      <div className="absolute top-0 left-0 w-full h-1/2 bg-transparent rounded-t-lg" />
+      <span className="relative text-5xl font-bold text-white">{displayDigit}</span>
       <div className="absolute top-1/2 left-0 w-full h-px bg-black/20" />
     </div>
   )
@@ -177,22 +178,22 @@ const DdayCounter = () => {
     <div ref={ref} className="mt-16">
       {dDay < 0 ? (
         <div className="flex flex-col items-center gap-4">
-          <p className="mt-2 text-xl text-foreground"> 저희 결혼한지 💍 {Math.abs(dDay)}일 지났습니다 ❤️</p>
+          <p className="mt-2 text-xl text-foreground font-heading"> 저희 결혼한지 💍 {Math.abs(dDay)}일 지났습니다 ❤️</p>
           <div className="flex items-center gap-2">
             <FlipChar char="D" isInView={isInView} delay={0} />
-            <span className="text-6xl font-bold text-primary">+</span>
+            <span className="text-6xl font-bold text-wedding-green">+</span>
             {dPlusDigits.map((digit, index) => (
               <FlipDigit key={index} digit={digit} isInView={isInView} delay={(index + 1) * 150} />
             ))}
           </div>
-          <p className="mt-2 text-xl text-foreground"> 아직 행복하게 잘 살고 있습니다😅🫶</p>
+          <p className="mt-2 text-xl text-foreground font-heading"> 아직 행복하게 잘 살고 있습니다😅🫶</p>
         </div>
       ) : dDay === 0 ? (
         <div className="flex flex-col items-center gap-4">
-          <p className="mt-2 text-xl text-foreground">🎉 저희 오늘 결혼 💍 합니다 🎉</p>
+          <p className="mt-2 text-xl text-foreground font-heading">🎉 저희 오늘 결혼 💍 합니다 🎉</p>
           <div className="flex items-center gap-2">
             <FlipChar char="D" isInView={isInView} delay={0} />
-            <span className="text-6xl font-bold text-primary">-</span>
+            <span className="text-6xl font-bold text-wedding-green">-</span>
             <FlipChar char="D" isInView={isInView} delay={120} />
             <FlipChar char="A" isInView={isInView} delay={250} />
             <FlipChar char="Y" isInView={isInView} delay={400} />
@@ -201,10 +202,10 @@ const DdayCounter = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
-          <p className="mt-2 text-xl text-foreground font-serif fontSize-20"> 💍 Wedding Day 💍</p>
+          <p className="mt-2 text-xl text-foreground font-heading"> 💍 Wedding Day 💍</p>
           <div className="flex items-center gap-2">
             <FlipChar char="D" isInView={isInView} delay={0} />
-            <span className="text-5xl font-bold text-primary">-</span>
+            <span className="text-5xl font-bold text-wedding-green">-</span>
             {dDayDigits.map((digit, index) => (
               <FlipDigit key={index} digit={digit} isInView={isInView} delay={(index + 1) * 150} />
             ))}
@@ -278,7 +279,7 @@ const WEDDING_CONFIG = {
 
   // 💝 메시지
   messages: {
-    mainTitle: "Wedding Invitation",
+    mainTitle: "",
     coupleMessage:
       "\n\n\n" +
       "따뜻한 봄에 만난 우리,\n" +
@@ -560,7 +561,7 @@ export default function WeddingInvitation() {
         content: {
           title: "💒 최봉석 ♥ 김가율 결혼식에 초대합니다",
           description: "2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀",
-          imageUrl: "https://your-domain.com/wedding-image.jpg",
+          imageUrl: "https://bong-yul-invitation.netlify.app",
           link: {
             mobileWebUrl: window.location.href,
             webUrl: window.location.href,
@@ -580,654 +581,709 @@ export default function WeddingInvitation() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section id="invitation" className="relative min-h-screen flex items-center justify-center px-4 py-8">
-        <div
-          className="absolute inset-0 bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: `url('${WEDDING_CONFIG.images.heroBackground}')`,
-            backgroundPosition: WEDDING_CONFIG.images.backgroundPosition,
-          }}
-        />
-        <div
-          className="absolute inset-0 bg-background opacity-75"
-          style={{ opacity: WEDDING_CONFIG.styles.heroOverlayOpacity }}
-        />
-
-        <div
-          className={`relative z-10 text-center max-w-md mx-auto ${WEDDING_CONFIG.styles.heroContentMarginTop} transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
-        >
-          <div className="mb-8 animate-float">
-            <Heart className="w-16 h-16 mx-auto mb-4 text-pink-400" fill="currentColor" />
-          </div>
-          <h1 className="text-4xl font-serif text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
-          <div className="w-24 h-px bg-primary mx-auto mb-6"/>
-          <div className="space-y-2 mb-8">
-            <p className="text-2xl text-pink-400">
-              {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
-            </p>
-            <p className="text-sm text-muted-foreground">{formatDate(weddingDate)}</p>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Couple Section */}
-      <section id="couple" className="py-16 px-4 overflow-hidden">
-        <AnimateOnScroll>
-          <div className="max-w-md mx-auto text-center">
-            <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
-        <div className="grid grid-cols-2 gap-4 mb-12">
-        <Card className="p-4 bg-card border-border flex flex-col">
-             <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
-                {WEDDING_CONFIG.images.groomPhoto ? (
-                  <img
-                    src={WEDDING_CONFIG.images.groomPhoto || "/placeholder.svg"}
-                    alt="신랑"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-2xl">{WEDDING_CONFIG.groom.emoji}</span>
-                )}
-              </div>
-              <div className="flex flex-col flex-grow">
-                <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
-                <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.groom.engFirstName} ${WEDDING_CONFIG.groom.englishName}`}</p>
-                <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.parents}</p>
-              </div>
-            </Card>
-
-            <Card className="p-4 bg-card border-border flex flex-col">
-             <div className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
-                {WEDDING_CONFIG.images.bridePhoto ? (
-                  <img
-                    src={WEDDING_CONFIG.images.bridePhoto || "/placeholder.svg"}
-                    alt="신부"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-2xl">{WEDDING_CONFIG.bride.emoji}</span>
-                )}
-              </div>
-              <div className="flex flex-col flex-grow">
-                <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
-                <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.bride.engFirstName} ${WEDDING_CONFIG.bride.englishName}`}</p>
-                <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.parents}</p>
-              </div>
-            </Card>
-          </div>
-          <AnimateOnScroll className="py-16">
-        <SectionDivider />
-      </AnimateOnScroll>
-          <div className="bg-muted/50 rounded-lg p-6 text-center">
-            <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
-              . . .
-              {WEDDING_CONFIG.messages.coupleMessage.split("\n").map((line, index) => (
-                <span className="text-foreground" key={index}>
-                  {line}
-                  {index < WEDDING_CONFIG.messages.coupleMessage.split("\n").length - 1 && <br />}
-                </span>
-              ))}
-               . . . 
-            </p>
-            </div>
-            <DdayCounter />
-        </div>
-        </AnimateOnScroll>
-      </section>
-      
-      <AnimateOnScroll className="py-16">
-        <SectionDivider />
-      </AnimateOnScroll>
-
-
-      {/* Wedding Details */}
-      <section id="details" className="py-16 px-4 bg-muted/30 overflow-hidden">
-        <AnimateOnScroll>
-          <div className="max-w-md mx-auto">
-        <h2 className="text-3xl text-center text-foreground mb-12">
-            {WEDDING_CONFIG.messages.sectionTitles.details}
-          </h2>
-
-          <div className="space-y-6">
-            <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-0">
-                <Calendar className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.date}</h3>
-              </div>
-              <p className="text-card-foreground font-medium">{formatDate(weddingDate)}</p>
-            </Card>
-
-            <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-0">
-                <Clock className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.time}</h3>
-              </div>
-              <p className="text-card-foreground font-medium"> {formatTime(weddingDate)}</p>
-            </Card>
-
-            <Card className="p-6 bg-card border-border">
-              <div className="flex items-center gap-4 mb-0">
-                <MapPin className="w-6 h-6 text-primary" />
-                <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.location}</h3>
-              </div>
-              <div className="space-y-1">
-                <p className="text-card-foreground font-medium">{WEDDING_CONFIG.venue.name}</p>
-                <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.venue.hall}</p>
-                <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.venue.address}</p>
-              </div>
-            </Card>
-          </div>
-        </div>
-        </AnimateOnScroll>
-      </section>
-
-      <AnimateOnScroll className="py-16">
-        <SectionDivider />
-      </AnimateOnScroll>
-
-      {/* Location Section */}
-      <section id="location" className="py-16 px-4 overflow-hidden">
-        <AnimateOnScroll>
-          <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl text-foreground mb-2">
-              {WEDDING_CONFIG.messages.sectionTitles.location}
-            </h2>
-          </div>
-
-          {/* 구글 맵 임베드 */}
-          <Card className="p-4 bg-card border-border mb-4">
-            <div className="aspect-video rounded-lg overflow-hidden mb-3">
-              <iframe
-                src={WEDDING_CONFIG.venue.googleMapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="rounded-lg"
+      <div className="min-h-screen bg-background">
+          {/* Hero Section */}
+          <section id="invitation"
+                   className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:py-12">
+              <div
+                  className="absolute inset-0 bg-cover bg-no-repeat"
+                  style={{
+                      backgroundImage: `url('${WEDDING_CONFIG.images.heroBackground}')`,
+                      backgroundPosition: WEDDING_CONFIG.images.backgroundPosition,
+                  }}
               />
-            </div>
-          </Card>
+              <div
+                  className="absolute inset-0 bg-background opacity-75"
+                  style={{opacity: WEDDING_CONFIG.styles.heroOverlayOpacity}}
+              />
 
-          {/* 네이버지도, 카카오맵 버튼 */}
-          <div className="grid grid-cols-2 gap-3 mb-8">
-            <Button
-              onClick={() => window.open(WEDDING_CONFIG.venue.naverMapUrl, "_blank")}
-              className="hover:bg-green-700 text-white py-3 bg-green-400"
-            >
-              {WEDDING_CONFIG.messages.naverMapButton}
-            </Button>
-            <Button
-              onClick={() => window.open(WEDDING_CONFIG.venue.kakaoMapUrl, "_blank")}
-              className="hover:bg-yellow-600 text-white py-3 bg-orange-300"
-            >
-              {WEDDING_CONFIG.messages.kakaoMapButton}
-            </Button>
-          </div>
-
-          {/* 대중교통 안내 */}
-          <Card className="p-6 bg-card border-border mb-6">
-            <div>
-              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
-                {WEDDING_CONFIG.messages.sectionTitles.publicTransport}
-              </h3>
-            </div>
-
-            <div className="space-y-4 text-sm">
-              {/* 기차 KTX */}
-              <div>
-                <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.trainKTX}</h4>
-                <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.publicTransport.train.ktx}</p>
-              </div>
-
-              {/* 버스 KTX */}
-              <div>
-                <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.busKTX}</h4>
-                <div className="space-y-1">
-                  <p className="text-muted-foreground">
-                    <span className="font-medium">{WEDDING_CONFIG.messages.labels.localBus} :</span>{" "}
-                    {WEDDING_CONFIG.transportation.publicTransport.bus.ktx.local}
-                  </p>
-                  <p className="text-muted-foreground">
-                    <span className="font-medium">{WEDDING_CONFIG.messages.labels.expressBus} :</span>{" "}
-                    {WEDDING_CONFIG.transportation.publicTransport.bus.ktx.express}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* 자가용 안내 */}
-          <Card className="p-6 bg-card border-border">
-            <div>
-              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
-                {WEDDING_CONFIG.messages.sectionTitles.carGuide}
-              </h3>
-            </div>
-
-            <div className="space-y-4 text-sm">
-              {/* 주소 */}
-              <div>
-                <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.address}</h4>
-                <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.car.address}</p>
-              </div>
-
-              {/* 남구미 IC에서 오실 때 */}
-              <div>
-                <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.southGumiIC}</h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  {WEDDING_CONFIG.transportation.car.routes.southGumi.split("\n").map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      {index < WEDDING_CONFIG.transportation.car.routes.southGumi.split("\n").length - 1 && <br />}
-                    </span>
-                  ))}
-                </p>
-              </div>
-
-              {/* 구미 IC에서 오실 때 */}
-              <div>
-                <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.gumiIC}</h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  {WEDDING_CONFIG.transportation.car.routes.gumiIC.split("\n").map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      {index < WEDDING_CONFIG.transportation.car.routes.gumiIC.split("\n").length - 1 && <br />}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            </div>
-          </Card>
-        </div>
-        </AnimateOnScroll>
-      </section>
-
-      <AnimateOnScroll className="py-16">
-        <SectionDivider />
-      </AnimateOnScroll>
-
-      <section id="gallery" className="py-16 px-4 bg-muted/30 overflow-hidden">
-      <AnimateOnScroll>
-        <div className="max-w-md mx-auto">
-          <h2 className="text-3xl    text-center text-foreground mb-12">
-            {WEDDING_CONFIG.messages.sectionTitles.gallery}
-          </h2>
-
-          {/* 메인 사진 영역 */}
-          <Card className="p-4 bg-card border-border mb-6">
-            <div className="relative rounded-lg overflow-hidden mb-3">
-              {/* <div className="relative w-full h-80 bg-muted/20 rounded-lg overflow-hidden"> */}
-              <div className="relative w-full aspect-[3/4] bg-muted/20 rounded-lg overflow-hidden">
-                <img
-                  src={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.url || "/placeholder.svg"}
-                  alt={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.alt || "웨딩 사진"}
-                  className="w-full h-full object-cover"
-                />
-
-                {/* 이전/다음 버튼 */}
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 hover:bg-black/70 text-white p-2 rounded-full transition-all bg-rose-400 opacity-70"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-black/70 text-white p-2 rounded-full transition-all bg-rose-400 opacity-70"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-
-                {/* 사진 설명 */}
-              </div>
-            </div>
-
-            {/* 사진 인덱스 표시 */}
-          </Card>
-
-          {/* 썸네일 슬라이더 */}
-          <Card className="p-4 bg-card border-border border px-0.5 py-3.5">
-            <div className="relative">
-              <div className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-[5px] flex-row items-end pb-0">
-                {WEDDING_CONFIG.images.gallery.map((image, index) => (
-                  <button
-                    key={image.id}
-                    onClick={() => selectImage(index)}
-                    className={`flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all snap-start ${
-                      selectedImageIndex === index
-                        ? "border-primary shadow-lg"
-                        : "border-transparent hover:border-muted-foreground/50 hover:scale-102"
-                    }`}
-                  >
-                    <img src={image.url || "/placeholder.svg"} alt={image.alt} className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-
-              <div className="text-center mt-2"></div>
-            </div>
-          </Card>
-        </div>
-        </AnimateOnScroll>
-      </section>
-
-      <AnimateOnScroll className="py-16">
-        <SectionDivider />
-      </AnimateOnScroll>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16 px-4 overflow-hidden">
-      <AnimateOnScroll>
-        <div className="max-w-md mx-auto">
-          <h2 className="text-3xl    text-center text-foreground mb-12">
-            {WEDDING_CONFIG.messages.sectionTitles.contact}
-          </h2>
-
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <Card className="p-4 bg-card border-border text-center">
-              <h3 className="font-medium text-card-foreground mb-3">{WEDDING_CONFIG.messages.labels.groomSide}</h3>
-              <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full bg-transparent"
-                  onClick={() => makeCall(WEDDING_CONFIG.groom.phone)}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {WEDDING_CONFIG.messages.labels.groom}
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full bg-transparent"
-                  onClick={() => makeCall(WEDDING_CONFIG.groom.motherPhone)}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {WEDDING_CONFIG.messages.labels.mother}
-                </Button>
-              </div>
-            </Card>
-
-            <Card className="p-4 bg-card border-border text-center">
-              <h3 className="font-medium text-card-foreground mb-3">{WEDDING_CONFIG.messages.labels.brideSide}</h3>
-              <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full bg-transparent"
-                  onClick={() => makeCall(WEDDING_CONFIG.bride.phone)}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {WEDDING_CONFIG.messages.labels.bride}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full bg-transparent"
-                  onClick={() => makeCall(WEDDING_CONFIG.bride.fatherPhone)}
-                >
-                  <Phone className="w-4 h-4 mr-2" />
-                  {WEDDING_CONFIG.messages.labels.father}
-                </Button>
-              </div>
-            </Card>
-          </div>
-
-          <div className="mb-8">
-            <h3 className="text-lg font-medium text-center text-foreground mb-4">
-              {WEDDING_CONFIG.messages.sectionTitles.accountInfo}
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <Button
-                onClick={() => setAccountModal("groom")}
-                className="h-auto p-4 bg-card hover:bg-card/80 text-card-foreground border border-border"
-                variant="outline"
+              <div
+                  className={`relative z-10 text-center max-w-md mx-auto transition-all duration-1000 ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
               >
-                <div className="text-center">
-                  <h4 className="font-medium mb-1">{WEDDING_CONFIG.messages.labels.groomAccountButton}</h4>
-                  <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.accounts.groom.accountHolder}</p>
-                </div>
-              </Button>
+                  {/* 하트 제거 */}
+                  {/* 타이틀 조건부 렌더링 */}
+                  {WEDDING_CONFIG.messages.mainTitle && (
+                      <>
+                          <h1 className="text-4xl font-serif text-foreground mb-2 text-balance">{WEDDING_CONFIG.messages.mainTitle}</h1>
+                          <div className="w-24 h-px bg-primary mx-auto mb-6"/>
+                      </>
+                  )}
+                  <div className="space-y-4 mb-8">
+                      {/* 텍스트 크기 증가 - 그림자 제거 */}
+                      <p className="text-4xl sm:text-5xl md:text-6xl font-bold font-heading" style={{color: '#2f4858'}}>
+                          {WEDDING_CONFIG.groom.name}<br/> <span className="inline-block animate-heartbeat"
+                                                                 style={{color: '#ffbe53'}}>♥<br/></span>
+                          <br/>{WEDDING_CONFIG.bride.name}
+                      </p>
+                      <p className="text-lg sm:text-xl md:text-2xl font-medium font-heading"
+                         style={{color: '#a6b550'}}>
+                          봄이 시작하는 계절에
+                      </p>
+                      <p className="text-lg sm:text-xl md:text-2xl font-medium font-heading"
+                         style={{color: '#a6b550'}}>
+                          저희 결혼합니다💍
+                      </p>
 
-              <Button
-                onClick={() => setAccountModal("bride")}
-                className="h-auto p-4 bg-card hover:bg-card/80 text-card-foreground border border-border"
-                variant="outline"
-              >
-                <div className="text-center">
-                  <h4 className="font-medium mb-1">{WEDDING_CONFIG.messages.labels.brideAccountButton}</h4>
-                  <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.accounts.bride.accountHolder}</p>
-                </div>
-              </Button>
-            </div>
-          </div>
-        </div>
-        </AnimateOnScroll>
-      </section>
+                  </div>
+              </div>
+          </section>
 
-      <AnimateOnScroll className="py-8">
-        <SectionDivider />
-      </AnimateOnScroll>
 
-      {accountModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-card rounded-lg p-6 w-full max-w-sm border border-border">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-card-foreground">
-                {accountModal === "groom"
-                  ? WEDDING_CONFIG.messages.labels.groomSide
-                  : WEDDING_CONFIG.messages.labels.brideSide}{" "}
-                계좌정보
-              </h3>
-              <Button variant="ghost" size="sm" onClick={closeModal} className="h-8 w-8 p-0">
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
+          {/* Couple Section */}
+          <section id="couple" className="py-16 px-4 overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto text-center">
+                      <h2 className="text-3xl text-foreground mb-8">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
+                      <div className="grid grid-cols-2 gap-4 mb-12">
+                          <Card className="p-4 bg-card border-border flex flex-col">
+                              <div
+                                  className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden relative">
+                                  {WEDDING_CONFIG.images.groomPhoto ? (
+                                      <Image
+                                          src={WEDDING_CONFIG.images.groomPhoto}
+                                          alt="신랑"
+                                          fill
+                                          className="object-cover"
+                                          sizes="128px"
+                                          quality={75}
+                                          priority
+                                      />
+                                  ) : (
+                                      <span className="text-2xl">{WEDDING_CONFIG.groom.emoji}</span>
+                                  )}
+                              </div>
+                              <div className="flex flex-col flex-grow">
+                                  <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.groom.name}</h3>
+                                  <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.groom.engFirstName} ${WEDDING_CONFIG.groom.englishName}`}</p>
+                                  <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.groom.parents}</p>
+                              </div>
+                          </Card>
 
-            <div className="space-y-4">
-            {accountModal === "groom" && (
-                <>
-                  {/* 신랑 어머니 계좌 */}
-                  <div className="bg-muted/50 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
+                          <Card className="p-4 bg-card border-border flex flex-col">
+                              <div
+                                  className="w-32 h-32 bg-secondary rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden relative">
+                                  {WEDDING_CONFIG.images.bridePhoto ? (
+                                      <Image
+                                          src={WEDDING_CONFIG.images.bridePhoto}
+                                          alt="신부"
+                                          fill
+                                          className="object-cover"
+                                          sizes="128px"
+                                          quality={75}
+                                          priority
+                                      />
+                                  ) : (
+                                      <span className="text-2xl">{WEDDING_CONFIG.bride.emoji}</span>
+                                  )}
+                              </div>
+                              <div className="flex flex-col flex-grow">
+                                  <h3 className="text-xl text-card-foreground mb-2">{WEDDING_CONFIG.bride.name}</h3>
+                                  <p className="text-sm text-muted-foreground">{`${WEDDING_CONFIG.bride.engFirstName} ${WEDDING_CONFIG.bride.englishName}`}</p>
+                                  <p className="text-xs text-muted-foreground mt-2">{WEDDING_CONFIG.bride.parents}</p>
+                              </div>
+                          </Card>
+                      </div>
+                      {/*    <AnimateOnScroll className="py-16">*/}
+                      {/*  <SectionDivider />*/}
+                      {/*</AnimateOnScroll>*/}
+                      <div className="bg-muted/50 rounded-lg p-6 text-center">
+                          <p className="text-sm text-muted-foreground leading-relaxed text-pretty">
+                              . . .
+                              {WEDDING_CONFIG.messages.coupleMessage.split("\n").map((line, index) => (
+                                  <span className="text-foreground" key={index}>
+                  {line}
+                                      {index < WEDDING_CONFIG.messages.coupleMessage.split("\n").length - 1 && <br/>}
+                </span>
+                              ))}
+                              . . .
+                          </p>
+                      </div>
+                      <DdayCounter/>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+
+          <AnimateOnScroll className="py-16">
+              <SectionDivider/>
+          </AnimateOnScroll>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          {/* Wedding Details */}
+          <section id="details" className="py-16 px-4 bg-muted/30 overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto">
+                      <h2 className="text-3xl text-center text-foreground mb-12">
+                          {WEDDING_CONFIG.messages.sectionTitles.details}
+                      </h2>
+
+                      <div className="space-y-6">
+                          <Card className="p-6 bg-card border-border">
+                              <div className="flex items-center gap-4 mb-0">
+                                  <Calendar className="w-6 h-6 text-wedding-green"/>
+                                  <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.date}</h3>
+                              </div>
+                              <p className="text-card-foreground font-medium">{formatDate(weddingDate)}</p>
+                          </Card>
+
+                          <Card className="p-6 bg-card border-border">
+                              <div className="flex items-center gap-4 mb-0">
+                                  <Clock className="w-6 h-6 text-wedding-green"/>
+                                  <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.time}</h3>
+                              </div>
+                              <p className="text-card-foreground font-medium"> {formatTime(weddingDate)}</p>
+                          </Card>
+
+                          <Card className="p-6 bg-card border-border">
+                              <div className="flex items-center gap-4 mb-0">
+                                  <MapPin className="w-6 h-6 text-wedding-green"/>
+                                  <h3 className="text-lg font-medium text-card-foreground">{WEDDING_CONFIG.messages.labels.location}</h3>
+                              </div>
+                              <div className="space-y-1">
+                                  <p className="text-card-foreground font-medium">{WEDDING_CONFIG.venue.name}</p>
+                                  <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.venue.hall}</p>
+                                  <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.venue.address}</p>
+                              </div>
+                          </Card>
+                      </div>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+
+          <AnimateOnScroll className="py-16">
+              <SectionDivider/>
+          </AnimateOnScroll>
+
+          {/* Location Section */}
+          <section id="location" className="py-16 px-4 overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto">
+                      <div className="text-center mb-8">
+                          <h2 className="text-2xl text-foreground mb-2">
+                              {WEDDING_CONFIG.messages.sectionTitles.location}
+                          </h2>
+                      </div>
+
+                      {/* 구글 맵 임베드 */}
+                      <Card className="p-4 bg-card border-border mb-4">
+                          <div className="aspect-video rounded-lg overflow-hidden mb-3">
+                              <iframe
+                                  src={WEDDING_CONFIG.venue.googleMapEmbedUrl}
+                                  width="100%"
+                                  height="100%"
+                                  style={{border: 0}}
+                                  allowFullScreen
+                                  loading="lazy"
+                                  referrerPolicy="no-referrer-when-downgrade"
+                                  className="rounded-lg"
+                              />
+                          </div>
+                      </Card>
+
+                      {/* 네이버지도, 카카오맵 버튼 */}
+                      <div className="grid grid-cols-2 gap-3 mb-8">
+                          <Button
+                              onClick={() => window.open(WEDDING_CONFIG.venue.naverMapUrl, "_blank")}
+                              className="hover:bg-wedding-teal text-white py-3 bg-[#ffbe53]"
+                          >
+                              {WEDDING_CONFIG.messages.naverMapButton}
+                          </Button>
+                          <Button
+                              onClick={() => window.open(WEDDING_CONFIG.venue.kakaoMapUrl, "_blank")}
+                              className="hover:bg-wedding-teal text-white py-3 bg-[#ffbe53]"
+                          >
+                              {WEDDING_CONFIG.messages.kakaoMapButton}
+                          </Button>
+                      </div>
+
+                      {/* 대중교통 안내 */}
+                      <Card className="p-6 bg-card border-border mb-6">
+                          <div>
+                              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
+                                  {WEDDING_CONFIG.messages.sectionTitles.publicTransport}
+                              </h3>
+                          </div>
+
+                          <div className="space-y-4 text-sm">
+                              {/* 기차 KTX */}
+                              <div>
+                                  <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.trainKTX}</h4>
+                                  <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.publicTransport.train.ktx}</p>
+                              </div>
+
+                              {/* 버스 KTX */}
+                              <div>
+                                  <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.busKTX}</h4>
+                                  <div className="space-y-1">
+                                      <p className="text-muted-foreground">
+                                          <span
+                                              className="font-medium">{WEDDING_CONFIG.messages.labels.localBus} :</span>{" "}
+                                          {WEDDING_CONFIG.transportation.publicTransport.bus.ktx.local}
+                                      </p>
+                                      <p className="text-muted-foreground">
+                                          <span
+                                              className="font-medium">{WEDDING_CONFIG.messages.labels.expressBus} :</span>{" "}
+                                          {WEDDING_CONFIG.transportation.publicTransport.bus.ktx.express}
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                      </Card>
+
+                      {/* 자가용 안내 */}
+                      <Card className="p-6 bg-card border-border">
+                          <div>
+                              <h3 className="text-lg font-medium text-card-foreground mb-0 flex items-center gap-2">
+                                  {WEDDING_CONFIG.messages.sectionTitles.carGuide}
+                              </h3>
+                          </div>
+
+                          <div className="space-y-4 text-sm">
+                              {/* 주소 */}
+                              <div>
+                                  <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.address}</h4>
+                                  <p className="text-muted-foreground">{WEDDING_CONFIG.transportation.car.address}</p>
+                              </div>
+
+                              {/* 남구미 IC에서 오실 때 */}
+                              <div>
+                                  <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.southGumiIC}</h4>
+                                  <p className="text-muted-foreground leading-relaxed">
+                                      {WEDDING_CONFIG.transportation.car.routes.southGumi.split("\n").map((line, index) => (
+                                          <span key={index}>
+                      {line}
+                                              {index < WEDDING_CONFIG.transportation.car.routes.southGumi.split("\n").length - 1 &&
+                                                  <br/>}
+                    </span>
+                                      ))}
+                                  </p>
+                              </div>
+
+                              {/* 구미 IC에서 오실 때 */}
+                              <div>
+                                  <h4 className="font-medium text-card-foreground mb-2">{WEDDING_CONFIG.messages.labels.gumiIC}</h4>
+                                  <p className="text-muted-foreground leading-relaxed">
+                                      {WEDDING_CONFIG.transportation.car.routes.gumiIC.split("\n").map((line, index) => (
+                                          <span key={index}>
+                      {line}
+                                              {index < WEDDING_CONFIG.transportation.car.routes.gumiIC.split("\n").length - 1 &&
+                                                  <br/>}
+                    </span>
+                                      ))}
+                                  </p>
+                              </div>
+                          </div>
+                      </Card>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+
+          <AnimateOnScroll className="py-16">
+              <SectionDivider/>
+          </AnimateOnScroll>
+
+          <section id="gallery" className="py-16 px-4 bg-muted/30 overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto">
+                      <h2 className="text-3xl    text-center text-foreground mb-12">
+                          {WEDDING_CONFIG.messages.sectionTitles.gallery}
+                      </h2>
+
+                      {/* 메인 사진 영역 */}
+                      <Card className="p-4 bg-card border-border mb-6">
+                          <div className="relative rounded-lg overflow-hidden mb-3">
+                              <div className="relative w-full aspect-[3/4] bg-muted/20 rounded-lg overflow-hidden">
+                                  <Image
+                                      src={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.url || "/placeholder.svg"}
+                                      alt={WEDDING_CONFIG.images.gallery[selectedImageIndex]?.alt || "웨딩 사진"}
+                                      fill
+                                      className="object-cover"
+                                      sizes="(max-width: 768px) 100vw, 400px"
+                                      quality={75}
+                                      priority={selectedImageIndex === 0}
+                                  />
+
+                                  {/* 이전/다음 버튼 */}
+                                  <button
+                                      onClick={prevImage}
+                                      className="absolute left-2 top-1/2 transform -translate-y-1/2 hover:bg-wedding-teal text-white p-2 rounded-full transition-all bg-wedding-green opacity-90"
+                                  >
+                                      <ChevronLeft className="w-4 h-4"/>
+                                  </button>
+                                  <button
+                                      onClick={nextImage}
+                                      className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:bg-wedding-teal text-white p-2 rounded-full transition-all bg-wedding-green opacity-90"
+                                  >
+                                      <ChevronRight className="w-4 h-4"/>
+                                  </button>
+
+                                  {/* 사진 설명 */}
+                              </div>
+                          </div>
+
+                          {/* 사진 인덱스 표시 */}
+                      </Card>
+
+                      {/* 썸네일 슬라이더 */}
+                      <Card className="p-4 bg-card border-border border px-0.5 py-3.5">
+                          <div className="relative">
+                              <div
+                                  className="flex overflow-x-auto scrollbar-hide snap-x snap-mandatory gap-[5px] flex-row items-end pb-0">
+                                  {WEDDING_CONFIG.images.gallery.map((image, index) => (
+                                      <button
+                                          key={image.id}
+                                          onClick={() => selectImage(index)}
+                                          className={`flex-shrink-0 w-16 h-20 rounded-lg overflow-hidden border-2 transition-all snap-start relative ${
+                                              selectedImageIndex === index
+                                                  ? "border-wedding-green shadow-lg"
+                                                  : "border-transparent hover:border-wedding-lime hover:scale-102"
+                                          }`}
+                                      >
+                                          <Image
+                                              src={image.url || "/placeholder.svg"}
+                                              alt={image.alt}
+                                              fill
+                                              className="object-cover"
+                                              sizes="64px"
+                                              quality={60}
+                                          />
+                                      </button>
+                                  ))}
+                              </div>
+
+                              <div className="text-center mt-2"></div>
+                          </div>
+                      </Card>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+
+          <AnimateOnScroll className="py-16">
+              <SectionDivider/>
+          </AnimateOnScroll>
+
+          {/* Contact Section */}
+          <section id="contact" className="py-16 px-4 overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto">
+                      <h2 className="text-3xl    text-center text-foreground mb-12">
+                          {WEDDING_CONFIG.messages.sectionTitles.contact}
+                      </h2>
+
+                      <div className="grid grid-cols-2 gap-4 mb-8">
+                          <Card className="p-4 bg-card border-border text-center">
+                              <h3 className="font-medium text-card-foreground mb-3">{WEDDING_CONFIG.messages.labels.groomSide}</h3>
+                              <div className="space-y-2">
+                                  <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="w-full bg-transparent"
+                                      onClick={() => makeCall(WEDDING_CONFIG.groom.phone)}
+                                  >
+                                      <Phone className="w-4 h-4 mr-2"/>
+                                      {WEDDING_CONFIG.messages.labels.groom}
+                                  </Button>
+
+                                  <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="w-full bg-transparent"
+                                      onClick={() => makeCall(WEDDING_CONFIG.groom.motherPhone)}
+                                  >
+                                      <Phone className="w-4 h-4 mr-2"/>
+                                      {WEDDING_CONFIG.messages.labels.mother}
+                                  </Button>
+                              </div>
+                          </Card>
+
+                          <Card className="p-4 bg-card border-border text-center">
+                              <h3 className="font-medium text-card-foreground mb-3">{WEDDING_CONFIG.messages.labels.brideSide}</h3>
+                              <div className="space-y-2">
+                                  <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="w-full bg-transparent"
+                                      onClick={() => makeCall(WEDDING_CONFIG.bride.phone)}
+                                  >
+                                      <Phone className="w-4 h-4 mr-2"/>
+                                      {WEDDING_CONFIG.messages.labels.bride}
+                                  </Button>
+                                  <Button
+                                      variant="outline"
+                                      size="sm"
+                                      className="w-full bg-transparent"
+                                      onClick={() => makeCall(WEDDING_CONFIG.bride.fatherPhone)}
+                                  >
+                                      <Phone className="w-4 h-4 mr-2"/>
+                                      {WEDDING_CONFIG.messages.labels.father}
+                                  </Button>
+                              </div>
+                          </Card>
+                      </div>
+
+                      <div className="mb-8">
+                          <h3 className="text-lg font-medium text-center text-foreground mb-4">
+                              {WEDDING_CONFIG.messages.sectionTitles.accountInfo}
+                          </h3>
+                          <div className="grid grid-cols-2 gap-4">
+                              <Button
+                                  onClick={() => setAccountModal("groom")}
+                                  className="h-auto p-4 bg-card hover:bg-card/80 text-card-foreground border border-border"
+                                  variant="outline"
+                              >
+                                  <div className="text-center">
+                                      <h4 className="font-medium mb-1">{WEDDING_CONFIG.messages.labels.groomAccountButton}</h4>
+                                      <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.accounts.groom.accountHolder}</p>
+                                  </div>
+                              </Button>
+
+                              <Button
+                                  onClick={() => setAccountModal("bride")}
+                                  className="h-auto p-4 bg-card hover:bg-card/80 text-card-foreground border border-border"
+                                  variant="outline"
+                              >
+                                  <div className="text-center">
+                                      <h4 className="font-medium mb-1">{WEDDING_CONFIG.messages.labels.brideAccountButton}</h4>
+                                      <p className="text-sm text-muted-foreground">{WEDDING_CONFIG.accounts.bride.accountHolder}</p>
+                                  </div>
+                              </Button>
+                          </div>
+                      </div>
+                  </div>
+              </AnimateOnScroll>
+          </section>
+
+          <AnimateOnScroll className="py-8">
+              <SectionDivider/>
+          </AnimateOnScroll>
+
+          {accountModal && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                  <div className="bg-card rounded-lg p-6 w-full max-w-sm border border-border">
+                      <div className="flex justify-between items-center mb-4">
+                          <h3 className="text-lg font-medium text-card-foreground">
+                              {accountModal === "groom"
+                                  ? WEDDING_CONFIG.messages.labels.groomSide
+                                  : WEDDING_CONFIG.messages.labels.brideSide}{" "}
+                              계좌정보
+                          </h3>
+                          <Button variant="ghost" size="sm" onClick={closeModal} className="h-8 w-8 p-0">
+                              <X className="w-4 h-4"/>
+                          </Button>
+                      </div>
+
+                      <div className="space-y-4">
+                          {accountModal === "groom" && (
+                              <>
+                                  {/* 신랑 어머니 계좌 */}
+                                  <div className="bg-muted/50 rounded-lg p-4">
+                                      <div className="space-y-2">
+                                          <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">
                           {WEDDING_CONFIG.messages.labels.accountHolder}
                         </span>
-                        <span className="font-medium text-card-foreground">
+                                              <span className="font-medium text-card-foreground">
                           {WEDDING_CONFIG.accounts.groomMother.accountHolder} ({WEDDING_CONFIG.messages.labels.mother})
                         </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
-                        <span className="font-medium text-card-foreground">
+                                          </div>
+                                          <div className="flex justify-between items-center">
+                                              <span
+                                                  className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                                              <span className="font-medium text-card-foreground">
                           {WEDDING_CONFIG.accounts.groomMother.bank}
                         </span>
-                      </div>
-                      <div className="flex justify-between items-center gap-2">
+                                          </div>
+                                          <div className="flex justify-between items-center gap-2">
                         <span className="text-sm text-muted-foreground">
                           {WEDDING_CONFIG.messages.labels.accountNumber}
                         </span>
-                        <div className="flex items-center gap-2">
+                                              <div className="flex items-center gap-2">
                           <span className="font-mono text-sm font-medium text-card-foreground">
                             {WEDDING_CONFIG.accounts.groomMother.accountNumber}
                           </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() =>
-                              copyToClipboard(WEDDING_CONFIG.accounts.groomMother.accountNumber, "groomMother")
-                            }
-                            className="h-6 px-2"
-                          >
-                            {copiedAccount === "groomMother" ? (
-                              <Check className="w-3 h-3 text-green-600" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* 신랑 계좌 */}
-                  <div className="bg-muted/50 rounded-lg p-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
+                                                  <Button
+                                                      size="sm"
+                                                      variant="outline"
+                                                      onClick={() =>
+                                                          copyToClipboard(WEDDING_CONFIG.accounts.groomMother.accountNumber, "groomMother")
+                                                      }
+                                                      className="h-6 px-2"
+                                                  >
+                                                      {copiedAccount === "groomMother" ? (
+                                                          <Check className="w-3 h-3 text-green-600"/>
+                                                      ) : (
+                                                          <Copy className="w-3 h-3"/>
+                                                      )}
+                                                  </Button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  {/* 신랑 계좌 */}
+                                  <div className="bg-muted/50 rounded-lg p-4">
+                                      <div className="space-y-2">
+                                          <div className="flex justify-between items-center">
                         <span className="text-sm text-muted-foreground">
                           {WEDDING_CONFIG.messages.labels.accountHolder}
                         </span>
-                        <span className="font-medium text-card-foreground">
+                                              <span className="font-medium text-card-foreground">
                           {WEDDING_CONFIG.accounts.groom.accountHolder} ({WEDDING_CONFIG.messages.labels.groom})
                         </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
-                        <span className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.groom.bank}</span>
-                      </div>
-                      <div className="flex justify-between items-center gap-2">
+                                          </div>
+                                          <div className="flex justify-between items-center">
+                                              <span
+                                                  className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                                              <span
+                                                  className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.groom.bank}</span>
+                                          </div>
+                                          <div className="flex justify-between items-center gap-2">
                         <span className="text-sm text-muted-foreground">
                           {WEDDING_CONFIG.messages.labels.accountNumber}
                         </span>
-                        <div className="flex items-center gap-2">
+                                              <div className="flex items-center gap-2">
                           <span className="font-mono text-sm font-medium text-card-foreground">
                             {WEDDING_CONFIG.accounts.groom.accountNumber}
                           </span>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.groom.accountNumber, "groom")}
-                            className="h-6 px-2"
-                          >
-                            {copiedAccount === "groom" ? (
-                              <Check className="w-3 h-3 text-green-600" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                   </div>
-                  </div>
-                </>
-              )}
+                                                  <Button
+                                                      size="sm"
+                                                      variant="outline"
+                                                      onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.groom.accountNumber, "groom")}
+                                                      className="h-6 px-2"
+                                                  >
+                                                      {copiedAccount === "groom" ? (
+                                                          <Check className="w-3 h-3 text-green-600"/>
+                                                      ) : (
+                                                          <Copy className="w-3 h-3"/>
+                                                      )}
+                                                  </Button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </>
+                          )}
 
-              {accountModal === "bride" && (
-                <div className="bg-muted/50 rounded-lg p-4">
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
-                      <span className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.bride.bank}</span>
-                    </div>
+                          {accountModal === "bride" && (
+                              <div className="bg-muted/50 rounded-lg p-4">
+                                  <div className="space-y-2">
+                                      <div className="flex justify-between items-center">
+                                          <span
+                                              className="text-sm text-muted-foreground">{WEDDING_CONFIG.messages.labels.bank}</span>
+                                          <span
+                                              className="font-medium text-card-foreground">{WEDDING_CONFIG.accounts.bride.bank}</span>
+                                      </div>
 
-                    <div className="flex justify-between items-center">
+                                      <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">
                         {WEDDING_CONFIG.messages.labels.accountHolder}
                       </span>
-                      <span className="font-medium text-card-foreground">
+                                          <span className="font-medium text-card-foreground">
                         {WEDDING_CONFIG.accounts.bride.accountHolder}
                       </span>
-                    </div>
+                                      </div>
 
-                    <div className="flex justify-between items-center gap-2">
+                                      <div className="flex justify-between items-center gap-2">
                       <span className="text-sm text-muted-foreground">
                         {WEDDING_CONFIG.messages.labels.accountNumber}
                       </span>
-                      <div className="flex items-center gap-2">
+                                          <div className="flex items-center gap-2">
                         <span className="font-mono text-sm font-medium text-card-foreground">
                           {WEDDING_CONFIG.accounts.bride.accountNumber}
                         </span>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.bride.accountNumber, "bride")}
-                          className="h-6 px-2"
-                        >
-                          {copiedAccount === "bride" ? (
-                            <Check className="w-3 h-3 text-green-600" />
-                          ) : (
-                            <Copy className="w-3 h-3" />
+                                              <Button
+                                                  size="sm"
+                                                  variant="outline"
+                                                  onClick={() => copyToClipboard(WEDDING_CONFIG.accounts.bride.accountNumber, "bride")}
+                                                  className="h-6 px-2"
+                                              >
+                                                  {copiedAccount === "bride" ? (
+                                                      <Check className="w-3 h-3 text-green-600"/>
+                                                  ) : (
+                                                      <Copy className="w-3 h-3"/>
+                                                  )}
+                                              </Button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
                           )}
-                        </Button>
+
+                          <div className="text-center">
+                              <p className="text-xs text-muted-foreground mb-3">
+                                  {WEDDING_CONFIG.messages.labels.copyAccountMessage}
+                              </p>
+                              <Button onClick={closeModal}
+                                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                                  {WEDDING_CONFIG.messages.labels.confirmButton}
+                              </Button>
+                          </div>
                       </div>
-                    </div>
                   </div>
-                </div>
-              )}
-
-              <div className="text-center">
-                <p className="text-xs text-muted-foreground mb-3">
-                  {WEDDING_CONFIG.messages.labels.copyAccountMessage}
-                </p>
-                <Button onClick={closeModal} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
-                  {WEDDING_CONFIG.messages.labels.confirmButton}
-                </Button>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Footer */}
-      <footer className="py-8 px-4 text-center overflow-hidden">
-        <AnimateOnScroll>
-          <div className="max-w-md mx-auto">
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium text-foreground mb-4">청첩장 공유하기</h3>
+          {/* Footer */}
+          <footer className="py-8 px-4 text-center overflow-hidden">
+              <AnimateOnScroll>
+                  <div className="max-w-md mx-auto">
+                      <div className="space-y-4">
+                          <h3 className="text-lg font-medium text-foreground mb-4">청첩장 공유하기</h3>
 
-            <div className="flex flex-col gap-3">
-              {/* 카카오톡 공유 버튼 */}
-              <Button
-                onClick={() => {
-                  // 실제 카카오톡 SDK 연동 시 위의 shareToKakao() 함수 호출
-                  alert("카카오톡 SDK 연동 후 사용 가능합니다.\n위의 주석 가이드라인을 참고해주세요.")
-                }}
-                className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 rounded-lg"
-              >
-                💬 카카오톡으로 공유하기
-              </Button>
+                          <div className="flex flex-col gap-3">
+                              {/* 카카오톡 공유 버튼 */}
+                              <Button
+                                  onClick={() => {
+                                      // 실제 카카오톡 SDK 연동 시 위의 shareToKakao() 함수 호출
+                                      alert("카카오톡 SDK 연동 후 사용 가능합니다.\n위의 주석 가이드라인을 참고해주세요.")
+                                  }}
+                                  className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-3 rounded-lg"
+                              >
+                                  💬 카카오톡으로 공유하기
+                              </Button>
 
-              {/* URL 복사 버튼 */}
+                              {/* URL 복사 버튼 */}
 
-              {/* 기본 공유 버튼 (Web Share API) */}
-              
-            </div>
+                              {/* 기본 공유 버튼 (Web Share API) */}
 
-            <div className="mt-6 pt-4 border-t border-border">
-              <p className="text-xs text-muted-foreground">
-                {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">{formatDate(weddingDate)}</p>
-            </div>
-          </div>
-        </div>       
-        </AnimateOnScroll>
-      </footer>
+                          </div>
 
-      {/* Navigation Dots */}
-      {WEDDING_CONFIG.features.showNavigationDots && (
-        <div className={`fixed ${WEDDING_CONFIG.styles.navigationPosition} top-1/2 transform -translate-y-1/2 z-50`}>
-          <div className="flex flex-col gap-2">
-            {sections.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => scrollToSection(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  currentSection === index
-                    ? "bg-primary scale-125"
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+                          <div className="mt-6 pt-4 border-t border-border">
+                              <p className="text-xs text-muted-foreground">
+                                  {WEDDING_CONFIG.groom.name} ♥ {WEDDING_CONFIG.bride.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">{formatDate(weddingDate)}</p>
+                          </div>
+                      </div>
+                  </div>
+              </AnimateOnScroll>
+          </footer>
+
+          {/* Navigation Dots */}
+          {WEDDING_CONFIG.features.showNavigationDots && (
+              <div
+                  className={`fixed ${WEDDING_CONFIG.styles.navigationPosition} top-1/2 transform -translate-y-1/2 z-50`}>
+                  <div className="flex flex-col gap-2">
+                      {sections.map((_, index) => (
+                          <button
+                              key={index}
+                              onClick={() => scrollToSection(index)}
+                              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                                  currentSection === index
+                                      ? "bg-primary scale-125"
+                                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                              }`}
+                          />
+                      ))}
+                  </div>
+              </div>
+          )}
+      </div>
   )
 }

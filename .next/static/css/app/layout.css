@@ -14,8 +14,19 @@ font-weight: 100 900;
   !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[12].use[3]!./app/globals.css ***!
   \*************************************************************************************************************************************************************************************************************************************************************/
 /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
-@import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
 @layer properties;
+@font-face {
+  font-family: 'TwaySky';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'GowunDodum';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -74,7 +85,7 @@ font-weight: 100 900;
     --aspect-video: 16 / 9;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --default-font-family: "Wanted Sans Variable", "Wanted Sans", sans-serif;
+    --default-font-family: "GowunDodum", "Wanted Sans Variable", "Wanted Sans", sans-serif;
     --default-mono-font-family: var(--font-geist-mono);
     --color-border: var(--border);
   }
@@ -451,17 +462,8 @@ font-weight: 100 900;
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
-  .mt-8 {
-    margin-top: calc(var(--spacing) * 8);
-  }
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
-  }
-  .mt-20 {
-    margin-top: calc(var(--spacing) * 20);
-  }
-  .mt-30 {
-    margin-top: calc(var(--spacing) * 30);
   }
   .mt-64 {
     margin-top: calc(var(--spacing) * 64);
@@ -495,15 +497,6 @@ font-weight: 100 900;
   }
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
-  }
-  .mb-20 {
-    margin-bottom: calc(var(--spacing) * 20);
-  }
-  .mb-30 {
-    margin-bottom: calc(var(--spacing) * 30);
-  }
-  .mb-60 {
-    margin-bottom: calc(var(--spacing) * 60);
   }
   .-ml-4 {
     margin-left: calc(var(--spacing) * -4);
@@ -631,14 +624,6 @@ font-weight: 100 900;
     width: calc(var(--spacing) * 9);
     height: calc(var(--spacing) * 9);
   }
-  .size-20 {
-    width: calc(var(--spacing) * 20);
-    height: calc(var(--spacing) * 20);
-  }
-  .size-30 {
-    width: calc(var(--spacing) * 30);
-    height: calc(var(--spacing) * 30);
-  }
   .size-auto {
     width: auto;
     height: auto;
@@ -697,12 +682,6 @@ font-weight: 100 900;
   }
   .h-32 {
     height: calc(var(--spacing) * 32);
-  }
-  .h-40 {
-    height: calc(var(--spacing) * 40);
-  }
-  .h-80 {
-    height: calc(var(--spacing) * 80);
   }
   .h-\[1\.15rem\] {
     height: 1.15rem;
@@ -1061,9 +1040,6 @@ font-weight: 100 900;
   .justify-items-start {
     justify-items: start;
   }
-  .gap-0 {
-    gap: calc(var(--spacing) * 0);
-  }
   .gap-0\.5 {
     gap: calc(var(--spacing) * 0.5);
   }
@@ -1364,6 +1340,12 @@ font-weight: 100 900;
   .bg-\(--color-bg\) {
     background-color: var(--color-bg);
   }
+  .bg-\[\#148677\] {
+    background-color: #148677;
+  }
+  .bg-\[\#ffbe53\] {
+    background-color: #ffbe53;
+  }
   .bg-accent {
     background-color: var(--accent);
   }
@@ -1440,12 +1422,6 @@ font-weight: 100 900;
     background-color: var(--primary);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--primary) 20%, transparent);
-    }
-  }
-  .bg-primary\/80 {
-    background-color: var(--primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--primary) 80%, transparent);
     }
   }
   .bg-rose-400 {
@@ -1565,20 +1541,8 @@ font-weight: 100 900;
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
   }
-  .py-10 {
-    padding-block: calc(var(--spacing) * 10);
-  }
   .py-16 {
     padding-block: calc(var(--spacing) * 16);
-  }
-  .py-20 {
-    padding-block: calc(var(--spacing) * 20);
-  }
-  .py-30 {
-    padding-block: calc(var(--spacing) * 30);
-  }
-  .py-50 {
-    padding-block: calc(var(--spacing) * 50);
   }
   .pt-0 {
     padding-top: calc(var(--spacing) * 0);
@@ -1628,11 +1592,14 @@ font-weight: 100 900;
   .align-middle {
     vertical-align: middle;
   }
+  .font-heading {
+    font-family: "TwaySky", "GowunDodum", sans-serif;
+  }
   .font-mono {
     font-family: var(--font-geist-mono);
   }
   .font-sans {
-    font-family: "Wanted Sans Variable", "Wanted Sans", sans-serif;
+    font-family: "GowunDodum", "Wanted Sans Variable", "Wanted Sans", sans-serif;
   }
   .font-serif {
     font-family: var(--font-serif);
@@ -1778,12 +1745,6 @@ font-weight: 100 900;
   .text-primary-foreground {
     color: var(--primary-foreground);
   }
-  .text-primary\/50 {
-    color: var(--primary);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--primary) 50%, transparent);
-    }
-  }
   .text-secondary-foreground {
     color: var(--secondary-foreground);
   }
@@ -1920,6 +1881,10 @@ font-weight: 100 900;
   }
   .shadow-xs {
     --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .ring {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .ring-0 {
@@ -4099,6 +4064,11 @@ font-weight: 100 900;
       gap: calc(var(--spacing) * 2.5);
     }
   }
+  .sm\:py-12 {
+    @media (width >= 40rem) {
+      padding-block: calc(var(--spacing) * 12);
+    }
+  }
   .sm\:pr-2\.5 {
     @media (width >= 40rem) {
       padding-right: calc(var(--spacing) * 2.5);
@@ -4112,6 +4082,18 @@ font-weight: 100 900;
   .sm\:text-left {
     @media (width >= 40rem) {
       text-align: left;
+    }
+  }
+  .sm\:text-5xl {
+    @media (width >= 40rem) {
+      font-size: var(--text-5xl);
+      line-height: var(--tw-leading, var(--text-5xl--line-height));
+    }
+  }
+  .sm\:text-xl {
+    @media (width >= 40rem) {
+      font-size: var(--text-xl);
+      line-height: var(--tw-leading, var(--text-xl--line-height));
     }
   }
   .data-\[state\=open\]\:sm\:slide-in-from-bottom-full {
@@ -4178,6 +4160,18 @@ font-weight: 100 900;
   .md\:text-left {
     @media (width >= 48rem) {
       text-align: left;
+    }
+  }
+  .md\:text-2xl {
+    @media (width >= 48rem) {
+      font-size: var(--text-2xl);
+      line-height: var(--tw-leading, var(--text-2xl--line-height));
+    }
+  }
+  .md\:text-6xl {
+    @media (width >= 48rem) {
+      font-size: var(--text-6xl);
+      line-height: var(--tw-leading, var(--text-6xl--line-height));
     }
   }
   .md\:text-sm {
@@ -4941,30 +4935,30 @@ font-weight: 100 900;
   initial-value: 0;
 }
 :root {
-  --background: oklch(0.98 0.01 320);
-  --foreground: oklch(0.25 0.02 320);
-  --card: oklch(0.99 0.005 320);
-  --card-foreground: oklch(0.25 0.02 320);
-  --popover: oklch(0.99 0.005 320);
-  --popover-foreground: oklch(0.25 0.02 320);
-  --primary: oklch(0.72 0.18 330);
-  --primary-foreground: oklch(0.98 0.005 320);
-  --secondary: oklch(0.92 0.08 160);
-  --secondary-foreground: oklch(0.35 0.03 160);
-  --muted: oklch(0.95 0.02 320);
-  --muted-foreground: oklch(0.55 0.02 320);
-  --accent: oklch(0.88 0.06 180);
-  --accent-foreground: oklch(0.35 0.03 180);
+  --background: oklch(1 0 0);
+  --foreground: #2f4858;
+  --card: oklch(1 0 0);
+  --card-foreground: #2f4858;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #2f4858;
+  --primary: #58a166;
+  --primary-foreground: oklch(1 0 0);
+  --secondary: #a6b550;
+  --secondary-foreground: #2f4858;
+  --muted: oklch(0.96 0.005 0);
+  --muted-foreground: #2f4858;
+  --accent: #ffbe53;
+  --accent-foreground: #2f4858;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.05 330);
-  --input: oklch(0.9 0.05 330);
-  --ring: oklch(0.72 0.18 330);
-  --chart-1: oklch(0.72 0.18 330);
-  --chart-2: oklch(0.7 0.1 160);
-  --chart-3: oklch(0.75 0.08 180);
-  --chart-4: oklch(0.8 0.06 200);
-  --chart-5: oklch(0.85 0.04 220);
+  --border: #a6b550;
+  --input: #a6b550;
+  --ring: #58a166;
+  --chart-1: #58a166;
+  --chart-2: #a6b550;
+  --chart-3: #ffbe53;
+  --chart-4: #148677;
+  --chart-5: #146772;
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -5020,6 +5014,10 @@ font-weight: 100 900;
   body {
     background-color: var(--background);
     color: var(--foreground);
+    font-family: "GowunDodum", sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "TwaySky", "GowunDodum", sans-serif;
   }
   html {
     scrollbar-width: none;
@@ -5051,11 +5049,29 @@ font-weight: 100 900;
     transform: translateY(-10px);
   }
 }
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(0.9);
+  }
+  20%, 40%, 60%, 80% {
+    transform: scale(1.1);
+  }
+  50%, 70% {
+    transform: scale(1.05);
+  }
+}
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out forwards;
 }
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+.animate-heartbeat {
+  font-size: 70px;
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 .scrollbar-hide {
   scrollbar-width: none;

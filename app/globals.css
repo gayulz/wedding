@@ -1,38 +1,53 @@
-@import url('https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.1/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css');
+/* TwaySky 폰트 - 제목용 */
+@font-face {
+    font-family: 'TwaySky';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+/* GowunDodum 폰트 - 본문용 */
+@font-face {
+    font-family: 'GowunDodum';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* 라이트모드: 화사한 파스텔톤 (Soft Pink, Mint, Cream 계열) */
-  --background: oklch(0.98 0.01 320); /* 크림 화이트 */
-  --foreground: oklch(0.25 0.02 320); /* 다크 그레이 */
-  --card: oklch(0.99 0.005 320); /* 소프트 화이트 */
-  --card-foreground: oklch(0.25 0.02 320);
-  --popover: oklch(0.99 0.005 320);
-  --popover-foreground: oklch(0.25 0.02 320);
-  /* primary 컬러를 화사한 pink-400 톤으로 변경 */
-  --primary: oklch(0.72 0.18 330); /* 화사한 핑크 (pink-400 equivalent) */
-  --primary-foreground: oklch(0.98 0.005 320);
-  --secondary: oklch(0.92 0.08 160); /* 민트 그린 */
-  --secondary-foreground: oklch(0.35 0.03 160);
-  --muted: oklch(0.95 0.02 320); /* 라이트 크림 */
-  --muted-foreground: oklch(0.55 0.02 320);
-  --accent: oklch(0.88 0.06 180); /* 소프트 민트 */
-  --accent-foreground: oklch(0.35 0.03 180);
+  /* 커스텀 웨딩 색상 팔레트 적용 */
+  --background: oklch(1 0 0); /* 순수 화이트 */
+  --foreground: #2f4858; /* 네이비 - 메인 텍스트 */
+  --card: oklch(1 0 0); /* 순수 화이트 */
+  --card-foreground: #2f4858; /* 네이비 */
+  --popover: oklch(1 0 0); /* 순수 화이트 */
+  --popover-foreground: #2f4858; /* 네이비 */
+  /* primary 컬러를 초록색으로 변경 */
+  --primary: #58a166; /* 초록색 - 주 강조색 */
+  --primary-foreground: oklch(1 0 0); /* 흰색 */
+  --secondary: #a6b550; /* 연두색 - 보조 강조색 */
+  --secondary-foreground: #2f4858; /* 네이비 */
+  --muted: oklch(0.96 0.005 0); /* 매우 연한 회색 */
+  --muted-foreground: #2f4858; /* 네이비 */
+  --accent: #ffbe53; /* 골드 - 액센트 */
+  --accent-foreground: #2f4858; /* 네이비 */
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  /* border와 ring 컬러도 새로운 핑크톤에 맞게 조정 */
-  --border: oklch(0.9 0.05 330); /* 화사한 핑크 보더 */
-  --input: oklch(0.9 0.05 330);
-  --ring: oklch(0.72 0.18 330);
-  /* chart 컬러들도 핑크 계열로 조정 */
-  --chart-1: oklch(0.72 0.18 330);
-  --chart-2: oklch(0.7 0.1 160);
-  --chart-3: oklch(0.75 0.08 180);
-  --chart-4: oklch(0.8 0.06 200);
-  --chart-5: oklch(0.85 0.04 220);
+  /* border와 ring 컬러를 연두색으로 조정 */
+  --border: #a6b550; /* 연두색 */
+  --input: #a6b550; /* 연두색 */
+  --ring: #58a166; /* 초록색 */
+  /* chart 컬러들을 커스텀 팔레트로 조정 */
+  --chart-1: #58a166; /* 초록 */
+  --chart-2: #a6b550; /* 연두 */
+  --chart-3: #ffbe53; /* 골드 */
+  --chart-4: #148677; /* 청록 */
+  --chart-5: #146772; /* 청록-블루 */
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -84,7 +99,8 @@
 }
 
 @theme inline {
-  --font-sans: "Wanted Sans Variable", "Wanted Sans", sans-serif;
+  --font-sans: "GowunDodum", "Wanted Sans Variable", "Wanted Sans", sans-serif;
+  --font-heading: "TwaySky", "GowunDodum", sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -130,6 +146,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "GowunDodum", sans-serif;
+  }
+
+  /* 제목 태그에 TwaySky 폰트 적용 */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "TwaySky", "GowunDodum", sans-serif;
   }
 
   /* 스크롤바 숨김 처리 - 모든 브라우저 지원 */
@@ -169,12 +191,32 @@
   }
 }
 
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(0.9);
+  }
+  20%, 40%, 60%, 80% {
+    transform: scale(1.1);
+  }
+  50%, 70% {
+    transform: scale(1.05);
+  }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out forwards;
 }
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-heartbeat {
+    font-size:70px;
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 /* 썸네일 슬라이더 스크롤바 숨김을 위한 유틸리티 클래스 추가 */

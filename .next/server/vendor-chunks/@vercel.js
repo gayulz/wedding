@@ -34,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! next/dist/build/webpack/loaders/next-flight-loader/module-proxy */ "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-loader/module-proxy.js");
 
 
-const e0 = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`/Users/focusone/Desktop/mystudy/wedding-invitation/wedding/node_modules/@vercel/analytics/dist/next/index.mjs#Analytics`);
+const e0 = (0,next_dist_build_webpack_loaders_next_flight_loader_module_proxy__WEBPACK_IMPORTED_MODULE_0__.createProxy)(String.raw`/Users/focusone/Library/Mobile Documents/com~apple~CloudDocs/MYSTUDY/wedding-invitation/node_modules/@vercel/analytics/dist/next/index.mjs#Analytics`);
 
 
 /***/ })

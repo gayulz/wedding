@@ -1,1 +1,1 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/focusone/Desktop/mystudy/wedding-invitation/wedding/app/layout\":[\"static/media/5b01f339abf2f1a5.p.woff2\"]},\"appUsingSizeAdjust\":false,\"pagesUsingSizeAdjust\":false}"
+self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/focusone/Library/Mobile Documents/com~apple~CloudDocs/MYSTUDY/wedding-invitation/app/layout\":[\"static/media/5b01f339abf2f1a5.p.woff2\"]},\"appUsingSizeAdjust\":false,\"pagesUsingSizeAdjust\":false}"
