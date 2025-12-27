@@ -150,7 +150,7 @@ export default function WeddingInvitation() {
                   }}
               />
               <div
-                  className="absolute inset-0 bg-background opacity-75"
+                  className="absolute inset-0 bg-black"
                   style={{opacity: WEDDING_CONFIG.styles.heroOverlayOpacity}}
               />
 
@@ -166,21 +166,21 @@ export default function WeddingInvitation() {
                   )}
                   <div className="space-y-4 mb-8">
                       {/* 이름 텍스트 */}
-                      <p className="text-4xl sm:text-5xl md:text-6xl font-bold drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)]" style={{color: '#2f4858'}}>
+                      <p className="text-4xl sm:text-5xl md:text-6xl font-bold drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]" style={{color: '#ffffff'}}>
                           {WEDDING_CONFIG.groom.name}<br/> <span className="inline-block animate-heartbeat"
                                                                  style={{color: '#ffbe53'}}>♥<br/></span>
                           <br/>{WEDDING_CONFIG.bride.name}
                       </p>
                       <div>
-                        <p className="text-lg sm:text-xl md:text-2xl font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
-                          style={{color: '#a6b550'}}>
-                            봄이 시작하는 계절에
+                        <p className="text-lg sm:text-xl md:text-2xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+                          style={{color: '#ffffff'}}>
+                            달달한 화이트데이에
                         </p>
-                        <p className="text-lg sm:text-xl md:text-2xl font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)]"
-                          style={{color: '#a6b550'}}>
-                            제 인생에 동반자를 소개합니다💍
+                        <p className="text-lg sm:text-xl md:text-2xl font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]"
+                          style={{color: '#ffffff'}}>
+                            저희 결혼을 축하🥂해주세요
                         </p>
-                      </div>
+                     </div>
 
                   </div>
               </div>

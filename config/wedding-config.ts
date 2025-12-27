@@ -167,7 +167,7 @@ export const WEDDING_CONFIG = {
 
   // 🎨 스타일 설정
   styles: {
-    heroOverlayOpacity: 0.65,
+    heroOverlayOpacity: 0.4,
     heroContentMarginTop: "mt-64",
     navigationPosition: "right-4",
   },
