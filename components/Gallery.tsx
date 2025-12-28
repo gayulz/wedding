@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Masonry from 'react-masonry-css';
 
@@ -46,6 +46,7 @@ import wedding40 from '../images/wedding-40.jpeg';
 const Gallery: React.FC = () => {
   const [page, setPage] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // 모든 이미지를 배열에 담기
   const allImages = [
@@ -63,6 +64,30 @@ const Gallery: React.FC = () => {
   const images = useMemo(() => {
     return allImages.slice(0, 27); // 랜덤 제거, 순서대로 27개
   }, []);
+
+  // 첫 페이지 이미지 프리로드
+  useEffect(() => {
+    const firstPageImages = images.slice(0, 9);
+    let loadedCount = 0;
+
+    const preloadImage = (src: string) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    };
+
+    Promise.all(firstPageImages.map(src => preloadImage(src)))
+      .then(() => {
+        setImagesLoaded(true);
+      })
+      .catch(err => {
+        console.error('Image preload error:', err);
+        setImagesLoaded(true); // 에러가 나도 표시
+      });
+  }, [images]);
 
   const imagesPerPage = 9; // 페이지당 9개로 줄임
   const currentPageImages = images.slice(page * imagesPerPage, (page + 1) * imagesPerPage);
@@ -85,35 +110,46 @@ const Gallery: React.FC = () => {
 
       <div className="relative w-full max-w-xl flex flex-col" style={{ height: '550px' }}>
         <div className="flex-1 overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={page}
-              initial={{ opacity: 0, x: page === 0 ? -20 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: page === 0 ? 20 : -20 }}
-            >
-              <Masonry
-                breakpointCols={breakpointColumnsObj}
-                className="flex -ml-2 w-auto"
-                columnClassName="pl-2 bg-clip-padding"
+          {!imagesLoaded ? (
+            // 로딩 중 표시
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center">
+                <i className="fa-solid fa-spinner fa-spin text-3xl text-gray-400 mb-3"></i>
+                <p className="text-sm text-gray-500">사진을 불러오는 중...</p>
+              </div>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={page}
+                initial={{ opacity: 0, x: page === 0 ? -20 : 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: page === 0 ? 20 : -20 }}
               >
-                {currentPageImages.map((src, idx) => (
-                  <motion.div
-                    key={idx}
-                    whileHover={{ scale: 1.02 }}
-                    className="mb-2 bg-gray-100 overflow-hidden rounded-lg cursor-pointer"
-                    onClick={() => setSelectedImage(src)}
-                  >
-                    <img 
-                      src={src} 
-                      alt={`gallery-${idx}`} 
-                      className="w-full h-auto object-cover"
-                    />
-                  </motion.div>
-                ))}
-              </Masonry>
-            </motion.div>
-          </AnimatePresence>
+                <Masonry
+                  breakpointCols={breakpointColumnsObj}
+                  className="flex -ml-2 w-auto"
+                  columnClassName="pl-2 bg-clip-padding"
+                >
+                  {currentPageImages.map((src, idx) => (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ scale: 1.02 }}
+                      className="mb-2 bg-gray-100 overflow-hidden rounded-lg cursor-pointer"
+                      onClick={() => setSelectedImage(src)}
+                    >
+                      <img 
+                        src={src} 
+                        alt={`gallery-${idx}`} 
+                        className="w-full h-auto object-cover"
+                        loading="eager"
+                      />
+                    </motion.div>
+                  ))}
+                </Masonry>
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
 
         {/* Navigation Buttons - 고정 위치 */}
