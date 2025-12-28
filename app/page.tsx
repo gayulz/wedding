@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Calendar, Check, ChevronLeft, ChevronRight, Clock, Copy, Heart, MapPin, Phone, X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import { WEDDING_CONFIG, sections } from "@/config/wedding-config"
 import { AnimateOnScroll } from "@/components/wedding/AnimateOnScroll"
@@ -19,114 +19,124 @@ export default function WeddingInvitation() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(WEDDING_CONFIG.features.galleryDefaultIndex)
   const [showFooter, setShowFooter] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsVisible(true)
-    
-    // 모바일에서 주소창 자동 숨김
-    setTimeout(() => {
-      window.scrollTo(0, 1)
-    }, 100)
   }, [])
 
-  // 스크롤 제어 - 한 번에 한 섹션씩
+  useEffect(() => {
+    const isLastSection = currentSection === sections.length - 1
+    setShowFooter(currentSection > 0 && !isLastSection)
+  }, [currentSection])
+
+  // 섹션으로 스크롤
+  const scrollToSection = (index: number) => {
+    if (index < 0 || index >= sections.length || isScrolling) return
+    
+    setIsScrolling(true)
+    setCurrentSection(index)
+    
+    const element = document.getElementById(sections[index])
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    
+    setTimeout(() => setIsScrolling(false), 1000)
+  }
+
+  // 휠 이벤트 핸들링
   useEffect(() => {
     let lastScrollTime = 0
-    const scrollDelay = 1000 // 스크롤 간격을 1초로 증가
-    let touchStartY = 0
-    let touchStartTime = 0
+    const scrollDelay = 800
     
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault()
       const now = Date.now()
-      
-      // 스크롤 중이거나 너무 빨리 스크롤하면 무시
       if (isScrolling || now - lastScrollTime < scrollDelay) {
+        e.preventDefault()
         return
       }
+      
+      if (Math.abs(e.deltaY) < 30) return
       
       lastScrollTime = now
-      setIsScrolling(true)
       
-      // 스크롤 방향 감지
-      if (e.deltaY > 30 && currentSection < sections.length - 1) {
-        // 아래로 스크롤 (threshold 30)
+      if (e.deltaY > 0 && currentSection < sections.length - 1) {
+        e.preventDefault()
         scrollToSection(currentSection + 1)
-      } else if (e.deltaY < -30 && currentSection > 0) {
-        // 위로 스크롤
+      } else if (e.deltaY < 0 && currentSection > 0) {
+        e.preventDefault()
         scrollToSection(currentSection - 1)
-      } else {
-        setIsScrolling(false)
-        return
       }
-      
-      setTimeout(() => setIsScrolling(false), scrollDelay)
     }
+    
+    let touchStartY = 0
+    let touchStartTime = 0
     
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY
       touchStartTime = Date.now()
     }
     
-    const handleTouchMove = (e: TouchEvent) => {
-      // 스크롤 중일 때 터치 이동 방지
-      if (isScrolling) {
-        e.preventDefault()
-      }
-    }
-    
     const handleTouchEnd = (e: TouchEvent) => {
       const now = Date.now()
-      
-      if (isScrolling || now - lastScrollTime < scrollDelay) {
-        return
-      }
+      if (isScrolling || now - lastScrollTime < scrollDelay) return
       
       const touchEndY = e.changedTouches[0].clientY
       const deltaY = touchStartY - touchEndY
       const deltaTime = now - touchStartTime
       
-      // 100px 이상 움직이고, 300ms 이내에 완료되어야 스와이프로 인식
-      if (Math.abs(deltaY) < 100 || deltaTime > 300) {
-        return
-      }
+      if (Math.abs(deltaY) < 80 || deltaTime > 300) return
       
       lastScrollTime = now
-      setIsScrolling(true)
       
       if (deltaY > 0 && currentSection < sections.length - 1) {
-        // 위로 스와이프 (아래 섹션으로)
         scrollToSection(currentSection + 1)
       } else if (deltaY < 0 && currentSection > 0) {
-        // 아래로 스와이프 (위 섹션으로)
         scrollToSection(currentSection - 1)
-      } else {
-        setIsScrolling(false)
-        return
       }
-      
-      setTimeout(() => setIsScrolling(false), scrollDelay)
     }
     
-    window.addEventListener('wheel', handleWheel, { passive: false })
-    window.addEventListener('touchstart', handleTouchStart, { passive: true })
-    window.addEventListener('touchmove', handleTouchMove, { passive: false })
-    window.addEventListener('touchend', handleTouchEnd, { passive: true })
-    
-    return () => {
-      window.removeEventListener('wheel', handleWheel)
-      window.removeEventListener('touchstart', handleTouchStart)
-      window.removeEventListener('touchmove', handleTouchMove)
-      window.removeEventListener('touchend', handleTouchEnd)
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false })
+      container.addEventListener('touchstart', handleTouchStart, { passive: true })
+      container.addEventListener('touchend', handleTouchEnd, { passive: true })
+      
+      return () => {
+        container.removeEventListener('wheel', handleWheel)
+        container.removeEventListener('touchstart', handleTouchStart)
+        container.removeEventListener('touchend', handleTouchEnd)
+      }
     }
   }, [currentSection, isScrolling])
 
-  // 스크롤 시 푸터 표시 (단, 마지막 섹션에서는 숨김)
+  // Intersection Observer로 현재 섹션 추적
   useEffect(() => {
-    // 첫 번째 섹션(invitation)이 아니고 마지막 섹션(contact)이 아니면 푸터 표시
-    const isLastSection = currentSection === sections.length - 1
-    setShowFooter(currentSection > 0 && !isLastSection)
-  }, [currentSection])
+    const options = {
+      root: null,
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0.1
+    }
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isScrolling) {
+          const index = sections.findIndex(id => id === entry.target.id)
+          if (index !== -1) {
+            setCurrentSection(index)
+          }
+        }
+      })
+    }, options)
+    
+    sections.forEach(id => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
+    })
+    
+    return () => observer.disconnect()
+  }, [isScrolling])
 
   const weddingDate = new Date(WEDDING_CONFIG.weddingDateTime)
   const formatDate = (date: Date) => {
@@ -143,20 +153,6 @@ export default function WeddingInvitation() {
       hour: "2-digit",
       minute: "2-digit",
     })
-  }
-
-  const scrollToSection = (index: number) => {
-    if (index < 0 || index >= sections.length) return
-    
-    setCurrentSection(index)
-    const element = document.getElementById(sections[index])
-    
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
-    }
   }
 
   const makeCall = (phoneNumber: string) => {
@@ -219,11 +215,10 @@ export default function WeddingInvitation() {
   }
 
   return (
-      <div className="min-h-screen bg-background scroll-smooth" style={{ scrollSnapType: 'y mandatory', height: '100vh', overflowY: 'auto' }}>
-          {/* Hero Section */}
-          <section id="invitation"
-                   className="relative min-h-screen flex items-center justify-center px-4 py-8 sm:py-12 overflow-hidden"
-                   style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>
+    <div ref={containerRef} className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth">
+      {/* Hero Section */}
+      <section id="invitation" className="h-screen snap-start snap-always">
+        <div className="relative h-full flex items-center justify-center px-4 py-8 sm:py-12 overflow-hidden">
               <div
                   className="absolute inset-0 bg-cover bg-no-repeat"
                   style={{
@@ -264,13 +259,14 @@ export default function WeddingInvitation() {
                         </p>
                      </div>
 
-                  </div>
               </div>
-          </section>
+          </div>
+        </div>
+      </section>
 
-
-          {/* Couple Section */}
-          <section id="couple" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
+      {/* Couple Section */}
+          <section id="couple" className="h-screen snap-start snap-always" style={{backgroundColor: '#EFE9E3'}}>
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto text-center">
                       <h2 className="text-3xl text-foreground mb-10">{WEDDING_CONFIG.messages.sectionTitles.couple}</h2>
@@ -334,14 +330,12 @@ export default function WeddingInvitation() {
                       <p className="text-xs text-muted-foreground mt-2">든든한 버팀목과 사랑스러운 동반자가 되겠습니다.</p>
                   </div>
               </AnimateOnScroll>
+            </div>
           </section>
 
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
-
           {/* Message Section - D-day + 메시지 */}
-          <section id="message" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center">
+          <section id="message" className="h-screen snap-start snap-always">
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto text-center">
                       <br />
@@ -361,16 +355,12 @@ export default function WeddingInvitation() {
                       </div>
                   </div>
               </AnimateOnScroll>
+            </div>
           </section>
 
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
-          <br/>
-          <br/>
-          <br/>
           {/* Wedding Details */}
-          <section id="details" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
+          <section id="details" className="h-screen snap-start snap-always" style={{backgroundColor: '#EFE9E3'}}>
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto w-full">
                       <h2 className="text-3xl text-center text-foreground mb-12">
@@ -408,17 +398,12 @@ export default function WeddingInvitation() {
                       </div>
                   </div>
               </AnimateOnScroll>
+            </div>
           </section>
-          <br/>
-          <br/>
-
-
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
 
           {/* Location Section 1 - 지도 */}
-          <section id="location1" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center">
+          <section id="location1" className="h-screen snap-start snap-always">
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto w-full">
                       <div className="text-center mb-12">
@@ -460,14 +445,12 @@ export default function WeddingInvitation() {
                       </div>
                   </div>
               </AnimateOnScroll>
+            </div>
           </section>
 
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
-
           {/* Location Section 2 - 대중교통/자가용 안내 */}
-          <section id="location2" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
+          <section id="location2" className="h-screen snap-start snap-always" style={{backgroundColor: '#EFE9E3'}}>
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto w-full">
                       <div className="text-center mb-7">
@@ -552,13 +535,12 @@ export default function WeddingInvitation() {
                       </div>
                   </div>
               </AnimateOnScroll>
+            </div>
           </section>
 
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
-
-          <section id="gallery" className="py-16 overflow-hidden min-h-screen flex items-center justify-center">
+          {/* Gallery Section */}
+          <section id="gallery" className="h-screen snap-start snap-always">
+            <div className="h-full py-16 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="w-full px-2">
                       <h2 className="text-3xl text-center text-foreground mb-12 px-4">
@@ -593,7 +575,7 @@ export default function WeddingInvitation() {
                       </div>
                   </div>
               </AnimateOnScroll>
-          </section>
+            </div>
 
           {/* 사진 모달 팝업 */}
           {selectedImageIndex !== WEDDING_CONFIG.features.galleryDefaultIndex && (
@@ -651,13 +633,11 @@ export default function WeddingInvitation() {
                   </div>
               </div>
           )}
-
-          <AnimateOnScroll className="py-16">
-              <SectionDivider/>
-          </AnimateOnScroll>
+          </section>
 
           {/* Contact Section */}
-          <section id="contact" className="py-16 px-4 overflow-hidden min-h-screen flex items-center justify-center" style={{backgroundColor: '#EFE9E3'}}>
+          <section id="contact" className="h-screen snap-start snap-always" style={{backgroundColor: '#EFE9E3'}}>
+            <div className="h-full py-16 px-4 overflow-hidden flex items-center justify-center">
               <AnimateOnScroll>
                   <div className="max-w-md mx-auto">
                       <h2 className="text-3xl    text-center text-foreground mb-12">
@@ -774,10 +754,10 @@ export default function WeddingInvitation() {
                       </AnimateOnScroll>
                   </footer>
               </AnimateOnScroll>
+            </div>
           </section>
 
-
-
+          {/* Account Modal */}
           {accountModal && (
               <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                   <div className="bg-card rounded-lg p-6 w-full max-w-sm border border-border">
@@ -943,26 +923,6 @@ export default function WeddingInvitation() {
               </div>
           )}
 
-          {/* Navigation Dots */}
-          {WEDDING_CONFIG.features.showNavigationDots && (
-              <div
-                  className={`fixed ${WEDDING_CONFIG.styles.navigationPosition} top-1/2 transform -translate-y-1/2 z-50`}>
-                  <div className="flex flex-col gap-2">
-                      {sections.map((_, index) => (
-                          <button
-                              key={index}
-                              onClick={() => scrollToSection(index)}
-                              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                                  currentSection === index
-                                      ? "bg-primary scale-125"
-                                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                              }`}
-                          />
-                      ))}
-                  </div>
-              </div>
-          )}
-
           {/* 고정 푸터 - 스크롤 시 나타남 */}
           <footer 
             className={`fixed bottom-0 left-0 right-0 bg-wedding-green/95 backdrop-blur-sm text-white py-4 px-4 transition-all duration-500 z-50 ${
@@ -970,7 +930,6 @@ export default function WeddingInvitation() {
             }`}
           >
             <div className="max-w-md mx-auto flex items-center justify-around">
-
               <Button
                 onClick={shareToKakao}
                 size="sm"
@@ -981,6 +940,6 @@ export default function WeddingInvitation() {
               </Button>
             </div>
           </footer>
-      </div>
+    </div>
   )
 }
