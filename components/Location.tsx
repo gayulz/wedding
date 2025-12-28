@@ -87,14 +87,14 @@ const Location: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-[#f9f9fb] p-8">
-      <div className="text-center mb-6">
+    <div className="h-full w-full flex flex-col items-center bg-[#f9f9fb] p-8 pt-16">
+      <div className="text-center mb-4">
         <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">LOCATION</h2>
         <div className="text-[10px] text-gray-400 mt-2 font-light">오시는 길</div>
       </div>
 
       {/* 컨텐츠 영역 - 화면의 60% 제한 */}
-      <div className="w-full max-w-md" style={{ maxHeight: '60vh' }}>
+      <div className="w-full max-w-md" style={{ maxHeight: '50vh' }}>
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 overflow-hidden">
           <div className="mb-6">
             <h3 className="text-lg font-bold text-gray-800 mb-1">토미스퀘어가든</h3>
