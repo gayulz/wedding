@@ -88,80 +88,83 @@ const Location: React.FC = () => {
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-[#f9f9fb] p-8">
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">LOCATION</h2>
         <div className="text-[10px] text-gray-400 mt-2 font-light">오시는 길</div>
       </div>
 
-      <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-sm border border-gray-100 overflow-hidden">
-        <div className="mb-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-1">토미스퀘어가든</h3>
-          <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
-          <div className="mt-2 text-blue-600 text-xs flex items-center gap-1">
-            <i className="fa-solid fa-phone"></i>
-            <a href="tel:054-473-6799">054-473-6799</a>
+      {/* 컨텐츠 영역 - 화면의 60% 제한 */}
+      <div className="w-full max-w-md" style={{ maxHeight: '60vh' }}>
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 overflow-hidden">
+          <div className="mb-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-1">토미스퀘어가든</h3>
+            <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
+            <div className="mt-2 text-blue-600 text-xs flex items-center gap-1">
+              <i className="fa-solid fa-phone"></i>
+              <a href="tel:054-473-6799">054-473-6799</a>
+            </div>
           </div>
-        </div>
 
-        {/* 네이버 지도 */}
-        <div className="relative rounded-2xl mb-6 overflow-hidden shadow-md" style={{ width: '100%', height: '300px' }}>
-          <div 
-            ref={mapRef}
-            className="w-full h-full bg-gray-200"
-          />
-          {!mapLoaded && !error && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-              <div className="text-center">
-                <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
-                <p className="text-xs text-gray-500">지도를 불러오는 중...</p>
+          {/* 네이버 지도 */}
+          <div className="relative rounded-2xl mb-6 overflow-hidden shadow-md" style={{ width: '100%', height: '250px' }}>
+            <div 
+              ref={mapRef}
+              className="w-full h-full bg-gray-200"
+            />
+            {!mapLoaded && !error && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <div className="text-center">
+                  <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
+                  <p className="text-xs text-gray-500">지도를 불러오는 중...</p>
+                </div>
               </div>
-            </div>
-          )}
-          {error && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-              <div className="text-center p-4">
-                <i className="fa-solid fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
-                <p className="text-xs text-gray-600">{error}</p>
+            )}
+            {error && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+                <div className="text-center p-4">
+                  <i className="fa-solid fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
+                  <p className="text-xs text-gray-600">{error}</p>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Map Links - Glass buttons */}
-        <div className="grid grid-cols-3 gap-3">
-          <a 
-            href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
-          >
-            <div className="w-6 h-6 flex items-center justify-center bg-green-500 rounded-md">
-              <span className="text-white text-xs font-bold">N</span>
-            </div>
-            <span className="text-[10px] text-gray-600">네이버지도</span>
-          </a>
-          <a 
-            href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
-          >
-            <div className="w-6 h-6 flex items-center justify-center bg-yellow-400 rounded-md">
-              <span className="text-gray-800 text-xs font-bold">K</span>
-            </div>
-            <span className="text-[10px] text-gray-600">카카오맵</span>
-          </a>
-          <a 
-            href="https://www.google.com/maps/search/?api=1&query=36.097854,128.435753"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
-          >
-            <div className="w-6 h-6 flex items-center justify-center bg-blue-500 rounded-md">
-              <span className="text-white text-xs font-bold">G</span>
-            </div>
-            <span className="text-[10px] text-gray-600">구글맵</span>
-          </a>
+          {/* Map Links - Glass buttons */}
+          <div className="grid grid-cols-3 gap-3">
+            <a 
+              href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <div className="w-6 h-6 flex items-center justify-center bg-green-500 rounded-md">
+                <span className="text-white text-xs font-bold">N</span>
+              </div>
+              <span className="text-[10px] text-gray-600">네이버지도</span>
+            </a>
+            <a 
+              href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <div className="w-6 h-6 flex items-center justify-center bg-yellow-400 rounded-md">
+                <span className="text-gray-800 text-xs font-bold">K</span>
+              </div>
+              <span className="text-[10px] text-gray-600">카카오맵</span>
+            </a>
+            <a 
+              href="https://www.google.com/maps/search/?api=1&query=36.097854,128.435753"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+            >
+              <div className="w-6 h-6 flex items-center justify-center bg-blue-500 rounded-md">
+                <span className="text-white text-xs font-bold">G</span>
+              </div>
+              <span className="text-[10px] text-gray-600">구글맵</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
