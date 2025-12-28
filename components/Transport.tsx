@@ -1,0 +1,50 @@
+
+import React from 'react';
+
+const Transport: React.FC = () => {
+  return (
+    <div className="h-full w-full flex flex-col items-center justify-center bg-white p-8">
+      <div className="w-full max-w-md space-y-8">
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
+              <i className="fa-solid fa-bus"></i>
+            </div>
+            <h3 className="font-bold text-gray-800">대중교통 안내</h3>
+          </div>
+          <div className="space-y-4 text-sm text-gray-600 leading-relaxed pl-11">
+            <div>
+              <p className="font-semibold text-gray-800 mb-1">시내버스</p>
+              <p>지선(초록) : 187, 187-1, 188</p>
+              <p>간선(파랑) : 180, 881, 881-1, 883, 883-1, 884, 884-1, 884-2, 885, 885</p>
+            </div>
+            <div>
+              <p className="font-semibold text-gray-800 mb-1">기차 KTX</p>
+              <p>동대구역 → 구미역 → 대중교통 이용</p>
+              <p>(30분~50분 소요)</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center">
+              <i className="fa-solid fa-car"></i>
+            </div>
+            <h3 className="font-bold text-gray-800">자가용 및 주차</h3>
+          </div>
+          <div className="space-y-4 text-sm text-gray-600 leading-relaxed pl-11">
+            <div>
+              <p className="font-semibold text-gray-800 mb-1">주차 안내</p>
+              <p>실외 1주차장과 실내 2주차장이 홀과 가장 가깝습니다.</p>
+              <p>최대 1,400대 주차 가능</p>
+              <p>웨딩홀 방문객 무료 주차</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default Transport;
