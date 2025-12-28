@@ -145,6 +145,7 @@
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scroll-behavior: smooth; /* 부드러운 스크롤 */
+    overflow-y: auto;
   }
 
   html::-webkit-scrollbar {
@@ -153,6 +154,18 @@
 
   body {
     overflow-x: hidden; /* 가로 스크롤 방지 */
+  }
+
+  /* 섹션별 스냅 효과를 CSS로 부드럽게 처리 */
+  section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* 부드러운 스크롤 전환 */
+  * {
+    scroll-margin-top: 0;
+    scroll-padding-top: 0;
   }
 }
 
