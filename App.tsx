@@ -10,14 +10,12 @@ import Gallery from './components/Gallery';
 import Gift from './components/Gift';
 import Guestbook from './components/Guestbook';
 import ShareButton from './components/ShareButton';
-import AiPhoto from './components/AiPhoto';
 
 const SECTIONS = [
   'hero',
   'intro',
   'profiles',
   'gallery',
-  'ai-photo',
   'location',
   'transport',
   'gift',
@@ -27,7 +25,23 @@ const SECTIONS = [
 const App: React.FC = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const touchStartY = useRef(0);
+
+  // 카카오톡 웹뷰에서 외부 브라우저로 열기
+  const openInExternalBrowser = () => {
+    const currentUrl = window.location.href;
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+    if (isAndroid) {
+      // Android: 크롬으로 열기
+      window.location.href = `intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
+    } else if (isIOS) {
+      // iOS: Safari로 열기 (iOS에서는 Safari가 기본)
+      window.location.href = currentUrl;
+    }
+  };
 
   const handleScroll = useCallback((delta: number) => {
     if (isScrolling) return;
@@ -42,6 +56,14 @@ const App: React.FC = () => {
 
     setTimeout(() => setIsScrolling(false), 800);
   }, [isScrolling, currentIdx]);
+
+  // 카카오톡 웹뷰 감지 및 팝업 표시
+  useEffect(() => {
+    const isKakaoTalk = /KAKAOTALK/.test(navigator.userAgent);
+    if (isKakaoTalk) {
+      setShowBrowserPrompt(true);
+    }
+  }, []);
 
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
@@ -73,6 +95,40 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen relative bg-[#0a0a0c] overflow-hidden select-none">
+      {/* 카카오톡 브라우저 전환 안내 팝업 */}
+      {showBrowserPrompt && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-3xl p-8 max-w-sm mx-4 shadow-2xl"
+          >
+            <div className="text-center">
+              <div className="text-4xl mb-4">🌐</div>
+              <h3 className="text-xl font-bold mb-2 text-gray-800">더 나은 경험을 위해</h3>
+              <p className="text-sm text-gray-600 mb-8 leading-relaxed">
+                카카오톡 브라우저보다 외부 브라우저에서<br />더 빠르고 부드럽게 감상할 수 있습니다.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setShowBrowserPrompt(false)}
+                  className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-all active:scale-95"
+                >
+                  계속 보기
+                </button>
+                <button
+                  onClick={openInExternalBrowser}
+                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:shadow-lg transition-all active:scale-95"
+                >
+                  브라우저 열기
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       <AnimatePresence mode="wait">
         <motion.div
           key={SECTIONS[currentIdx]}
@@ -86,11 +142,10 @@ const App: React.FC = () => {
           {currentIdx === 1 && <Intro />}
           {currentIdx === 2 && <Profiles />}
           {currentIdx === 3 && <Gallery />}
-          {currentIdx === 4 && <AiPhoto />}
-          {currentIdx === 5 && <Location />}
-          {currentIdx === 6 && <Transport />}
-          {currentIdx === 7 && <Gift />}
-          {currentIdx === 8 && <Guestbook />}
+          {currentIdx === 4 && <Location />}
+          {currentIdx === 5 && <Transport />}
+          {currentIdx === 6 && <Gift />}
+          {currentIdx === 7 && <Guestbook />}
         </motion.div>
       </AnimatePresence>
 
