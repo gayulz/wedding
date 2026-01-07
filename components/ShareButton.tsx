@@ -52,6 +52,22 @@ const ShareButton: React.FC = () => {
       const baseUrl = window.location.origin;
       const imageUrl = `${baseUrl}/images/wedding-37.jpeg`;
 
+        /**
+         *     "object_type": "feed",
+         *         "content": {
+         *             "title": "오늘의 디저트",
+         *             "description": "아메리카노, 빵, 케익",
+         *             "image_url": "https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+         *             "image_width": 640,
+         *             "image_height": 640,
+         *             "link": {
+         *                 "web_url": "http://www.daum.net",
+         *                 "mobile_web_url": "http://m.daum.net",
+         *                 "android_execution_params": "contentId=100",
+         *                 "ios_execution_params": "contentId=100"
+         *             }
+         *         }
+         */
       // 피드 템플릿으로 공유
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
@@ -61,13 +77,13 @@ const ShareButton: React.FC = () => {
           // 채팅창에 보여질 설명
           description: '2026년 3월 14일 토요일 오후 2시\n구미 토미스퀘어가든 4층',
           // 채팅창에 보여질 이미지 (중요: 절대경로 사용)
-          imageUrl: imageUrl,
-          imageWidth: 800,
-          imageHeight: 1000,
+          image_url: imageUrl,
+          image_width: 800,
+          image_height: 1000,
           // 클릭 시 이동할 링크
           link: {
-            mobileWebUrl: baseUrl,
-            webUrl: baseUrl,
+            web_url: baseUrl,
+            mobile_web_url: baseUrl,
           },
         },
         // 공유 메시지 하단 버튼
