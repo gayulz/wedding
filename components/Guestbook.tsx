@@ -40,6 +40,8 @@ const Guestbook: React.FC = () => {
 
   // 스크롤 컨테이너 ref
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  // 페이지 전환 방지 영역 ref
+  const noScrollAreaRef = useRef<HTMLDivElement>(null);
 
   // 수정 관련 state
   const [editingEntry, setEditingEntry] = useState<GuestbookEntry | null>(null);
@@ -210,6 +212,30 @@ const Guestbook: React.FC = () => {
     }
   }, [entries]);
 
+  // 방명록 영역에서 페이지 전환 완전 차단 (모바일 포함)
+  useEffect(() => {
+    const noScrollArea = noScrollAreaRef.current;
+    if (!noScrollArea) return;
+
+    // 모든 스크롤 이벤트 차단
+    const preventScroll = (e: Event) => {
+      e.stopPropagation();
+    };
+
+    // 네이티브 이벤트 리스너로 강제 차단
+    noScrollArea.addEventListener('wheel', preventScroll, { passive: false });
+    noScrollArea.addEventListener('touchstart', preventScroll, { passive: false });
+    noScrollArea.addEventListener('touchmove', preventScroll, { passive: false });
+    noScrollArea.addEventListener('touchend', preventScroll, { passive: false });
+
+    return () => {
+      noScrollArea.removeEventListener('wheel', preventScroll);
+      noScrollArea.removeEventListener('touchstart', preventScroll);
+      noScrollArea.removeEventListener('touchmove', preventScroll);
+      noScrollArea.removeEventListener('touchend', preventScroll);
+    };
+  }, []);
+
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-3 overflow-hidden">
       {/* 카운트다운 - 페이지 이동 가능한 유일한 영역 */}
@@ -244,9 +270,8 @@ const Guestbook: React.FC = () => {
 
       {/* 카운트다운 아래 영역 - 페이지 전환 방지 */}
       <div
+        ref={noScrollAreaRef}
         className="w-full max-w-md flex flex-col flex-1"
-        onWheel={(e) => e.stopPropagation()}
-        onTouchMove={(e) => e.stopPropagation()}
       >
         {/* 방명록 목록 - 카톡 스타일 */}
         <motion.div
