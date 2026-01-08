@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../lib/firebase';
 import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, updateDoc } from 'firebase/firestore';
@@ -38,8 +38,8 @@ const Guestbook: React.FC = () => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 페이징 관련 state
-  const [currentPage, setCurrentPage] = useState(1);
+  // 스크롤 컨테이너 ref
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // 수정 관련 state
   const [editingEntry, setEditingEntry] = useState<GuestbookEntry | null>(null);
@@ -82,11 +82,11 @@ const Guestbook: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // 실시간 방명록 불러오기
+  // 실시간 방명록 불러오기 (오래된 순서 - 채팅 스타일)
   useEffect(() => {
     const q = query(
       collection(db, 'guestbook'),
-      orderBy('createdAt', 'desc')
+      orderBy('createdAt', 'asc') // 오래된 글이 위, 최신 글이 아래
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -134,7 +134,6 @@ const Guestbook: React.FC = () => {
       setPassword('');
       setMessage('');
       setShowWritePopup(false);
-      setCurrentPage(1); // 새 방명록 작성 시 첫 페이지로
       showCustomAlert('축하 메시지가 전달되었습니다! 💕');
     } catch (error: any) {
       showCustomAlert(`메시지 전송에 실패했습니다.\n${error.message}`);
@@ -201,30 +200,18 @@ const Guestbook: React.FC = () => {
   const isVerySmallScreen = windowHeight < 680;
   const isSmallScreen = windowHeight < 750;
 
-  const itemsPerPage = isVerySmallScreen ? 3 : isSmallScreen ? 4 : 5;
   const useSmallFont = isSmallScreen; // 750px 미만일때 모두 작은 폰트 사용
-
-  // 페이징 계산
-  const totalPages = Math.ceil(entries.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const displayEntries = entries.slice(startIndex, endIndex);
-
-  // 페이지 변경 시 스크롤 최상단으로
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
-
-  // 화면 크기나 항목 수 변경 시 현재 페이지가 범위를 벗어나면 조정
-  useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
-    }
-  }, [totalPages, currentPage]);
   // --- 반응형 로직 끝 ---
 
+  // 새 메시지나 엔트리 변경 시 맨 아래로 스크롤
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [entries]);
+
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-4 overflow-y-auto">
+    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-4 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -254,26 +241,20 @@ const Guestbook: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* 축하메세지 작성 버튼 */}
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        onClick={() => setShowWritePopup(true)}
-        className="w-full max-w-md mb-4 px-6 py-3 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
-      >
-        💍 축하메세지 작성 💍
-      </motion.button>
-
       {/* 방명록 목록 - 카톡 스타일 */}
       <motion.div
+        ref={scrollContainerRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        className="w-full max-w-md space-y-3 mb-4"
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="w-full max-w-md flex-1 overflow-y-auto space-y-3 mb-4 px-2"
+        style={{
+          maxHeight: 'calc(100vh - 450px)',
+          minHeight: '200px'
+        }}
       >
-        {displayEntries.length > 0 ? (
-          displayEntries.map((entry) => {
+        {entries.length > 0 ? (
+          entries.map((entry) => {
             // 신랑신부 확인 (이름이 최봉석 or 김가율이고 비밀번호가 0331)
             const isCouple = (entry.name === '최봉석' || entry.name === '김가율') && entry.password === '0331';
 
@@ -323,29 +304,16 @@ const Guestbook: React.FC = () => {
         )}
       </motion.div>
 
-      {/* 페이지네이션 */}
-      {totalPages > 1 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex items-center justify-center gap-2 mb-4"
-        >
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`w-8 h-8 rounded-full font-medium text-xs transition-all ${
-                currentPage === page
-                  ? 'bg-white text-gray-900 scale-110'
-                  : 'bg-white/10 text-white/60 hover:bg-white/20'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
-        </motion.div>
-      )}
+      {/* 축하메세지 작성 버튼 */}
+      <motion.button
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        onClick={() => setShowWritePopup(true)}
+        className="w-full max-w-md mb-4 px-6 py-3 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
+      >
+        💍 축하메세지 작성 💍
+      </motion.button>
 
       {/* 작성 팝업 */}
       <AnimatePresence>

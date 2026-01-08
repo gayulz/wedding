@@ -4,15 +4,15 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore"; // Firestore 데이터베이스를 사용하기 위해 import 합니다.
 
-// Your web app's Firebase configuration
+// Your web app's Firebase configuration (환경 변수 사용)
 const firebaseConfig = {
-  apiKey: "AIzaSyAnAVtFtDOHJzAKiqhC6Wt86VcnFCocLAM",
-  authDomain: "by-wedding-db137.firebaseapp.com",
-  projectId: "by-wedding-db137",
-  storageBucket: "by-wedding-db137.firebasestorage.app",
-  messagingSenderId: "484025562296",
-  appId: "1:484025562296:web:5d42b7a6fb1b58630a304d",
-  measurementId: "G-4GGQ2BS7Y3"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
