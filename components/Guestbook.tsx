@@ -225,15 +225,17 @@ const Guestbook: React.FC = () => {
   }, [totalPages, currentPage]);
   // --- 반응형 로직 끝 ---
 
-  // 첫 번째 아코디언 자동 열기 (매우 작은 화면 제외)
+  // 첫 번째 아코디언 자동 열기 (매우 작은 화면 제외) - 초기 한 번만
   useEffect(() => {
-    const shouldNotAutoOpen = isVerySmallScreen;
-    if (!shouldNotAutoOpen && !hasSetInitialAccordion && displayEntries.length > 0) {
-      setOpenAccordionId(displayEntries[0].id);
+    if (hasSetInitialAccordion) return; // 이미 설정했으면 더 이상 실행하지 않음
+
+    if (displayEntries.length > 0) {
+      if (!isVerySmallScreen) {
+        // 일반 화면에서는 첫 번째 아코디언 자동 열기
+        setOpenAccordionId(displayEntries[0].id);
+      }
+      // 매우 작은 화면에서는 모두 닫힌 상태로 시작
       setHasSetInitialAccordion(true);
-    }
-     if (shouldNotAutoOpen) {
-      setOpenAccordionId(null);
     }
   }, [displayEntries, hasSetInitialAccordion, isVerySmallScreen]);
 
