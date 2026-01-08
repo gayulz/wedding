@@ -37,8 +37,6 @@ const Guestbook: React.FC = () => {
   const [message, setMessage] = useState('');
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [loading, setLoading] = useState(false);
-  const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
-  const [hasSetInitialAccordion, setHasSetInitialAccordion] = useState(false);
 
   // 페이징 관련 state
   const [currentPage, setCurrentPage] = useState(1);
@@ -225,20 +223,6 @@ const Guestbook: React.FC = () => {
   }, [totalPages, currentPage]);
   // --- 반응형 로직 끝 ---
 
-  // 첫 번째 아코디언 자동 열기 (매우 작은 화면 제외) - 초기 한 번만
-  useEffect(() => {
-    if (hasSetInitialAccordion) return; // 이미 설정했으면 더 이상 실행하지 않음
-
-    if (displayEntries.length > 0) {
-      if (!isVerySmallScreen) {
-        // 일반 화면에서는 첫 번째 아코디언 자동 열기
-        setOpenAccordionId(displayEntries[0].id);
-      }
-      // 매우 작은 화면에서는 모두 닫힌 상태로 시작
-      setHasSetInitialAccordion(true);
-    }
-  }, [displayEntries, hasSetInitialAccordion, isVerySmallScreen]);
-
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-4 overflow-y-auto">
       <motion.div
@@ -281,55 +265,59 @@ const Guestbook: React.FC = () => {
         💍 축하메세지 작성 💍
       </motion.button>
 
-      {/* 방명록 목록 */}
+      {/* 방명록 목록 - 카톡 스타일 */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
-        className="w-full max-w-md space-y-2 mb-4"
+        className="w-full max-w-md space-y-3 mb-4"
       >
         {displayEntries.length > 0 ? (
-          displayEntries.map((entry) => (
-            <div
-              key={entry.id}
-              className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden"
-            >
-              <button
-                onClick={() => setOpenAccordionId(openAccordionId === entry.id ? null : entry.id)}
-                className="w-full flex items-center justify-between p-3 text-left hover:bg-white/5 transition-colors"
+          displayEntries.map((entry) => {
+            // 신랑신부 확인 (이름이 최봉석 or 김가율이고 비밀번호가 0331)
+            const isCouple = (entry.name === '최봉석' || entry.name === '김가율') && entry.password === '0331';
+
+            return (
+              <motion.div
+                key={entry.id}
+                initial={{ opacity: 0, x: isCouple ? 20 : -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`flex flex-col ${isCouple ? 'items-end' : 'items-start'}`}
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-white/90">{entry.name}</span>
-                  <span className="text-[10px] text-white/40">
+                {/* 이름과 날짜 */}
+                <div className={`flex items-center gap-2 mb-1 ${isCouple ? 'flex-row-reverse' : ''}`}>
+                  <span className="text-[10px] text-white/90 font-medium">{entry.name}</span>
+                  <span className="text-[9px] text-white/40">
                     {entry.createdAt?.toDate().toLocaleDateString('ko-KR')}
                   </span>
                 </div>
-                <i className={`fa-solid fa-chevron-down text-white/60 text-[10px] transition-transform ${openAccordionId === entry.id ? 'rotate-180' : ''}`}></i>
-              </button>
-              <AnimatePresence>
-                {openAccordionId === entry.id && (
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{ height: 'auto' }}
-                    exit={{ height: 0 }}
-                    className="overflow-hidden"
+
+                {/* 말풍선 */}
+                <div className={`relative max-w-[80%] ${isCouple ? 'items-end' : 'items-start'} flex flex-col`}>
+                  <div
+                    className={`px-3 py-2 rounded-2xl ${
+                      isCouple
+                        ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
+                        : 'bg-white/10 text-white/90 rounded-tl-sm'
+                    }`}
                   >
-                    <div className="px-3 pb-3 pt-2 border-t border-white/10">
-                      <p className="text-xs text-white/70 leading-relaxed whitespace-pre-wrap mb-2">{entry.message}</p>
-                      <div className="flex justify-end">
-                        <button
-                          onClick={() => handleEditClick(entry)}
-                          className="px-2 py-1 bg-white/10 text-white rounded-md text-[10px] font-medium hover:bg-white/20 transition-colors"
-                        >
-                          Edit
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))
+                    <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{entry.message}</p>
+                  </div>
+
+                  {/* Edit 버튼 */}
+                  <button
+                    onClick={() => handleEditClick(entry)}
+                    className={`mt-1 text-[9px] text-white/50 hover:text-white/80 transition-colors ${
+                      isCouple ? 'self-end' : 'self-start'
+                    }`}
+                  >
+                    수정
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })
         ) : (
           <p className="text-center text-white/40 text-xs py-4">아직 작성된 방명록이 없습니다.</p>
         )}
