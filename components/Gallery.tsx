@@ -2,19 +2,20 @@ import React, {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 
 // 12개의 이미지만 import
-import wedding01 from '../images/wedding-01.jpeg';
-import wedding02 from '../images/wedding-02.jpeg';
-import wedding03 from '../images/wedding-03.jpeg';
-import wedding04 from '../images/wedding-04.jpeg';
-import wedding05 from '../images/wedding-05.jpeg';
-import wedding06 from '../images/wedding-06.jpeg';
-import wedding07 from '../images/wedding-07.jpeg';
-import wedding08 from '../images/wedding-08.jpeg';
-import wedding09 from '../images/wedding-09.jpeg';
-import wedding10 from '../images/wedding-10.jpeg';
-import wedding11 from '../images/wedding-11.jpeg';
-import wedding12 from '../images/wedding-12.jpeg';
-
+const images = [
+    '/optimized-images/wedding-01.webp',
+    '/optimized-images/wedding-02.webp',
+    '/optimized-images/wedding-03.webp',
+    '/optimized-images/wedding-04.webp',
+    '/optimized-images/wedding-05.webp',
+    '/optimized-images/wedding-06.webp',
+    '/optimized-images/wedding-07.webp',
+    '/optimized-images/wedding-08.webp',
+    '/optimized-images/wedding-09.webp',
+    '/optimized-images/wedding-10.webp',
+    '/optimized-images/wedding-11.webp',
+    '/optimized-images/wedding-12.webp'
+];
 
 const Gallery: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,8 +25,18 @@ const Gallery: React.FC = () => {
 
     // 12개의 이미지 배열
     const images = [
-        wedding01, wedding02, wedding03, wedding04, wedding05, wedding06,
-        wedding07, wedding08, wedding09, wedding10, wedding11, wedding12
+        '/optimized-images/wedding-01.webp',
+        '/optimized-images/wedding-02.webp',
+        '/optimized-images/wedding-03.webp',
+        '/optimized-images/wedding-04.webp',
+        '/optimized-images/wedding-05.webp',
+        '/optimized-images/wedding-06.webp',
+        '/optimized-images/wedding-07.webp',
+        '/optimized-images/wedding-08.webp',
+        '/optimized-images/wedding-09.webp',
+        '/optimized-images/wedding-10.webp',
+        '/optimized-images/wedding-11.webp',
+        '/optimized-images/wedding-12.webp'
     ];
 
     // 이미지 프리로드

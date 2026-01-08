@@ -49,12 +49,13 @@ const ShareButton: React.FC = () => {
 
         try {
             const baseUrl = window.location.origin;
-            const imageUrl = `${baseUrl}/images/wedding-100.jpeg`;
+            // 카카오톡 캐시 우회를 위한 버전 파라미터 추가
+            const imageUrl = `${baseUrl}/optimized-images/wedding-100.webp?v=2`;
 
             window.Kakao.Link.sendDefault({
                 objectType: 'feed',
                 content: {
-                    title: '최봉석 ♥ 김가율 결혼식에 초대합니다',
+                    title: '최봉석 ❤️ 김가율 결혼식에 초대합니다',
                     description: '2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀',
                     imageUrl: imageUrl,
                     link: {

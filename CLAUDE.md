@@ -58,31 +58,37 @@ The app uses a **full-page slide/section-based navigation** pattern:
 - **Scroll/Touch-Triggered**: Users navigate via mouse wheel, trackpad scroll, or touch swipe gestures
 - **Smooth Transitions**: Framer Motion provides fade + slide animations (0.6s duration) between sections
 
-### Key Navigation Logic (`App.tsx:32-44`)
+### Key Navigation Logic (`App.tsx:48-60`)
 
 - Scroll up (`delta < 0`) decrements index; scroll down (`delta > 0`) increments
 - Implements debouncing (800ms) to prevent rapid section jumps
-- Supports both wheel and touch events with configurable sensitivity
-- Right-side dot navigation allows direct section jumping
+- Supports both wheel and touch events (touch threshold: 50px delta)
+- FloatingNavMenu component provides visual navigation with section dots
+- KakaoTalk webview detection prompts users to open in external browser for better performance
 
 ### Component Structure
 
 ```
 components/
-├── Hero.tsx            # Landing section with call-to-action
-├── Intro.tsx           # Wedding introduction/details
-├── Profiles.tsx        # Bride and groom profiles
-├── Gallery.tsx         # Photo gallery with masonry layout (uses react-masonry-css)
-├── Location.tsx        # Map and venue location (height limited to 60vh on mobile)
-├── Transport.tsx       # Transportation information
-├── Gift.tsx            # Registry/gift information
-├── Guestbook.tsx       # Firebase-backed guestbook comments
-└── ShareButton.tsx     # Share functionality
+├── Hero.tsx               # Landing section with call-to-action
+├── Intro.tsx              # Wedding introduction/details
+├── Profiles.tsx           # Bride and groom profiles
+├── Gallery.tsx            # Photo carousel with drag gestures (12 preloaded images)
+├── Location.tsx           # Naver Map integration and venue location
+├── Transport.tsx          # Transportation information
+├── Gift.tsx               # Registry/gift information
+├── Guestbook.tsx          # Firebase-backed guestbook with CRUD operations
+├── ShareButton.tsx        # Kakao Share integration
+├── FloatingNavMenu.tsx    # Section navigation menu with dots
+└── FloatingParticles.tsx  # Animated background particles effect
 ```
 
 ### Data Layer
 
-- **Firebase Firestore** (`lib/firebase.ts`): Stores guestbook entries and comments
+- **Firebase Firestore** (`lib/firebase.ts`): Stores guestbook entries with real-time updates
+  - Collection: `guestbook`
+  - Fields: `name`, `password` (4-digit numeric), `message`, `createdAt` (Timestamp)
+  - Operations: Create, Read (real-time with `onSnapshot`), Update (password-protected)
 - **Static Data**: Most content is hardcoded or imported from `metadata.json`
 
 ## Styling & Theming
@@ -123,10 +129,13 @@ See `netlify.toml` for configuration:
 
 ## Performance Considerations
 
-- **Image Preloading**: Gallery component preloads images for smooth rendering
-- **Lazy Loading**: Components mount/unmount based on section visibility
+- **Image Preloading**: Gallery component preloads all 12 images before rendering (`/optimized-images/wedding-*.webp`)
+- **Lazy Loading**: Components mount/unmount based on section visibility via `AnimatePresence`
 - **Touch Optimization**: Touch events have 50px sensitivity threshold to prevent accidental scrolls
 - **CSS-in-Tailwind**: No external CSS files needed; tree-shaking removes unused styles
+- **Browser-Specific Optimizations**:
+  - Guestbook adapts display count based on browser (KakaoTalk: 3 items, Chrome: 4 items, Others: 5 items)
+  - KakaoTalk users see browser switch prompt for better experience
 
 ## Testing & Debugging
 
@@ -144,18 +153,19 @@ npx tsc --noEmit
 ## Dependencies
 
 - **React 19+**: Latest with concurrent features
-- **Framer Motion 12.23+**: Animation library
-- **Firebase 12.7+**: Cloud database and services
-- **react-masonry-css**: Responsive masonry grid for gallery
+- **Framer Motion 12.23+**: Animation library (used for page transitions, carousels, accordions)
+- **Firebase 12.7+**: Cloud Firestore for guestbook data
 - **Vite 6.2+**: Modern build tool
 - **TypeScript 5.8+**: Type safety
 
 ## Git & Version Control
 
-The repo is already a git repository. Recent commits focus on UX improvements:
+The repo is already a git repository. Recent commits focus on:
+- Guestbook feature with Firebase integration
+- FloatingNavMenu and FloatingParticles components
 - Image preloading optimizations
-- Mobile layout fixes
-- Netlify configuration updates
+- Mobile layout fixes and browser-specific optimizations
+- KakaoTalk share template improvements
 
 ## Common Development Tasks
 
@@ -169,9 +179,10 @@ The repo is already a git repository. Recent commits focus on UX improvements:
 
 ### Modifying Animations
 
-- Edit Framer Motion `initial`, `animate`, `exit` props in `App.tsx:77-82`
+- Edit Framer Motion `initial`, `animate`, `exit` props in `App.tsx:138-143`
 - Adjust `transition` duration as needed (currently 0.6s)
 - Individual components can have their own Framer Motion animations
+- Gallery uses drag gestures with custom swipe detection (threshold: 10000 swipe units)
 
 ### Updating Firebase Schema
 
@@ -183,3 +194,20 @@ The repo is already a git repository. Recent commits focus on UX improvements:
 - Use Tailwind breakpoints: `sm:`, `md:`, `lg:`, `xl:`
 - Location section already has mobile-specific height limit (60vh)
 - Test on actual devices or Chrome DevTools mobile emulation
+
+### Working with Third-Party Integrations
+
+**Kakao Share API**:
+- Requires `VITE_KAKAO_API_KEY` in `.env.local`
+- Used in `ShareButton.tsx` for social sharing
+- Loads Kakao SDK script dynamically
+
+**Naver Map API**:
+- Requires `VITE_NAVER_MAP_CLIENT_ID` in `.env.local`
+- Used in `Location.tsx` for venue map display
+- Coordinates: 36.097854, 128.435753 (토미스퀘어가든)
+
+**Firebase**:
+- Config already hardcoded in `lib/firebase.ts` (public client keys)
+- Real-time listener pattern used for live guestbook updates
+- Password-protected edit operations (client-side validation only)

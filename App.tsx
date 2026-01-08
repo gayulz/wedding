@@ -67,6 +67,30 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // 주소창과 하단 바 자동 숨김 (모바일 브라우저)
+  useEffect(() => {
+    const hideAddressBar = () => {
+      // 페이지 로드 후 약간의 스크롤을 트리거해서 주소창 숨김
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+      }, 100);
+
+      // 추가로 안정성을 위해 한번 더
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 300);
+    };
+
+    hideAddressBar();
+
+    // orientation 변경 시에도 다시 적용
+    window.addEventListener('orientationchange', hideAddressBar);
+
+    return () => {
+      window.removeEventListener('orientationchange', hideAddressBar);
+    };
+  }, []);
+
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       handleScroll(e.deltaY);

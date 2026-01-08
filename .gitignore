@@ -50,3 +50,7 @@ Thumbs.db
 *.tmp
 *.temp
 .cache
+
+# Gemini and Claude Markdown files
+GEMINI.md
+CLAUDE.md

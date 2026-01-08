@@ -1,17 +1,15 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-// @ts-ignore
-import wedding100 from '../images/wedding-100.jpeg';
 
 const Hero: React.FC = () => {
   return (
     <div className="relative h-full w-full flex items-start justify-center pt-24 md:pt-32">
-      {/* Background Image - wedding-37.jpeg */}
+      {/* Background Image - wedding-100.webp */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${wedding100})`,
+          backgroundImage: `url(/optimized-images/wedding-100.webp)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
