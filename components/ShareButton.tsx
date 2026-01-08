@@ -49,34 +49,19 @@ const ShareButton: React.FC = () => {
 
         try {
             const baseUrl = window.location.origin;
-            const imageUrl = `${baseUrl}/images/wedding-37.jpeg`;
+            const imageUrl = `${baseUrl}/images/wedding-100.jpeg`;
 
-            /**
-             * objectType: 'feed',
-             *   content: {
-             *     title: '오늘의 디저트',
-             *     description: '아메리카노, 빵, 케익',
-             *     imageUrl:
-             *       'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
-             *     link: {
-             *       mobileWebUrl: 'https://developers.kakao.com',
-             *       webUrl: 'https://developers.kakao.com',
-             *     },
-             *   }
-             */
-            // 피드 템플릿으로 공유
             window.Kakao.Link.sendDefault({
                 objectType: 'feed',
                 content: {
-                    title: '최봉석 ❤️ 김가율 결혼합니다',
-                    description: '2026년 3월 14일 토요일 오후 2시\n구미 토미스퀘어가든 4층',
+                    title: '최봉석 ♥ 김가율 결혼식에 초대합니다',
+                    description: '2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀',
                     imageUrl: imageUrl,
                     link: {
                         webUrl: baseUrl,
                         mobileWebUrl: baseUrl,
                     },
                 },
-                // 공유 메시지 하단 버튼
                 buttons: [
                     {
                         title: '청첩장 보기',
@@ -86,11 +71,9 @@ const ShareButton: React.FC = () => {
                         },
                     },
                 ],
-                // 공유 완료 콜백
                 success: function (response: any) {
                     console.log('카카오톡 공유 성공:', response);
                 },
-                // 공유 실패 콜백
                 fail: function (error: any) {
                     console.error('카카오톡 공유 실패:', error);
                     alert('공유 중 오류가 발생했습니다.');
@@ -107,7 +90,7 @@ const ShareButton: React.FC = () => {
             onClick={handleShare}
             disabled={!isKakaoReady}
             title={isKakaoReady ? '카카오톡으로 공유' : '카카오톡 로딩 중...'}
-            className={`fixed bottom-8 left-8 z-[60] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all ${
+            className={`fixed bottom-8 right-24 z-[60] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all ${
                 isKakaoReady
                     ? 'bg-[#FEE500] text-[#3c1e1e] active:scale-95 hover:scale-110 cursor-pointer'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'

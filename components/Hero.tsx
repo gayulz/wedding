@@ -2,16 +2,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 // @ts-ignore
-import wedding37 from '../images/wedding-37.jpeg';
+import wedding100 from '../images/wedding-100.jpeg';
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative h-full w-full flex items-center justify-center">
+    <div className="relative h-full w-full flex items-start justify-center pt-24 md:pt-32">
       {/* Background Image - wedding-37.jpeg */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ 
-          backgroundImage: `url(${wedding37})`,
+        style={{
+          backgroundImage: `url(${wedding100})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -19,22 +19,28 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3, duration: 1 }}
-        className="relative z-10 p-8 glass-card w-4/5 max-w-md text-center rounded-3xl"
+        className="relative z-10 p-6 md:p-8 w-4/5 max-w-md text-center rounded-3xl"
+        style={{
+          background: 'rgba(255, 255, 255, 0.08)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+        }}
       >
-        <p className="text-white/80 tracking-[0.3em] uppercase text-xs mb-4">Wedding Invitation</p>
-        <h1 className="text-4xl md:text-5xl text-white font-myeongjo mb-8 leading-tight">
-          최봉석 <span className="text-2xl align-middle mx-1"><br/>&<br/></span> 김가율
+        <p className="text-white/80 tracking-[0.3em] uppercase text-[10px] mb-3">Wedding Invitation</p>
+        <h1 className="text-3xl md:text-4xl text-white font-myeongjo mb-6 leading-tight">
+          최봉석 <span className="text-xl align-middle mx-1">&</span> 김가율
         </h1>
-        <div className="w-8 h-[1px] bg-white/40 mx-auto mb-8" />
-        <p className="text-white font-light text-lg tracking-widest">
+        <div className="w-8 h-[1px] bg-white/40 mx-auto mb-6" />
+        <p className="text-white font-light text-base md:text-lg tracking-widest">
           2026. 03. 14. 토
             <br/> PM 2:00
         </p>
-        <p className="text-white/70 mt-2 text-sm">
+        <p className="text-white/70 mt-2 text-xs md:text-sm">
           구미 토미스퀘어가든, 4층 스퀘어가든 홀
         </p>
       </motion.div>

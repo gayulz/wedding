@@ -1,11 +1,55 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
+// @ts-ignore
+import wedding81 from '../images/wedding-81.png';
 
 const Transport: React.FC = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-white p-8">
-      <div className="w-full max-w-md space-y-8">
-        <section>
+    <div className="relative h-full w-full flex flex-col items-center justify-center p-8">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${wedding81})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-white/70" />
+      </div>
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="relative z-10 w-full max-w-md space-y-8"
+      >
+        <motion.section variants={itemVariants}>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
               <i className="fa-solid fa-bus"></i>
@@ -24,9 +68,9 @@ const Transport: React.FC = () => {
               <p>(30분~50분 소요)</p>
             </div>
           </div>
-        </section>
+        </motion.section>
 
-        <section>
+        <motion.section variants={itemVariants}>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center">
               <i className="fa-solid fa-car"></i>
@@ -41,8 +85,8 @@ const Transport: React.FC = () => {
               <p>웨딩홀 방문객 무료 주차</p>
             </div>
           </div>
-        </section>
-      </div>
+        </motion.section>
+      </motion.div>
     </div>
   );
 };

@@ -10,6 +10,8 @@ import Gallery from './components/Gallery';
 import Gift from './components/Gift';
 import Guestbook from './components/Guestbook';
 import ShareButton from './components/ShareButton';
+import FloatingParticles from './components/FloatingParticles';
+import FloatingNavMenu from './components/FloatingNavMenu';
 
 const SECTIONS = [
   'hero',
@@ -95,6 +97,9 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen w-screen relative bg-[#0a0a0c] overflow-hidden select-none">
+      {/* 떠다니는 파티클 효과 */}
+      <FloatingParticles />
+
       {/* 카카오톡 브라우저 전환 안내 팝업 */}
       {showBrowserPrompt && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
@@ -149,20 +154,8 @@ const App: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Indicators */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
-        {SECTIONS.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentIdx(i)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              currentIdx === i ? 'bg-white scale-150 shadow-[0_0_10px_rgba(255,255,255,0.8)]' : 'bg-white/30'
-            }`}
-          />
-        ))}
-      </div>
-
       <ShareButton />
+      <FloatingNavMenu currentSection={currentIdx} onNavigate={setCurrentIdx} />
     </div>
   );
 };

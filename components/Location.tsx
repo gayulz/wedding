@@ -1,6 +1,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+// @ts-ignore
+import wedding81 from '../images/wedding-81.png';
 
 declare global {
   interface Window {
@@ -87,14 +89,38 @@ const Location: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-[#f9f9fb] p-8 pt-16">
-      <div className="text-center mb-4">
-        <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">LOCATION</h2>
-        <div className="text-[10px] text-gray-400 mt-2 font-light">오시는 길</div>
+    <div className="relative h-full w-full flex flex-col items-center p-8 pt-16">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${wedding81})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-white/70" />
       </div>
 
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 text-center mb-4"
+      >
+        <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">LOCATION</h2>
+        <div className="text-[10px] text-gray-400 mt-2 font-light">오시는 길</div>
+      </motion.div>
+
       {/* 컨텐츠 영역 - 화면의 60% 제한 */}
-      <div className="w-full max-w-md" style={{ maxHeight: '50vh' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="relative z-10 w-full max-w-md"
+        style={{ maxHeight: '50vh' }}
+      >
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 overflow-hidden">
           <div className="mb-6">
             <h3 className="text-lg font-bold text-gray-800 mb-1">토미스퀘어가든</h3>
@@ -131,33 +157,33 @@ const Location: React.FC = () => {
 
           {/* Map Links - Glass buttons */}
           <div className="grid grid-cols-3 gap-3">
-            <a 
+            <a
               href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
             >
               <div className="w-6 h-6 flex items-center justify-center bg-green-500 rounded-md">
                 <span className="text-white text-xs font-bold">N</span>
               </div>
               <span className="text-[10px] text-gray-600">네이버지도</span>
             </a>
-            <a 
+            <a
               href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
             >
               <div className="w-6 h-6 flex items-center justify-center bg-yellow-400 rounded-md">
                 <span className="text-gray-800 text-xs font-bold">K</span>
               </div>
               <span className="text-[10px] text-gray-600">카카오맵</span>
             </a>
-            <a 
+            <a
               href="https://www.google.com/maps/search/?api=1&query=36.097854,128.435753"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
             >
               <div className="w-6 h-6 flex items-center justify-center bg-blue-500 rounded-md">
                 <span className="text-white text-xs font-bold">G</span>
@@ -166,7 +192,7 @@ const Location: React.FC = () => {
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
