@@ -210,38 +210,9 @@ const Guestbook: React.FC = () => {
     }
   }, [entries]);
 
-  // 채팅 스크롤 시 페이지 전환 방지
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (!scrollContainer) return;
-
-    const preventPageScroll = (e: WheelEvent) => {
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const isAtTop = scrollTop === 0;
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-      // 스크롤이 가능한 영역 내에 있으면 이벤트 전파 중단
-      if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
-        e.stopPropagation();
-      }
-    };
-
-    const preventTouchScroll = (e: TouchEvent) => {
-      // 터치 스크롤도 전파 방지
-      e.stopPropagation();
-    };
-
-    scrollContainer.addEventListener('wheel', preventPageScroll, { passive: false });
-    scrollContainer.addEventListener('touchmove', preventTouchScroll, { passive: false });
-
-    return () => {
-      scrollContainer.removeEventListener('wheel', preventPageScroll);
-      scrollContainer.removeEventListener('touchmove', preventTouchScroll);
-    };
-  }, []);
-
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-3 overflow-hidden">
+      {/* 카운트다운 - 페이지 이동 가능한 유일한 영역 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -271,18 +242,24 @@ const Guestbook: React.FC = () => {
         </motion.div>
       </motion.div>
 
-      {/* 방명록 목록 - 카톡 스타일 */}
-      <motion.div
-        ref={scrollContainerRef}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full max-w-md flex-1 overflow-y-auto space-y-3 mb-3 px-2"
-        style={{
-          maxHeight: 'calc(100vh - 320px)',
-          minHeight: '300px'
-        }}
+      {/* 카운트다운 아래 영역 - 페이지 전환 방지 */}
+      <div
+        className="w-full max-w-md flex flex-col flex-1"
+        onWheel={(e) => e.stopPropagation()}
+        onTouchMove={(e) => e.stopPropagation()}
       >
+        {/* 방명록 목록 - 카톡 스타일 */}
+        <motion.div
+          ref={scrollContainerRef}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="w-full flex-1 overflow-y-auto space-y-3 mb-3 px-2"
+          style={{
+            maxHeight: 'calc(100vh - 320px)',
+            minHeight: '300px'
+          }}
+        >
         {entries.length > 0 ? (
           entries.map((entry, index) => {
             // 인덱스 기반으로 번갈아가며 배치 (짝수는 왼쪽, 홀수는 오른쪽)
@@ -332,18 +309,19 @@ const Guestbook: React.FC = () => {
         ) : (
           <p className="text-center text-white/40 text-xs py-4">아직 작성된 방명록이 없습니다.</p>
         )}
-      </motion.div>
+        </motion.div>
 
-      {/* 축하메세지 작성 버튼 */}
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
-        onClick={() => setShowWritePopup(true)}
-        className="w-full max-w-md mb-2 px-6 py-2.5 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
-      >
-        💍 축하메세지 작성 💍
-      </motion.button>
+        {/* 축하메세지 작성 버튼 */}
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          onClick={() => setShowWritePopup(true)}
+          className="w-full mb-2 px-6 py-2.5 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
+        >
+          💍 축하메세지 작성 💍
+        </motion.button>
+      </div>
 
       {/* 작성 팝업 */}
       <AnimatePresence>
