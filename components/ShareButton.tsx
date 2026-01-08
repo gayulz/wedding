@@ -14,11 +14,16 @@ const ShareButton: React.FC = () => {
         const initializeKakao = () => {
             if (window.Kakao && !window.Kakao.isInitialized()) {
                 const kakaoKey = import.meta.env.VITE_KAKAO_API_KEY;
+                console.log('카카오 API 키 확인:', kakaoKey ? '존재함' : '없음');
                 if (kakaoKey) {
                     window.Kakao.init(kakaoKey);
+                    console.log('카카오 SDK 초기화 완료');
                     setIsKakaoReady(true);
+                } else {
+                    console.error('카카오 API 키가 없습니다.');
                 }
             } else if (window.Kakao && window.Kakao.isInitialized()) {
+                console.log('카카오 SDK 이미 초기화됨');
                 setIsKakaoReady(true);
             }
         };

@@ -210,13 +210,43 @@ const Guestbook: React.FC = () => {
     }
   }, [entries]);
 
+  // 채팅 스크롤 시 페이지 전환 방지
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const preventPageScroll = (e: WheelEvent) => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const isAtTop = scrollTop === 0;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      // 스크롤이 가능한 영역 내에 있으면 이벤트 전파 중단
+      if ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom)) {
+        e.stopPropagation();
+      }
+    };
+
+    const preventTouchScroll = (e: TouchEvent) => {
+      // 터치 스크롤도 전파 방지
+      e.stopPropagation();
+    };
+
+    scrollContainer.addEventListener('wheel', preventPageScroll, { passive: false });
+    scrollContainer.addEventListener('touchmove', preventTouchScroll, { passive: false });
+
+    return () => {
+      scrollContainer.removeEventListener('wheel', preventPageScroll);
+      scrollContainer.removeEventListener('touchmove', preventTouchScroll);
+    };
+  }, []);
+
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-4 overflow-hidden">
+    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-3 overflow-hidden">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-4 text-center"
+        className="mb-3 text-center"
       >
         <h2 className="text-base font-myeongjo text-white/90 tracking-[0.2em] mb-3">COUNTDOWN</h2>
         <motion.div
@@ -247,27 +277,27 @@ const Guestbook: React.FC = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full max-w-md flex-1 overflow-y-auto space-y-3 mb-4 px-2"
+        className="w-full max-w-md flex-1 overflow-y-auto space-y-3 mb-3 px-2"
         style={{
-          maxHeight: 'calc(100vh - 450px)',
-          minHeight: '200px'
+          maxHeight: 'calc(100vh - 320px)',
+          minHeight: '300px'
         }}
       >
         {entries.length > 0 ? (
-          entries.map((entry) => {
-            // 신랑신부 확인 (이름이 최봉석 or 김가율이고 비밀번호가 0331)
-            const isCouple = (entry.name === '최봉석' || entry.name === '김가율') && entry.password === '0331';
+          entries.map((entry, index) => {
+            // 인덱스 기반으로 번갈아가며 배치 (짝수는 왼쪽, 홀수는 오른쪽)
+            const isRight = index % 2 === 1;
 
             return (
               <motion.div
                 key={entry.id}
-                initial={{ opacity: 0, x: isCouple ? 20 : -20 }}
+                initial={{ opacity: 0, x: isRight ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`flex flex-col ${isCouple ? 'items-end' : 'items-start'}`}
+                className={`flex flex-col ${isRight ? 'items-end' : 'items-start'}`}
               >
                 {/* 이름과 날짜 */}
-                <div className={`flex items-center gap-2 mb-1 ${isCouple ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center gap-2 mb-1 ${isRight ? 'flex-row-reverse' : ''}`}>
                   <span className="text-[10px] text-white/90 font-medium">{entry.name}</span>
                   <span className="text-[9px] text-white/40">
                     {entry.createdAt?.toDate().toLocaleDateString('ko-KR')}
@@ -275,10 +305,10 @@ const Guestbook: React.FC = () => {
                 </div>
 
                 {/* 말풍선 */}
-                <div className={`relative max-w-[80%] ${isCouple ? 'items-end' : 'items-start'} flex flex-col`}>
+                <div className={`relative max-w-[80%] ${isRight ? 'items-end' : 'items-start'} flex flex-col`}>
                   <div
                     className={`px-3 py-2 rounded-2xl ${
-                      isCouple
+                      isRight
                         ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
                         : 'bg-white/10 text-white/90 rounded-tl-sm'
                     }`}
@@ -290,7 +320,7 @@ const Guestbook: React.FC = () => {
                   <button
                     onClick={() => handleEditClick(entry)}
                     className={`mt-1 text-[9px] text-white/50 hover:text-white/80 transition-colors ${
-                      isCouple ? 'self-end' : 'self-start'
+                      isRight ? 'self-end' : 'self-start'
                     }`}
                   >
                     수정
@@ -310,7 +340,7 @@ const Guestbook: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}
         onClick={() => setShowWritePopup(true)}
-        className="w-full max-w-md mb-4 px-6 py-3 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
+        className="w-full max-w-md mb-2 px-6 py-2.5 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
       >
         💍 축하메세지 작성 💍
       </motion.button>
@@ -581,7 +611,7 @@ const Guestbook: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <p className="mt-4 text-white/30 text-[9px] text-center font-light uppercase tracking-[0.3em]">
+      <p className="mt-2 text-white/30 text-[9px] text-center font-light uppercase tracking-[0.3em]">
         Design by Gayul
       </p>
     </div>
