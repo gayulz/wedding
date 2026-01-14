@@ -12,8 +12,51 @@ declare global {
 
 const Location: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapContainerRef = useRef<HTMLDivElement>(null); // 지도 영역 페이지 전환 방지용
   const [mapLoaded, setMapLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // T맵 경로안내 핸들러
+  const handleTmapRoute = () => {
+    const destination = {
+      name: '토미스퀘어가든',
+      lat: 36.097854,
+      lon: 128.435753
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+
+          // T맵 앱 딥링크 (모바일 앱 실행)
+          const tmapAppUrl = `tmap://route?goalname=${encodeURIComponent(destination.name)}&goaly=${destination.lat}&goalx=${destination.lon}&starty=${latitude}&startx=${longitude}`;
+
+          // T맵 웹 경로안내 (앱 미설치 시 대체)
+          const tmapWebUrl = `https://apis.openapi.sk.com/tmap/app/routes?appKey=${import.meta.env.VITE_TMAP_API_KEY}&version=1&format=json&callback=result&goal=${destination.name}&goalY=${destination.lat}&goalX=${destination.lon}&startY=${latitude}&startX=${longitude}`;
+
+          // 모바일: 앱 실행 시도 → 2초 후 웹으로 대체
+          if (/Android|iPhone|iPad/i.test(navigator.userAgent)) {
+            window.location.href = tmapAppUrl;
+            setTimeout(() => {
+              window.open(tmapWebUrl, '_blank');
+            }, 2000);
+          } else {
+            // 데스크톱: 바로 웹 열기
+            window.open(tmapWebUrl, '_blank');
+          }
+        },
+        (error) => {
+          // 위치 거부 시: 출발지 없이 목적지만 표시
+          console.error('위치 권한 거부:', error);
+          const tmapWebUrlNoStart = `https://apis.openapi.sk.com/tmap/app/routes?appKey=${import.meta.env.VITE_TMAP_API_KEY}&version=1&format=json&callback=result&goal=${destination.name}&goalY=${destination.lat}&goalX=${destination.lon}`;
+          window.open(tmapWebUrlNoStart, '_blank');
+        }
+      );
+    } else {
+      alert('이 브라우저는 위치 서비스를 지원하지 않습니다.');
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -88,6 +131,29 @@ const Location: React.FC = () => {
     };
   }, []);
 
+  // 지도 영역에서 페이지 전환 방지
+  useEffect(() => {
+    const mapContainer = mapContainerRef.current;
+    if (!mapContainer) return;
+
+    const preventScroll = (e: Event) => {
+      e.stopPropagation();
+    };
+
+    // 네이티브 이벤트 리스너로 모든 스크롤/터치 이벤트 차단
+    mapContainer.addEventListener('wheel', preventScroll, { passive: false });
+    mapContainer.addEventListener('touchstart', preventScroll, { passive: false });
+    mapContainer.addEventListener('touchmove', preventScroll, { passive: false });
+    mapContainer.addEventListener('touchend', preventScroll, { passive: false });
+
+    return () => {
+      mapContainer.removeEventListener('wheel', preventScroll);
+      mapContainer.removeEventListener('touchstart', preventScroll);
+      mapContainer.removeEventListener('touchmove', preventScroll);
+      mapContainer.removeEventListener('touchend', preventScroll);
+    };
+  }, []);
+
   return (
     <div className="relative h-full w-full flex flex-col items-center p-8 pt-16">
       {/* Background Image */}
@@ -132,8 +198,12 @@ const Location: React.FC = () => {
           </div>
 
           {/* 네이버 지도 */}
-          <div className="relative rounded-2xl mb-6 overflow-hidden shadow-md" style={{ width: '100%', height: '250px' }}>
-            <div 
+          <div
+            ref={mapContainerRef}
+            className="relative rounded-2xl mb-6 overflow-hidden shadow-md"
+            style={{ width: '100%', height: '250px' }}
+          >
+            <div
               ref={mapRef}
               className="w-full h-full bg-gray-200"
             />
@@ -179,17 +249,15 @@ const Location: React.FC = () => {
               </div>
               <span className="text-[10px] text-gray-600">카카오맵</span>
             </a>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=36.097854,128.435753"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
+            <button
+              onClick={handleTmapRoute}
+              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors cursor-pointer border-0"
             >
-              <div className="w-6 h-6 flex items-center justify-center bg-blue-500 rounded-md">
-                <span className="text-white text-xs font-bold">G</span>
+              <div className="w-6 h-6 flex items-center justify-center bg-red-500 rounded-md">
+                <span className="text-white text-xs font-bold">T</span>
               </div>
-              <span className="text-[10px] text-gray-600">구글맵</span>
-            </a>
+              <span className="text-[10px] text-gray-600">티맵 길찾기</span>
+            </button>
           </div>
         </div>
       </motion.div>

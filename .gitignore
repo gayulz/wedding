@@ -54,3 +54,9 @@ Thumbs.db
 # Gemini and Claude Markdown files
 GEMINI.md
 CLAUDE.md
+
+# Claude
+.claude/
+.gemini-clipboard/
+.idea/
+lib/
