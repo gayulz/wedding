@@ -222,34 +222,34 @@ const Location: React.FC = () => {
             href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
+            className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-green-500 rounded-lg overflow-hidden">
+            <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src={naverMapIcon} alt="네이버지도" className="w-full h-full object-cover" />
             </div>
-            <span className="text-xs text-gray-700 font-medium">네이버지도</span>
+            <span className="text-[11px] text-gray-700 font-medium">네이버지도</span>
           </a>
 
           <button
             onClick={handleTmapRoute}
-            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200 cursor-pointer"
+            className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200 cursor-pointer"
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-red-500 rounded-lg overflow-hidden">
+            <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src={tmapIcon} alt="티맵" className="w-full h-full object-cover" />
             </div>
-            <span className="text-xs text-gray-700 font-medium">티맵</span>
+            <span className="text-[11px] text-gray-700 font-medium">티맵</span>
           </button>
 
           <a
             href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
+            className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
           >
-            <div className="w-12 h-12 flex items-center justify-center bg-yellow-400 rounded-lg overflow-hidden">
+            <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src={kakaoNavIcon} alt="카카오내비" className="w-full h-full object-cover" />
             </div>
-            <span className="text-xs text-gray-700 font-medium">카카오내비</span>
+            <span className="text-[11px] text-gray-700 font-medium">카카오내비</span>
           </a>
         </div>
       </motion.div>

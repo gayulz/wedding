@@ -120,7 +120,7 @@ const App: React.FC = () => {
   }, [handleScroll]);
 
   return (
-    <div className="h-screen w-screen relative bg-[#0a0a0c] overflow-hidden select-none">
+    <div className="h-screen w-screen relative bg-[#f8f8f8] overflow-hidden select-none">
       {/* 떠다니는 파티클 효과 */}
       <FloatingParticles />
 

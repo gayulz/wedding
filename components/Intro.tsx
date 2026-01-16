@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
+import introBackground from '../images/wedding-80.png';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -60,65 +61,76 @@ const Intro: React.FC = () => {
     };
 
     return (
-        <div className="relative h-full w-full flex flex-col items-center justify-center px-8 text-center bg-[#f8f8f8]">
-            <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="space-y-8 max-w-lg"
-            >
-                <motion.div variants={itemVariants} className="text-[10px] text-gray-400 tracking-[0.3em] uppercase">
-                    INVITATION
-                </motion.div>
+        <div
+            className="relative h-full w-full flex flex-col items-center justify-center px-8 text-center"
+            style={{
+                backgroundImage: `url(${introBackground})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
+        >
+            <div className="absolute inset-0 bg-black/50 z-0"></div>
 
-                <motion.h2 variants={itemVariants} className="text-xl font-myeongjo text-gray-800 mb-8">
-                    소중한 분들을 초대합니다
-                </motion.h2>
-
-                <motion.p variants={itemVariants} className="font-myeongjo text-sm leading-relaxed text-gray-700 whitespace-pre-line">
-                    따뜻한 봄에 만난 우리,<br/>
-                    오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br/>
-                    이제는 함께 걸어가려 합니다.
-                </motion.p>
-
-                <motion.p variants={itemVariants} className="font-myeongjo text-sm leading-relaxed text-gray-700 whitespace-pre-line">
-                    봄에는 활짝 핀 벚꽃이 되어주고<br/>
-                    여름에는 시원한 바람이 되어주겠습니다.<br/>
-                    가을에는 드넓은 하늘이 되어주고<br/>
-                    겨울에는 새하얀 눈이 되어<br/>
-                    평생을 늘 서로에게 버팀목이 되어주겠습니다.
-                </motion.p>
-
-                <motion.p variants={itemVariants} className="font-myeongjo text-sm leading-relaxed text-gray-700 whitespace-pre-line">
-                    시작의 한 걸음,<br/>
-                    함께 축복해 주시면 감사드립니다.
-                </motion.p>
-
-                {/* 부모님 이름 */}
-                <motion.div variants={itemVariants} className="space-y-3 pt-8">
-                    <p className="text-sm text-gray-700">
-                        <span className="font-light">{contacts.groom.mother.name}</span>
-                        <span className="text-xs text-gray-500 ml-2">의 아들</span>
-                        <span className="font-semibold ml-1">{contacts.groom.name}</span>
-                    </p>
-                    <p className="text-sm text-gray-700">
-                        <span className="font-light">{contacts.bride.father.name}</span>
-                        <span className="text-xs text-gray-500 ml-2">의 딸</span>
-                        <span className="font-semibold ml-1">{contacts.bride.name}</span>
-                    </p>
-                </motion.div>
-
-                {/* 연락하기 버튼 */}
-                <motion.button
-                    variants={itemVariants}
-                    onClick={() => setIsContactOpen(true)}
-                    className="mt-8 px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 mx-auto"
+            <div className="relative z-10">
+                <motion.div
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    className="space-y-8 max-w-lg"
                 >
-                    <i className="fa-solid fa-phone text-xs"></i>
-                    <span>연락하기</span>
-                </motion.button>
-            </motion.div>
+                    <motion.div variants={itemVariants} className="text-[10px] text-gray-300 tracking-[0.3em] uppercase">
+                        INVITATION
+                    </motion.div>
+
+                    <motion.h2 variants={itemVariants} className="text-xl font-myeongjo text-white mb-8">
+                        소중한 분들을 초대합니다
+                    </motion.h2>
+
+                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-200 whitespace-pre-line">
+                        따뜻한 봄에 만난 우리,<br/>
+                        오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br/>
+                        이제는 함께 걸어가려 합니다.
+                    </motion.p>
+
+                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-200 whitespace-pre-line">
+                        봄에는 활짝 핀 벚꽃이 되어주고<br/>
+                        여름에는 시원한 바람이 되어주겠습니다.<br/>
+                        가을에는 드넓은 하늘이 되어주고<br/>
+                        겨울에는 새하얀 눈이 되어<br/>
+                        평생을 늘 서로에게 버팀목이 되어주겠습니다.
+                    </motion.p>
+
+                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-200 whitespace-pre-line">
+                        시작의 한 걸음,<br/>
+                        함께 축복해 주시면 감사드립니다.
+                    </motion.p>
+
+                    {/* 부모님 이름 */}
+                    <motion.div variants={itemVariants} className="space-y-3 pt-8">
+                        <p className="text-sm text-gray-200">
+                            <span className="font-light">{contacts.groom.mother.name}</span>
+                            <span className="text-xs text-gray-400 ml-2">의 아들</span>
+                            <span className="font-semibold ml-1">{contacts.groom.name}</span>
+                        </p>
+                        <p className="text-sm text-gray-200">
+                            <span className="font-light">{contacts.bride.father.name}</span>
+                            <span className="text-xs text-gray-400 ml-2">의 딸</span>
+                            <span className="font-semibold ml-1">{contacts.bride.name}</span>
+                        </p>
+                    </motion.div>
+
+                    {/* 연락하기 버튼 */}
+                    <motion.button
+                        variants={itemVariants}
+                        onClick={() => setIsContactOpen(true)}
+                        className="mt-8 px-12 py-3 rounded-full border border-gray-200/50 text-sm text-white hover:bg-white/10 transition-colors flex items-center gap-2 mx-auto"
+                    >
+                        <i className="fa-solid fa-phone text-xs"></i>
+                        <span>연락하기</span>
+                    </motion.button>
+                </motion.div>
+            </div>
 
             {/* 연락처 모달 */}
             <AnimatePresence>
@@ -231,4 +243,3 @@ const Intro: React.FC = () => {
     );
 };
 
-export default Intro;

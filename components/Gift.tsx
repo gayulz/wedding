@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import webankIcon from '../images/webank.png';
 import ibkbankIcon from '../images/ibkbank.svg';
 import kakaobankIcon from '../images/kakaobank.jpg';
@@ -17,10 +17,13 @@ const getBankIcon = (bankName: string): string => {
 	return '';
 };
 
-const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
+const AccountCard: React.FC<{
+	account: Account;
+	showToast: (message: string) => void;
+}> = ({ account, showToast }) => {
 	const handleCopy = () => {
 		navigator.clipboard.writeText(account.num);
-		alert('계좌번호가 복사되었습니다.');
+		showToast('계좌번호가 복사되었습니다.');
 	};
 
 	const bankIcon = getBankIcon(account.bank);
@@ -61,6 +64,14 @@ const AccountCard: React.FC<{ account: Account }> = ({ account }) => {
 
 const Gift: React.FC = () => {
 	const [activeTab, setActiveTab] = useState<'groom' | 'bride'>('groom');
+	const [toast, setToast] = useState({ show: false, message: '' });
+
+	const showToast = (message: string) => {
+		setToast({ show: true, message });
+		setTimeout(() => {
+			setToast({ show: false, message: '' });
+		}, 2000);
+	};
 
 	const groomAccounts: Account[] = [
 		{ bank: '우리은행', name: '석명순', num: '70820187102001' },
@@ -127,9 +138,9 @@ const Gift: React.FC = () => {
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ duration: 0.3, delay: index * 0.1 }}
 									className="snap-start flex-shrink-0"
-									style={{ width: currentAccounts.length === 1 ? 'calc(100% - 6rem)' : 'calc(100% - 3rem)' }}
+									style={{ width: 'calc(100% - 3rem)' }}
 								>
-									<AccountCard account={account} />
+									<AccountCard account={account} showToast={showToast} />
 								</motion.div>
 							))}
 						</div>
@@ -146,6 +157,26 @@ const Gift: React.FC = () => {
 				화훼 화환은 정중히 사양합니다.<br />
 				보내주시는 따뜻한 마음 감사히 받겠습니다.
 			</motion.p>
+
+			{/* Toast Popup */}
+			<AnimatePresence>
+				{toast.show && (
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: 20 }}
+						transition={{ duration: 0.3 }}
+						className="fixed bottom-16 left-1/2 -translate-x-1/2 p-4 rounded-xl shadow-lg"
+						style={{
+							backgroundColor: 'rgba(0, 0, 0, 0.5)',
+							backdropFilter: 'blur(10px)',
+							WebkitBackdropFilter: 'blur(10px)',
+						}}
+					>
+						<p className="text-white text-sm">{toast.message}</p>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };
