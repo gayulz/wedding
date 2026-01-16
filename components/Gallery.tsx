@@ -1,25 +1,39 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 
+import wedding01 from '../images/wedding-01.png';
+import wedding02 from '../images/wedding-02.png';
+import wedding03 from '../images/wedding-03.png';
+import wedding04 from '../images/wedding-04.png';
+import wedding05 from '../images/wedding-05.png';
+import wedding06 from '../images/wedding-06.png';
+import wedding07 from '../images/wedding-07.png';
+import wedding08 from '../images/wedding-08.png';
+import wedding09 from '../images/wedding-09.png';
+import wedding10 from '../images/wedding-10.png';
+import wedding11 from '../images/wedding-11.png';
+import wedding12 from '../images/wedding-12.png';
+
 const Gallery: React.FC = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const carouselRef = useRef<HTMLDivElement>(null);
+    const [dragConstraints, setDragConstraints] = useState(0);
 
     // 12개의 이미지 배열
     const images = [
-        '/images/wedding-01.png',
-        '/images/wedding-02.png',
-        '/images/wedding-03.png',
-        '/images/wedding-04.png',
-        '/images/wedding-05.png',
-        '/images/wedding-06.png',
-        '/images/wedding-07.png',
-        '/images/wedding-08.png',
-        '/images/wedding-09.png',
-        '/images/wedding-10.png',
-        '/images/wedding-11.png',
-        '/images/wedding-12.png'
+        wedding01,
+        wedding02,
+        wedding03,
+        wedding04,
+        wedding05,
+        wedding06,
+        wedding07,
+        wedding08,
+        wedding09,
+        wedding10,
+        wedding11,
+        wedding12
     ];
 
     // 이미지 프리로드
@@ -43,6 +57,14 @@ const Gallery: React.FC = () => {
             });
     }, []);
 
+    useEffect(() => {
+        if (carouselRef.current) {
+            const carouselWidth = carouselRef.current.offsetWidth;
+            const contentWidth = carouselRef.current.scrollWidth;
+            setDragConstraints(contentWidth - carouselWidth);
+        }
+    }, [imagesLoaded]);
+
     // 팝업에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
     const handlePopupWheel = (e: React.WheelEvent) => {
         e.stopPropagation();
@@ -53,12 +75,12 @@ const Gallery: React.FC = () => {
     };
 
     return (
-        <div className="h-full w-full flex flex-col items-center justify-center bg-white p-6 md:p-12">
+        <div className="h-full w-full flex flex-col items-center justify-center bg-white p-6 md:p-12 overflow-hidden">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-center mb-6"
+                className="text-center mb-10"
             >
                 <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">GALLERY</p>
                 <h2 className="text-2xl font-myeongjo text-gray-800">소중한 순간들을 기록합니다</h2>
@@ -79,64 +101,33 @@ const Gallery: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                    <>
-                        {/* 이미지 캐러셀 */}
-                        <div className="relative w-full h-[70vh] overflow-hidden">
-                            <motion.div
-                                className="flex gap-6 h-full pl-[10%]"
-                                animate={{ x: `-${currentIndex * 94}%` }}
-                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                            >
-                                {images.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex-shrink-0 flex items-center justify-center"
-                                        style={{ width: '88%', aspectRatio: '3/4' }}
-                                    >
-                                        <img
-                                            src={image}
-                                            alt={`gallery-${index + 1}`}
-                                            onClick={() => setSelectedImage(image)}
-                                            className="w-full h-full object-cover rounded-lg shadow-lg cursor-pointer"
-                                            draggable={false}
-                                        />
-                                    </div>
-                                ))}
-                            </motion.div>
-
-                            {/* 터치 영역 */}
-                            <div className="absolute inset-0 flex">
+                     <motion.div
+                         ref={carouselRef}
+                         className="w-full overflow-hidden cursor-grab"
+                         whileTap={{ cursor: 'grabbing' }}
+                     >
+                        <motion.div
+                            className="flex gap-4"
+                            drag="x"
+                            dragConstraints={{ right: 0, left: -dragConstraints }}
+                            dragTransition={{ bounceStiffness: 200, bounceDamping: 20 }}
+                        >
+                            {images.map((image, index) => (
                                 <div
-                                    className="w-1/2 h-full cursor-pointer"
-                                    onClick={() => setCurrentIndex(prev => (prev - 1 + images.length) % images.length)}
-                                />
-                                <div
-                                    className="w-1/2 h-full cursor-pointer"
-                                    onClick={() => setCurrentIndex(prev => (prev + 1) % images.length)}
-                                />
-                            </div>
-                        </div>
-
-                        {/* 페이지 인디케이터 */}
-                        <div className="flex items-center gap-2 mt-6">
-                            {images.map((_, index) => (
-                                <button
                                     key={index}
-                                    onClick={() => setCurrentIndex(index)}
-                                    className={`transition-all ${
-                                        index === currentIndex
-                                            ? 'w-8 h-2 bg-gray-800'
-                                            : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
-                                    } rounded-full`}
-                                />
+                                    onClick={() => setSelectedImage(image)}
+                                    className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden"
+                                    style={{ width: '80vw', maxWidth: '400px' }}
+                                >
+                                    <img
+                                        src={image}
+                                        alt={`gallery-${index + 1}`}
+                                        className="w-full h-full object-cover pointer-events-none"
+                                    />
+                                </div>
                             ))}
-                        </div>
-
-                        {/* 카운터 */}
-                        <div className="text-sm text-gray-600 mt-3">
-                            {currentIndex + 1} / {images.length}
-                        </div>
-                    </>
+                        </motion.div>
+                    </motion.div>
                 )}
             </motion.div>
 
