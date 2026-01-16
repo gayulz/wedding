@@ -1,7 +1,6 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { loadImage } from '@/lib/image-loader';
+import { loadImage } from '@/lib/image-loader.ts';
 
 declare global {
   interface Window {
@@ -252,3 +251,4 @@ const Location: React.FC = () => {
   );
 };
 
+export default Location;
