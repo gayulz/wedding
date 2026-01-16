@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { loadImage } from '@/lib/image-loader';
+import { loadImage } from '@/lib/image-loader.ts';
 
 const Profiles: React.FC = () => {
 	const [isInterviewOpen, setIsInterviewOpen] = useState(false);

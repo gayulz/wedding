@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import { loadImage } from '@/lib/image-loader';
+import { loadImage } from '@/lib/image-loader.ts';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);

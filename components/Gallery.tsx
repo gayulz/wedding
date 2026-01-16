@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import { loadImage } from '@/lib/image-loader';
+import { loadImage } from '@/lib/image-loader.ts';
 
 const Gallery: React.FC = () => {
     const [imagesLoaded, setImagesLoaded] = useState(false);

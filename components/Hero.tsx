@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { loadImage } from '@/lib/image-loader';
+import { loadImage } from '@/lib/image-loader.ts';
 
 const Hero: React.FC = () => {
   return (
