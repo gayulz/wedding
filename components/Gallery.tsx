@@ -57,15 +57,15 @@ const Gallery: React.FC = () => {
     };
 
     return (
-        <div className="h-full w-full flex flex-col items-center justify-center bg-white p-6 md:p-12 overflow-hidden">
+        <div className="h-full w-full flex flex-col items-center justify-center bg-white pt-0 px-6 pb-6 md:pt-12 md:px-12 md:pb-12 overflow-hidden">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="text-center mb-10"
             >
-                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">GALLERY</p>
-                <h2 className="text-2xl font-myeongjo text-gray-800">소중한 순간들을 기록합니다</h2>
+                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">GALLERY</p>
+                <h2 className="text-2xl font-myeongjo text-gray-800 mt-0">소중한 순간들을 기록합니다</h2>
             </motion.div>
 
             <motion.div

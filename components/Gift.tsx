@@ -83,7 +83,7 @@ const Gift: React.FC = () => {
 	const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
 
 	return (
-		<div className="h-full w-full flex flex-col items-center justify-center bg-[#f8f8f8] p-8 overflow-hidden">
+		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] pt-12 px-8 pb-12 overflow-hidden">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -92,8 +92,8 @@ const Gift: React.FC = () => {
 			>
 				{/* 헤더 */}
 				<div className="text-center mb-10">
-					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-3">ACCOUNT</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6">마음 전하실 곳</h2>
+					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">ACCOUNT</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-6">마음 전하실 곳</h2>
 					<p className="text-xs text-gray-500 leading-relaxed">
 						참석이 어려우신 분들을 위해<br />
 						계좌번호를 기재하였습니다.<br />

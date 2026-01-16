@@ -66,7 +66,7 @@ const Profiles: React.FC = () => {
 	];
 
 	return (
-		<div className="h-full w-full flex flex-col items-center justify-center bg-[#f8f8f8] overflow-hidden p-6">
+		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-hidden pt-12 px-6 pb-12">
 			<motion.div
 				variants={containerVariants}
 				initial="hidden"
@@ -76,8 +76,8 @@ const Profiles: React.FC = () => {
 			>
 				{/* 헤더 */}
 				<motion.div variants={itemVariants} className="text-center">
-					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">INTERVIEW</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800">우리 두 사람의 이야기</h2>
+					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">INTERVIEW</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mt-0">우리 두 사람의 이야기</h2>
 					<p className="text-sm text-gray-600 mt-4">결혼을 앞두고 저희 두 사람의<br/>인터뷰를 준비했습니다.</p>
 				</motion.div>
 

@@ -237,15 +237,15 @@ const Guestbook: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-gray-900 text-white p-3 overflow-hidden">
+    <div className="h-full w-full flex flex-col items-center bg-gray-900 text-white pt-12 px-3 pb-3 overflow-hidden">
       {/* 카운트다운 - 페이지 이동 가능한 유일한 영역 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-3 text-center"
+        className="text-center"
       >
-        <h2 className="text-base font-myeongjo text-white/90 tracking-[0.2em] mb-3">COUNTDOWN</h2>
+        <h2 className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">COUNTDOWN</h2>
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

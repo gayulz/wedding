@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-import { loadImage } from '@/lib/image-loader.ts';
+import { loadImage } from '@/lib/image-loader';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -107,7 +107,7 @@ const Intro: React.FC = () => {
                     </motion.p>
 
                     {/* 부모님 이름 */}
-                    <motion.div variants={itemVariants} className="space-y-3 pt-8">
+                    <motion.div variants={itemVariants} className="space-y-2 pt-2">
                         <p className="text-sm text-gray-700">
                             <span className="font-light">{contacts.groom.mother.name}</span>
                             <span className="text-xs text-gray-500 ml-2">의 아들</span>

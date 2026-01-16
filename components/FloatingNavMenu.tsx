@@ -41,7 +41,7 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
                   onNavigate(item.index);
                   setIsOpen(false);
                 }}
-                className={`px-4 py-2 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
                   currentSection === item.index
                     ? 'bg-yellow-200 text-gray-900 shadow-lg'
                     : 'bg-yellow-100/90 text-gray-900 hover:bg-yellow-200'
@@ -61,7 +61,7 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
       {/* 토글 버튼 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all bg-yellow-100/90 text-[#3c1e1e] hover:bg-yellow-200 active:scale-95"
+        className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center transition-all bg-yellow-100/90 text-[#3c1e1e] hover:bg-yellow-200 active:scale-95"
         style={{
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',

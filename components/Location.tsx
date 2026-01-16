@@ -159,13 +159,13 @@ const Location: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center pt-12 pb-6 px-6"
+        className="text-center pt-6 pb-6 px-6"
       >
-        <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">LOCATION</p>
-        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6">오시는 길</h2>
+        <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">LOCATION</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-6">오시는 길</h2>
 
-        <div className="space-y-2">
-          <h3 className="text-lg font-bold text-gray-800">토미스퀘어가든, 4층 스퀘어가든홀</h3>
+        <div className="space-y-0">
+          <h3 className="text-m font-bold text-gray-600">토미스퀘어가든</h3>
           <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
           <p className="text-sm text-gray-600">Tel. 054-473-6799</p>
         </div>
@@ -178,7 +178,7 @@ const Location: React.FC = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         ref={mapContainerRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '300px' }}
+        style={{ height: '250px' }}
       >
         <div
           ref={mapRef}
@@ -204,14 +204,14 @@ const Location: React.FC = () => {
 
       {/* 네비게이션 섹션 */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 2, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full px-1 py-8"
+        className="w-full px-1 py-2"
       >
 
         {/* 네비게이션 버튼 */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2">
           <a
             href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
             target="_blank"
@@ -221,7 +221,7 @@ const Location: React.FC = () => {
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src={loadImage('navermap')} alt="네이버지도" className="w-full h-full object-cover" />
             </div>
-            <span className="text-[11px] text-gray-700 font-medium">네이버지도</span>
+            <span className="text-[11px] text-gray-700 font-medium">네이버</span>
           </a>
 
           <button
@@ -243,7 +243,7 @@ const Location: React.FC = () => {
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src={loadImage('kakaonav')} alt="카카오내비" className="w-full h-full object-cover" />
             </div>
-            <span className="text-[11px] text-gray-700 font-medium">카카오내비</span>
+            <span className="text-[11px] text-gray-700 font-medium">카카오</span>
           </a>
         </div>
       </motion.div>
