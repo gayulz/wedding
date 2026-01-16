@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import webankIcon from '../images/webank.png';
-import ibkbankIcon from '../images/ibkbank.svg';
-import kakaobankIcon from '../images/kakaobank.jpg';
+import { loadImage } from '@/lib/image-loader';
 
 interface Account {
 	name: string;
@@ -11,9 +9,9 @@ interface Account {
 }
 
 const getBankIcon = (bankName: string): string => {
-	if (bankName.includes('우리')) return webankIcon;
-	if (bankName.includes('기업')) return ibkbankIcon;
-	if (bankName.includes('카카오')) return kakaobankIcon;
+	if (bankName.includes('우리')) return loadImage('webank');
+	if (bankName.includes('기업')) return loadImage('ibkbank');
+	if (bankName.includes('카카오')) return loadImage('kakaobank');
 	return '';
 };
 

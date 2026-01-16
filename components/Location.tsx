@@ -1,12 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-// @ts-ignore
-import naverMapIcon from '../images/navermap.webp';
-// @ts-ignore
-import tmapIcon from '../images/tmap.svg';
-// @ts-ignore
-import kakaoNavIcon from '../images/kakaonav.png';
+import { loadImage } from '@/lib/image-loader';
 
 declare global {
   interface Window {
@@ -213,7 +208,7 @@ const Location: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full px-6 py-8"
+        className="w-full px-1 py-8"
       >
 
         {/* 네비게이션 버튼 */}
@@ -225,7 +220,7 @@ const Location: React.FC = () => {
             className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
           >
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
-              <img src={naverMapIcon} alt="네이버지도" className="w-full h-full object-cover" />
+              <img src={loadImage('navermap')} alt="네이버지도" className="w-full h-full object-cover" />
             </div>
             <span className="text-[11px] text-gray-700 font-medium">네이버지도</span>
           </a>
@@ -235,7 +230,7 @@ const Location: React.FC = () => {
             className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200 cursor-pointer"
           >
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
-              <img src={tmapIcon} alt="티맵" className="w-full h-full object-cover" />
+              <img src={loadImage('tmap')} alt="티맵" className="w-full h-full object-cover" />
             </div>
             <span className="text-[11px] text-gray-700 font-medium">티맵</span>
           </button>
@@ -247,7 +242,7 @@ const Location: React.FC = () => {
             className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
           >
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
-              <img src={kakaoNavIcon} alt="카카오내비" className="w-full h-full object-cover" />
+              <img src={loadImage('kakaonav')} alt="카카오내비" className="w-full h-full object-cover" />
             </div>
             <span className="text-[11px] text-gray-700 font-medium">카카오내비</span>
           </a>
@@ -257,4 +252,3 @@ const Location: React.FC = () => {
   );
 };
 
-export default Location;

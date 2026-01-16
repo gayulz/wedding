@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { loadImage } from '@/lib/image-loader';
 
 const Hero: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const Hero: React.FC = () => {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(/images/wedding-100.png)`,
+          backgroundImage: `url(${loadImage('wedding-100')})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}

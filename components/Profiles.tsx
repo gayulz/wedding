@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import wedding98 from '../images/wedding-98.png';
-import wedding99 from '../images/wedding-99.png';
+import { loadImage } from '@/lib/image-loader';
 
 const Profiles: React.FC = () => {
 	const [isInterviewOpen, setIsInterviewOpen] = useState(false);
@@ -42,12 +41,27 @@ const Profiles: React.FC = () => {
 	const interviews = [
 		{
 			question: "Q1. 결혼을 앞둔 소감",
-			groom: "드디어 장가갑니다😊 먼저 인생에서 가장 큰 결심을 할 수 있게 해준 예비 신부에게 너무 고맙습니다.\n\n가족이라는 단어를 함께 한다는 것은 정말 설레면서 아쉽다운 일이기에 그만큼 책임감을 갖고 살아야겠다고 다짐했습니다.\n\n저의 부부가 한걸음 한걸음을 성실하게 나가는 모습을 지켜봐주시고 응원해주세요💛💛",
-			bride: "오래된 연인에서 이제는 서로의 부부가 되기로 약속 했습니다!\n\n아직은 남자친구라는 말이 더 익숙하지만 그동안 제 연봉을 준 신랑에게도 좋은 아내로서 더 좋게 배려하며 큰 힘이 되는 존재가 실천하니다😊\n\n이제는 저의 평생의 반려자가 될 신랑 에게도 좋은 아내로서 더 좋게"
+			groom: "드디어 장가갑니다😊\n" +
+				"먼저 인생에서 가장 큰 결심을 할 수 있게 해준\n" +
+				"예비 신부에게 너무 고맙습니다.\n\n" +
+				"가족이라는 단어를 함께 한다는 것은 정말 설레고\n" +
+				"그만큼 가장의 책임감을 느낍니다.\n\n" +
+				"저희 부부가 한걸음 한걸음을 성실하게 나가는 \n" +
+				"모습을 지켜봐주시고 응원해주세요💛💛",
+			bride: "오래된 연인에서 이제는 인생의 동반자로\n" +
+				"머나먼 여정을 시작합니다 ! \n\n " +
+				"누구보다 잘 먹고 , 잘 자고, 아프지 않고 😊\n" +
+				"오늘을 평생 간직하며 잘 살겠습니다 ! " +
+				"지켜봐주세요 !"
 		},
 		{
 			question: "Q2. 결혼을 결심한 계기는?",
-			answer: "함께 라면 그 어떤 어려움이 있더라도 잘 해나갈 수 있다고 자신이 확신이 되었습니다.\n\n함께 서로를 보내면서 서로에 대한 믿음과 애정이 쌓이게 되고 이러한 행동들이 둘이 메에서\n\n서로에게 🙋🏻를 얻과, 👨🏻를 아빠가 될 수 있다는 확인이 들어 결혼을 결심하게 되었습니다😊"
+			answer: "오랜 시간 함께 있다 보니 그 어떤 어려움이 있더라도 잘 해쳐 나갈 수 있다고 확신을 갖게 되었습니다.\n\n6년이란 시간을 함께 보내면서 서로에 대한 믿음과 애정이 쌓이게 되었고 이 사람과 살면 평생 재밌겠구나 란 생각이 들었습니다.\n"
+		},
+		{
+			question: "Q3. 서로에게 어떤 배우자가 될건가요?",
+			groom: "밥 잘 차려주고 삼시세끼 집에서 먹지 않는 멋진 오빠가 되겠습니다😏",
+			bride: "오빠가 집안일 할 수 있게 돈 많이 벌어다 주는 와이프가 되겠습니다🙋🏻‍♀️"
 		}
 	];
 
@@ -71,14 +85,14 @@ const Profiles: React.FC = () => {
 				<motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 w-full px-4">
 					<div className="relative rounded-2xl overflow-hidden shadow-lg">
 						<img
-							src={wedding99}
+							src={loadImage('wedding-99')}
 							alt="Groom"
 							className="w-full h-64 object-cover"
 						/>
 					</div>
 					<div className="relative rounded-2xl overflow-hidden shadow-lg">
 						<img
-							src={wedding98}
+							src={loadImage('wedding-98')}
 							alt="Bride"
 							className="w-full h-64 object-cover"
 						/>
@@ -164,6 +178,26 @@ const Profiles: React.FC = () => {
 									<p className="text-sm text-white leading-relaxed whitespace-pre-line">
 										{interviews[1].answer}
 									</p>
+								</div>
+								{/* 구분선 */}
+								<div className="border-t border-gray-600"></div>
+								{/* Q3 */}
+								<div>
+									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[2].question}</h4>
+									<div className="space-y-4">
+										<div>
+											<p className="text-sm text-gray-400 mb-2">🤵 신랑 최봉석</p>
+											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+												{interviews[2].groom}
+											</p>
+										</div>
+										<div>
+											<p className="text-sm text-gray-400 mb-2">👰 신부 김가율</p>
+											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+												{interviews[2].bride}
+											</p>
+										</div>
+									</div>
 								</div>
 							</div>
 						</motion.div>

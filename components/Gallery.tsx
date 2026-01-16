@@ -1,18 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
-
-import wedding01 from '../images/wedding-01.png';
-import wedding02 from '../images/wedding-02.png';
-import wedding03 from '../images/wedding-03.png';
-import wedding04 from '../images/wedding-04.png';
-import wedding05 from '../images/wedding-05.png';
-import wedding06 from '../images/wedding-06.png';
-import wedding07 from '../images/wedding-07.png';
-import wedding08 from '../images/wedding-08.png';
-import wedding09 from '../images/wedding-09.png';
-import wedding10 from '../images/wedding-10.png';
-import wedding11 from '../images/wedding-11.png';
-import wedding12 from '../images/wedding-12.png';
+import { loadImage } from '@/lib/image-loader';
 
 const Gallery: React.FC = () => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -20,21 +8,15 @@ const Gallery: React.FC = () => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [dragConstraints, setDragConstraints] = useState(0);
 
-    // 12개의 이미지 배열
-    const images = [
-        wedding01,
-        wedding02,
-        wedding03,
-        wedding04,
-        wedding05,
-        wedding06,
-        wedding07,
-        wedding08,
-        wedding09,
-        wedding10,
-        wedding11,
-        wedding12
+    // 12개의 이미지 이름 배열
+    const imageNames = [
+        'wedding-01', 'wedding-02', 'wedding-03', 'wedding-04',
+        'wedding-05', 'wedding-06', 'wedding-07', 'wedding-08',
+        'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12'
     ];
+
+    const images = imageNames.map(name => loadImage(name));
+
 
     // 이미지 프리로드
     useEffect(() => {
