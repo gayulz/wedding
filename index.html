@@ -29,6 +29,13 @@
         ::-webkit-scrollbar {
             display: none;
         }
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari, Opera */
+        }
         /* Glass Design Utilities */
         .glass-card {
             background: rgba(255, 255, 255, 0.12);
@@ -55,7 +62,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-gray-50 text-gray-800">
     <div id="root"></div>

@@ -1,225 +1,177 @@
-
 import React, { useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import wedding98 from '../images/wedding-98.jpeg';
-import wedding99 from '../images/wedding-99.jpeg';
-
-const TiltCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseX = useSpring(x, { stiffness: 500, damping: 50 });
-  const mouseY = useSpring(y, { stiffness: 500, damping: 50 });
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [5, -5]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-5, 5]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseXPos = e.clientX - rect.left;
-    const mouseYPos = e.clientY - rect.top;
-    x.set(mouseXPos / width - 0.5);
-    y.set(mouseYPos / height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="transition-all duration-300 flex flex-row items-center justify-center w-full gap-6 px-4"
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-const ArchPhoto: React.FC<{ src: string; alt: string; onClick: () => void }> = ({ src, alt, onClick }) => {
-  return (
-    <div className="relative group shrink-0 cursor-pointer" onClick={onClick}>
-      {/* Outer Glow / Luxury Border Gradient */}
-      <div className="absolute -inset-[1px] rounded-t-full rounded-b-xl bg-gradient-to-tr from-[#e2e2e2] via-white to-[#f3f3f3] opacity-70 blur-[1px]"></div>
-
-      <div className="relative w-40 h-52 md:w-44 md:h-56 bg-gray-50 rounded-t-full rounded-b-lg overflow-hidden shadow-xl border-[1px] border-white/40">
-        {/* Subtle Texture Overlay */}
-        <div className="absolute inset-0 z-10 pointer-events-none opacity-20 mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/white-diamond.png')]"></div>
-
-        {/* Inner Shadow for Depth */}
-        <div className="absolute inset-0 z-20 shadow-[inner_0_0_15px_rgba(0,0,0,0.1)] pointer-events-none"></div>
-
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
-        />
-      </div>
-    </div>
-  );
-};
+import { motion, AnimatePresence } from 'framer-motion';
+import wedding98 from '../images/wedding-98.png';
+import wedding99 from '../images/wedding-99.png';
 
 const Profiles: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+	const [isInterviewOpen, setIsInterviewOpen] = useState(false);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  };
+	// 모달에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
+	const handleModalWheel = (e: React.WheelEvent) => {
+		e.stopPropagation();
+	};
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
+	const handleModalTouch = (e: React.TouchEvent) => {
+		e.stopPropagation();
+	};
 
-  return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-[#fffcfc] overflow-hidden p-6">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="flex flex-col gap-10 w-full max-sm:max-w-[320px] max-w-sm items-center"
-      >
+	const containerVariants = {
+		hidden: { opacity: 0 },
+		visible: {
+			opacity: 1,
+			transition: {
+				staggerChildren: 0.2,
+				delayChildren: 0.1
+			}
+		}
+	};
 
-        {/* Groom Section - Horizontal layout within the card */}
-        <motion.div variants={itemVariants} className="w-full">
-          <TiltCard>
-            <ArchPhoto
-              src={wedding99}
-              alt="Groom"
-              onClick={() => setSelectedImage(wedding99)}
-            />
+	const itemVariants = {
+		hidden: { opacity: 0, y: 30 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: {
+				duration: 0.5,
+				ease: "easeOut"
+			}
+		}
+	};
 
-            <div className="text-left space-y-2 flex-1">
-              <div className="text-gray-400 text-[10px] tracking-[0.3em] font-medium uppercase">GROOM</div>
-              <div className="text-3xl font-myeongjo text-gray-800 font-bold">최봉석</div>
-              <div className="text-gray-500 text-sm">
-                <span className="font-light">석명순</span>
-                <span className="text-xs ml-1">의 아들</span>
-              </div>
+	// 인터뷰 내용
+	const interviews = [
+		{
+			question: "Q1. 결혼을 앞둔 소감",
+			groom: "드디어 장가갑니다😊 먼저 인생에서 가장 큰 결심을 할 수 있게 해준 예비 신부에게 너무 고맙습니다.\n\n가족이라는 단어를 함께 한다는 것은 정말 설레면서 아쉽다운 일이기에 그만큼 책임감을 갖고 살아야겠다고 다짐했습니다.\n\n저의 부부가 한걸음 한걸음을 성실하게 나가는 모습을 지켜봐주시고 응원해주세요💛💛",
+			bride: "오래된 연인에서 이제는 서로의 부부가 되기로 약속 했습니다!\n\n아직은 남자친구라는 말이 더 익숙하지만 그동안 제 연봉을 준 신랑에게도 좋은 아내로서 더 좋게 배려하며 큰 힘이 되는 존재가 실천하니다😊\n\n이제는 저의 평생의 반려자가 될 신랑 에게도 좋은 아내로서 더 좋게"
+		},
+		{
+			question: "Q2. 결혼을 결심한 계기는?",
+			answer: "함께 라면 그 어떤 어려움이 있더라도 잘 해나갈 수 있다고 자신이 확신이 되었습니다.\n\n함께 서로를 보내면서 서로에 대한 믿음과 애정이 쌓이게 되고 이러한 행동들이 둘이 메에서\n\n서로에게 🙋🏻를 얻과, 👨🏻를 아빠가 될 수 있다는 확인이 들어 결혼을 결심하게 되었습니다😊"
+		}
+	];
 
-              <div className="pt-3 flex justify-start gap-3">
-                <a href="tel:010-4404-1519" className="liquid-glass w-10 h-10 flex items-center justify-center text-blue-500 hover:bg-yellow-100 transition-all shadow-sm">
-                  <i className="fa-solid fa-phone text-sm"></i>
-                </a>
-                <a href="sms:010-4404-1519" className="liquid-glass w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-yellow-100 transition-all shadow-sm">
-                  <i className="fa-solid fa-envelope text-sm"></i>
-                </a>
-              </div>
-            </div>
-          </TiltCard>
-        </motion.div>
+	return (
+		<div className="h-full w-full flex flex-col items-center justify-center bg-[#f8f8f8] overflow-hidden p-6">
+			<motion.div
+				variants={containerVariants}
+				initial="hidden"
+				whileInView="visible"
+				viewport={{ once: true }}
+				className="flex flex-col items-center w-full max-w-md space-y-8"
+			>
+				{/* 헤더 */}
+				<motion.div variants={itemVariants} className="text-center">
+					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">INTERVIEW</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800">우리 두 사람의 이야기</h2>
+					<p className="text-sm text-gray-600 mt-4">결혼을 앞두고 저희 두 사람의<br/>인터뷰를 준비했습니다.</p>
+				</motion.div>
 
-        {/* Horizontal Divider */}
-        <motion.div variants={itemVariants} className="flex items-center gap-4 w-full px-12">
-          <div className="flex-1 h-[0.5px] bg-gradient-to-r from-transparent via-gray-300 to-transparent opacity-30" />
-          <div className="text-gray-300 font-myeongjo text-sm italic opacity-40">&</div>
-          <div className="flex-1 h-[0.5px] bg-gradient-to-l from-transparent via-gray-300 to-transparent opacity-30" />
-        </motion.div>
+				{/* 사진 */}
+				<motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 w-full px-4">
+					<div className="relative rounded-2xl overflow-hidden shadow-lg">
+						<img
+							src={wedding99}
+							alt="Groom"
+							className="w-full h-64 object-cover"
+						/>
+					</div>
+					<div className="relative rounded-2xl overflow-hidden shadow-lg">
+						<img
+							src={wedding98}
+							alt="Bride"
+							className="w-full h-64 object-cover"
+						/>
+					</div>
+				</motion.div>
 
-        {/* Bride Section - Horizontal layout within the card */}
-        <motion.div variants={itemVariants} className="w-full">
-          <TiltCard>
-            <ArchPhoto
-              src={wedding98}
-              alt="Bride"
-              onClick={() => setSelectedImage(wedding98)}
-            />
+				{/* 인터뷰 읽어보기 버튼 */}
+				<motion.button
+					variants={itemVariants}
+					onClick={() => setIsInterviewOpen(true)}
+					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2"
+				>
+					<i className="fa-solid fa-envelope text-xs"></i>
+					<span>신랑 & 신부의 인터뷰 읽어보기</span>
+				</motion.button>
+			</motion.div>
 
-            <div className="text-left space-y-2 flex-1">
-              <div className="text-gray-400 text-[10px] tracking-[0.3em] font-medium uppercase">BRIDE</div>
-              <div className="text-3xl font-myeongjo text-gray-800 font-bold">김가율</div>
-              <div className="text-gray-500 text-sm">
-                <span className="font-light">김상준</span>
-                <span className="text-xs ml-1">의 딸</span>
-              </div>
+			{/* 인터뷰 모달 */}
+			<AnimatePresence>
+				{isInterviewOpen && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						onClick={() => setIsInterviewOpen(false)}
+						onWheel={handleModalWheel}
+						onTouchMove={handleModalTouch}
+						className="fixed inset-0 z-[100] flex items-center justify-center p-6"
+						style={{
+							background: 'rgba(0, 0, 0, 0.85)',
+						}}
+					>
+						<motion.div
+							initial={{ scale: 0.9, opacity: 0 }}
+							animate={{ scale: 1, opacity: 1 }}
+							exit={{ scale: 0.9, opacity: 0 }}
+							onClick={(e) => e.stopPropagation()}
+							onWheel={handleModalWheel}
+							onTouchMove={handleModalTouch}
+							className="bg-[#3a3a3a] rounded-2xl p-8 w-full max-w-md max-h-[80vh] overflow-y-auto relative"
+						>
+							{/* 닫기 버튼 - sticky로 스크롤해도 항상 보임 */}
+							<button
+								onClick={() => setIsInterviewOpen(false)}
+								className="sticky top-0 float-right text-white/60 hover:text-white text-2xl z-10 mb-4"
+							>
+								<i className="fa-solid fa-xmark"></i>
+							</button>
 
-              <div className="pt-3 flex justify-start gap-3">
-                <a href="tel:010-8790-1519" className="liquid-glass w-10 h-10 flex items-center justify-center text-pink-500 hover:bg-yellow-100 transition-all shadow-sm">
-                  <i className="fa-solid fa-phone text-sm"></i>
-                </a>
-                <a href="sms:010-8790-1519" className="liquid-glass w-10 h-10 flex items-center justify-center text-gray-500 hover:bg-yellow-100 transition-all shadow-sm">
-                  <i className="fa-solid fa-envelope text-sm"></i>
-                </a>
-              </div>
-            </div>
-          </TiltCard>
-        </motion.div>
+							{/* 헤더 */}
+							<div className="text-center mb-8 clear-both">
+								<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">INTERVIEW</p>
+								<h3 className="text-xl text-white font-myeongjo">우리 두 사람의 이야기</h3>
+							</div>
 
-      </motion.div>
+							{/* 인터뷰 내용 */}
+							<div className="space-y-8">
+								{/* Q1 */}
+								<div>
+									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[0].question}</h4>
+									<div className="space-y-4">
+										<div>
+											<p className="text-sm text-gray-400 mb-2">🤵 신랑 최봉석</p>
+											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+												{interviews[0].groom}
+											</p>
+										</div>
+										<div>
+											<p className="text-sm text-gray-400 mb-2">👰 신부 김가율</p>
+											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+												{interviews[0].bride}
+											</p>
+										</div>
+									</div>
+								</div>
 
-      {/* Image Popup - Liquid Glass Style */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-            }}
-          >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="relative"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div
-                className="liquid-glass p-4 rounded-3xl shadow-2xl"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1))',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.5)',
-                }}
-              >
-                <img
-                  src={selectedImage}
-                  alt="selected"
-                  className="max-w-full max-h-[80vh] object-contain rounded-2xl"
-                />
-              </div>
-            </motion.div>
-            <button
-              className="absolute top-8 right-8 w-12 h-12 rounded-full flex items-center justify-center liquid-glass hover:bg-white/30 transition-colors"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1))',
-                backdropFilter: 'blur(15px)',
-                WebkitBackdropFilter: 'blur(15px)',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-              }}
-            >
-              <i className="fa-solid fa-xmark text-gray-700 text-2xl"></i>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
+								{/* 구분선 */}
+								<div className="border-t border-gray-600"></div>
+
+								{/* Q2 */}
+								<div>
+									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[1].question}</h4>
+									<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+										{interviews[1].answer}
+									</p>
+								</div>
+							</div>
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
+		</div>
+	);
 };
 
 export default Profiles;

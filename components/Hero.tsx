@@ -5,11 +5,11 @@ import { motion } from 'framer-motion';
 const Hero: React.FC = () => {
   return (
     <div className="relative h-full w-full flex items-start justify-center pt-24 md:pt-32">
-      {/* Background Image - wedding-100.webp */}
+      {/* Background Image - wedding-100.png */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(/optimized-images/wedding-100.webp)`,
+          backgroundImage: `url(/images/wedding-100.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}

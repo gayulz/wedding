@@ -12,11 +12,11 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
   const menuItems = [
     { label: '첫 화면', index: 0 },
     { label: '인사말', index: 1 },
-    { label: '주인공', index: 2 },
-    { label: '사진첩', index: 3 },
+    { label: '인터뷰', index: 2 },
+    { label: '갤러리', index: 3 },
     { label: '위치', index: 4 },
     { label: '대중 교통', index: 5 },
-    { label: '마음 전하는곳', index: 6 },
+    { label: '마음 전하실 곳', index: 6 },
     { label: '방명록', index: 7 },
   ];
 

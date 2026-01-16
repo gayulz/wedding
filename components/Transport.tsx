@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 // @ts-ignore
-import wedding81 from '../images/wedding-81.png';
+import wedding81 from '../images/wedding-81.webp';
 
 const Transport: React.FC = () => {
   const containerVariants = {
@@ -29,7 +29,7 @@ const Transport: React.FC = () => {
   };
 
   return (
-    <div className="relative h-full w-full flex flex-col items-center justify-center p-8">
+    <div className="relative h-full w-full flex flex-col items-center overflow-y-auto">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -43,11 +43,22 @@ const Transport: React.FC = () => {
         <div className="absolute inset-0 bg-white/70" />
       </div>
 
+      {/* 상단 헤더 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 text-center pt-12 pb-6 px-6"
+      >
+        <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">TRANSPORT</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mb-2">대중교통</h2>
+      </motion.div>
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 w-full max-w-md space-y-8"
+        className="relative z-10 w-full max-w-md space-y-8 px-8 pb-8"
       >
         <motion.section variants={itemVariants}>
           <div className="flex items-center gap-3 mb-4">

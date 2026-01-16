@@ -1,42 +1,25 @@
 import React, {useState, useEffect} from 'react';
 import {motion, AnimatePresence} from 'framer-motion';
 
-// 12개의 이미지만 import
-const images = [
-    '/optimized-images/wedding-01.webp',
-    '/optimized-images/wedding-02.webp',
-    '/optimized-images/wedding-03.webp',
-    '/optimized-images/wedding-04.webp',
-    '/optimized-images/wedding-05.webp',
-    '/optimized-images/wedding-06.webp',
-    '/optimized-images/wedding-07.webp',
-    '/optimized-images/wedding-08.webp',
-    '/optimized-images/wedding-09.webp',
-    '/optimized-images/wedding-10.webp',
-    '/optimized-images/wedding-11.webp',
-    '/optimized-images/wedding-12.webp'
-];
-
 const Gallery: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     // 12개의 이미지 배열
     const images = [
-        '/optimized-images/wedding-01.webp',
-        '/optimized-images/wedding-02.webp',
-        '/optimized-images/wedding-03.webp',
-        '/optimized-images/wedding-04.webp',
-        '/optimized-images/wedding-05.webp',
-        '/optimized-images/wedding-06.webp',
-        '/optimized-images/wedding-07.webp',
-        '/optimized-images/wedding-08.webp',
-        '/optimized-images/wedding-09.webp',
-        '/optimized-images/wedding-10.webp',
-        '/optimized-images/wedding-11.webp',
-        '/optimized-images/wedding-12.webp'
+        '/images/wedding-01.png',
+        '/images/wedding-02.png',
+        '/images/wedding-03.png',
+        '/images/wedding-04.png',
+        '/images/wedding-05.png',
+        '/images/wedding-06.png',
+        '/images/wedding-07.png',
+        '/images/wedding-08.png',
+        '/images/wedding-09.png',
+        '/images/wedding-10.png',
+        '/images/wedding-11.png',
+        '/images/wedding-12.png'
     ];
 
     // 이미지 프리로드
@@ -60,39 +43,13 @@ const Gallery: React.FC = () => {
             });
     }, []);
 
-    const handlePrev = () => {
-        setDirection(-1);
-        setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    // 팝업에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
+    const handlePopupWheel = (e: React.WheelEvent) => {
+        e.stopPropagation();
     };
 
-    const handleNext = () => {
-        setDirection(1);
-        setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    };
-
-    const handleDragEnd = (_e: any, { offset, velocity }: any) => {
-        const swipe = Math.abs(offset.x) * velocity.x;
-
-        if (swipe < -10000) {
-            handleNext();
-        } else if (swipe > 10000) {
-            handlePrev();
-        }
-    };
-
-    const slideVariants = {
-        enter: (direction: number) => ({
-            x: direction > 0 ? 1000 : -1000,
-            opacity: 0
-        }),
-        center: {
-            x: 0,
-            opacity: 1
-        },
-        exit: (direction: number) => ({
-            x: direction > 0 ? -1000 : 1000,
-            opacity: 0
-        })
+    const handlePopupTouch = (e: React.TouchEvent) => {
+        e.stopPropagation();
     };
 
     return (
@@ -103,8 +60,8 @@ const Gallery: React.FC = () => {
                 transition={{ duration: 0.5 }}
                 className="text-center mb-6"
             >
-                <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">GALLERY</h2>
-                <div className="text-[10px] text-gray-400 mt-2">소중한 순간들을 기록합니다</div>
+                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">GALLERY</p>
+                <h2 className="text-2xl font-myeongjo text-gray-800">소중한 순간들을 기록합니다</h2>
             </motion.div>
 
             <motion.div
@@ -123,48 +80,41 @@ const Gallery: React.FC = () => {
                     </div>
                 ) : (
                     <>
-                        {/* 이미지 슬라이드 */}
-                        <div className="relative w-full h-[70vh] overflow-hidden rounded-lg">
-                            <AnimatePresence mode="wait" custom={direction}>
-                                <motion.div
-                                    key={currentIndex}
-                                    custom={direction}
-                                    variants={slideVariants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{
-                                        x: { type: "spring", stiffness: 300, damping: 30 },
-                                        opacity: { duration: 0.2 }
-                                    }}
-                                    drag="x"
-                                    dragConstraints={{ left: 0, right: 0 }}
-                                    dragElastic={1}
-                                    onDragEnd={handleDragEnd}
-                                    className="absolute inset-0 flex items-center justify-center"
-                                >
-                                    <img
-                                        src={images[currentIndex]}
-                                        alt={`gallery-${currentIndex + 1}`}
-                                        onClick={() => setSelectedImage(images[currentIndex])}
-                                        className="max-w-full max-h-full object-contain rounded-lg shadow-lg cursor-pointer hover:scale-105 transition-transform"
-                                    />
-                                </motion.div>
-                            </AnimatePresence>
+                        {/* 이미지 캐러셀 */}
+                        <div className="relative w-full h-[70vh] overflow-hidden">
+                            <motion.div
+                                className="flex gap-6 h-full pl-[10%]"
+                                animate={{ x: `-${currentIndex * 94}%` }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                                {images.map((image, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex-shrink-0 flex items-center justify-center"
+                                        style={{ width: '88%', aspectRatio: '3/4' }}
+                                    >
+                                        <img
+                                            src={image}
+                                            alt={`gallery-${index + 1}`}
+                                            onClick={() => setSelectedImage(image)}
+                                            className="w-full h-full object-cover rounded-lg shadow-lg cursor-pointer"
+                                            draggable={false}
+                                        />
+                                    </div>
+                                ))}
+                            </motion.div>
 
-                            {/* 좌우 네비게이션 버튼 */}
-                            <button
-                                onClick={handlePrev}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-lg transition-all z-10"
-                            >
-                                <i className="fa-solid fa-chevron-left"></i>
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-lg transition-all z-10"
-                            >
-                                <i className="fa-solid fa-chevron-right"></i>
-                            </button>
+                            {/* 터치 영역 */}
+                            <div className="absolute inset-0 flex">
+                                <div
+                                    className="w-1/2 h-full cursor-pointer"
+                                    onClick={() => setCurrentIndex(prev => (prev - 1 + images.length) % images.length)}
+                                />
+                                <div
+                                    className="w-1/2 h-full cursor-pointer"
+                                    onClick={() => setCurrentIndex(prev => (prev + 1) % images.length)}
+                                />
+                            </div>
                         </div>
 
                         {/* 페이지 인디케이터 */}
@@ -172,10 +122,7 @@ const Gallery: React.FC = () => {
                             {images.map((_, index) => (
                                 <button
                                     key={index}
-                                    onClick={() => {
-                                        setDirection(index > currentIndex ? 1 : -1);
-                                        setCurrentIndex(index);
-                                    }}
+                                    onClick={() => setCurrentIndex(index)}
                                     className={`transition-all ${
                                         index === currentIndex
                                             ? 'w-8 h-2 bg-gray-800'
@@ -193,7 +140,7 @@ const Gallery: React.FC = () => {
                 )}
             </motion.div>
 
-            {/* Image Popup - Liquid Glass Style */}
+            {/* Image Popup */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div
@@ -201,45 +148,30 @@ const Gallery: React.FC = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setSelectedImage(null)}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
-                        style={{
-                            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
-                            backdropFilter: 'blur(30px)',
-                            WebkitBackdropFilter: 'blur(30px)',
-                        }}
+                        onWheel={handlePopupWheel}
+                        onTouchMove={handlePopupTouch}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer bg-black/80"
                     >
                         <motion.div
-                            initial={{ scale: 0.8, opacity: 0 }}
+                            initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className="relative"
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            className="relative max-w-[90vw] max-h-[90vh]"
                             onClick={(e) => e.stopPropagation()}
+                            onWheel={handlePopupWheel}
+                            onTouchMove={handlePopupTouch}
                         >
-                            <div
-                                className="liquid-glass p-4 rounded-3xl shadow-2xl"
-                                style={{
-                                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1))',
-                                    backdropFilter: 'blur(20px)',
-                                    WebkitBackdropFilter: 'blur(20px)',
-                                    border: '1px solid rgba(255, 255, 255, 0.5)',
-                                }}
-                            >
-                                <img
-                                    src={selectedImage}
-                                    alt="selected"
-                                    className="max-w-full max-h-[85vh] object-contain rounded-2xl"
-                                />
-                            </div>
+                            <img
+                                src={selectedImage}
+                                alt="selected"
+                                className="w-full h-full object-contain"
+                            />
                         </motion.div>
                         <button
                             onClick={() => setSelectedImage(null)}
-                            className="absolute top-8 right-8 w-12 h-12 rounded-full flex items-center justify-center transition-colors"
-                            style={{
-                                background: 'rgba(0, 0, 0, 0.7)',
-                                backdropFilter: 'blur(10px)',
-                                WebkitBackdropFilter: 'blur(10px)',
-                            }}
+                            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors"
                         >
-                            <i className="fa-solid fa-xmark text-white text-2xl"></i>
+                            <i className="fa-solid fa-xmark text-4xl"></i>
                         </button>
                     </motion.div>
                 )}

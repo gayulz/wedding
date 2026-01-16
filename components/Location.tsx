@@ -2,7 +2,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 // @ts-ignore
-import wedding81 from '../images/wedding-81.png';
+import naverMapIcon from '../images/navermap.webp';
+// @ts-ignore
+import tmapIcon from '../images/tmap.svg';
+// @ts-ignore
+import kakaoNavIcon from '../images/kakaonav.png';
 
 declare global {
   interface Window {
@@ -155,110 +159,98 @@ const Location: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative h-full w-full flex flex-col items-center p-8 pt-16">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${wedding81})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-white/70" />
-      </div>
-
+    <div className="relative h-full w-full flex flex-col items-center bg-[#f8f8f8]">
+      {/* 상단 헤더 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 text-center mb-4"
+        className="text-center pt-12 pb-6 px-6"
       >
-        <h2 className="text-xl font-myeongjo text-gray-800 tracking-[0.2em]">LOCATION</h2>
-        <div className="text-[10px] text-gray-400 mt-2 font-light">오시는 길</div>
+        <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">LOCATION</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6">오시는 길</h2>
+
+        <div className="space-y-2">
+          <h3 className="text-lg font-bold text-gray-800">토미스퀘어가든, 4층 스퀘어가든홀</h3>
+          <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
+          <p className="text-sm text-gray-600">Tel. 054-473-6799</p>
+        </div>
       </motion.div>
 
-      {/* 컨텐츠 영역 - 화면의 60% 제한 */}
+      {/* 네이버 지도 - 양옆 꽉 채우기 */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="relative z-10 w-full max-w-md"
-        style={{ maxHeight: '50vh' }}
+        ref={mapContainerRef}
+        className="relative w-full overflow-hidden"
+        style={{ height: '300px' }}
       >
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 overflow-hidden">
-          <div className="mb-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-1">토미스퀘어가든</h3>
-            <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
-            <div className="mt-2 text-blue-600 text-xs flex items-center gap-1">
-              <i className="fa-solid fa-phone"></i>
-              <a href="tel:054-473-6799">054-473-6799</a>
+        <div
+          ref={mapRef}
+          className="w-full h-full bg-gray-200"
+        />
+        {!mapLoaded && !error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <div className="text-center">
+              <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
+              <p className="text-xs text-gray-500">지도를 불러오는 중...</p>
             </div>
           </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+            <div className="text-center p-4">
+              <i className="fa-solid fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
+              <p className="text-xs text-gray-600">{error}</p>
+            </div>
+          </div>
+        )}
+      </motion.div>
 
-          {/* 네이버 지도 */}
-          <div
-            ref={mapContainerRef}
-            className="relative rounded-2xl mb-6 overflow-hidden shadow-md"
-            style={{ width: '100%', height: '250px' }}
+      {/* 네비게이션 섹션 */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="w-full px-6 py-8"
+      >
+
+        {/* 네비게이션 버튼 */}
+        <div className="grid grid-cols-3 gap-3">
+          <a
+            href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
           >
-            <div
-              ref={mapRef}
-              className="w-full h-full bg-gray-200"
-            />
-            {!mapLoaded && !error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                <div className="text-center">
-                  <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
-                  <p className="text-xs text-gray-500">지도를 불러오는 중...</p>
-                </div>
-              </div>
-            )}
-            {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                <div className="text-center p-4">
-                  <i className="fa-solid fa-exclamation-triangle text-2xl text-yellow-500 mb-2"></i>
-                  <p className="text-xs text-gray-600">{error}</p>
-                </div>
-              </div>
-            )}
-          </div>
+            <div className="w-12 h-12 flex items-center justify-center bg-green-500 rounded-lg overflow-hidden">
+              <img src={naverMapIcon} alt="네이버지도" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-xs text-gray-700 font-medium">네이버지도</span>
+          </a>
 
-          {/* Map Links - Glass buttons */}
-          <div className="grid grid-cols-3 gap-3">
-            <a
-              href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
-            >
-              <div className="w-6 h-6 flex items-center justify-center bg-green-500 rounded-md">
-                <span className="text-white text-xs font-bold">N</span>
-              </div>
-              <span className="text-[10px] text-gray-600">네이버지도</span>
-            </a>
-            <a
-              href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors"
-            >
-              <div className="w-6 h-6 flex items-center justify-center bg-yellow-400 rounded-md">
-                <span className="text-gray-800 text-xs font-bold">K</span>
-              </div>
-              <span className="text-[10px] text-gray-600">카카오맵</span>
-            </a>
-            <button
-              onClick={handleTmapRoute}
-              className="flex flex-col items-center gap-1 p-3 rounded-xl bg-gray-50 hover:bg-yellow-100 transition-colors cursor-pointer border-0"
-            >
-              <div className="w-6 h-6 flex items-center justify-center bg-red-500 rounded-md">
-                <span className="text-white text-xs font-bold">T</span>
-              </div>
-              <span className="text-[10px] text-gray-600">티맵 길찾기</span>
-            </button>
-          </div>
+          <button
+            onClick={handleTmapRoute}
+            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200 cursor-pointer"
+          >
+            <div className="w-12 h-12 flex items-center justify-center bg-red-500 rounded-lg overflow-hidden">
+              <img src={tmapIcon} alt="티맵" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-xs text-gray-700 font-medium">티맵</span>
+          </button>
+
+          <a
+            href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200"
+          >
+            <div className="w-12 h-12 flex items-center justify-center bg-yellow-400 rounded-lg overflow-hidden">
+              <img src={kakaoNavIcon} alt="카카오내비" className="w-full h-full object-cover" />
+            </div>
+            <span className="text-xs text-gray-700 font-medium">카카오내비</span>
+          </a>
         </div>
       </motion.div>
     </div>

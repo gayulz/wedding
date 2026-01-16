@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 // 이미지 파일 타입 선언
-declare module '*.jpeg' {
+declare module '*.png' {
   const src: string;
   export default src;
 }
