@@ -25,14 +25,14 @@ const OpeningSequence: React.FC<OpeningSequenceProps> = ({ onComplete }) => {
             if (text.length < fullText.length) {
                 const timeout = setTimeout(() => {
                     setText(fullText.slice(0, text.length + 1));
-                }, 100); // Typing speed
+                }, 65); // Typing speed (Optimized: 1.5x faster)
                 return () => clearTimeout(timeout);
             } else {
                 // Typing finished
                 const finishTimer = setTimeout(() => {
                     setIsFinished(true); // Trigger exit animation
                     setTimeout(onComplete, 1000); // Complete after fade out
-                }, 1000); // Wait a bit after typing is done
+                }, 500); // Wait a bit after typing is done
                 return () => clearTimeout(finishTimer);
             }
         }
@@ -64,7 +64,7 @@ const OpeningSequence: React.FC<OpeningSequenceProps> = ({ onComplete }) => {
 
                     {/* Typewriter Text */}
                     <div className="h-8">
-                        <p className="text-white text-xl font-maruburi tracking-widest">
+                        <p className="text-white text-xl font-myeongjo tracking-widest">
                             {text}
                             <span className="animate-pulse ml-1">|</span>
                         </p>

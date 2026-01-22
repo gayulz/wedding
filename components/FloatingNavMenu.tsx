@@ -15,7 +15,7 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
     { label: '인터뷰', index: 2 },
     { label: '갤러리', index: 3 },
     { label: '위치', index: 4 },
-    { label: '대중 교통', index: 5 },
+    { label: '참석 의사', index: 5 },
     { label: '마음 전하실 곳', index: 6 },
     { label: '방명록', index: 7 },
   ];
@@ -42,8 +42,8 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
                   setIsOpen(false);
                 }}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap ${currentSection === item.index
-                    ? 'bg-yellow-200 text-gray-900 shadow-lg'
-                    : 'bg-yellow-100/90 text-gray-900 hover:bg-yellow-200'
+                  ? 'bg-yellow-200 text-gray-900 shadow-lg'
+                  : 'bg-yellow-100/90 text-gray-900 hover:bg-yellow-200'
                   }`}
                 style={{
                   backdropFilter: 'blur(10px)',

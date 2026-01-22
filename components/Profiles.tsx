@@ -61,26 +61,25 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 		{
 			question: "Q1. 결혼을 앞둔 소감",
 			groom: "드디어 장가갑니다😊\n" +
-				"먼저 인생에서 가장 큰 결심을 할 수 있게 해준\n" +
-				"예비 신부에게 너무 고맙습니다.\n\n" +
-				"가족이라는 단어를 함께 한다는 것은 정말 설레고\n" +
-				"그만큼 가장의 책임감을 느낍니다.\n\n" +
-				"저희 부부가 한걸음 한걸음을 성실하게 나가는 \n" +
-				"모습을 지켜봐주시고 응원해주세요💛💛",
-			bride: "오래된 연인에서 이제는 인생의 동반자로\n" +
-				"머나먼 여정을 시작합니다 ! \n\n " +
-				"누구보다 잘 먹고 , 잘 자고, 아프지 않고 😊\n" +
-				"오늘을 평생 간직하며 잘 살겠습니다 ! " +
-				"지켜봐주세요 !"
+				"평생 옆에 있고 싶은 사람을 만났습니다.\n" +
+				"앞으로 더 잘해줄게요.\n" +
+				"저희 잘 살겠습니다!\n",
+			bride: "2010년 3월에 시작한 만남이\n" +
+				"26년 3월에 끝이 나네요\n" +
+				"앞으로 더 잘하고 잘 살께요 , 지켜봐주세요❤️\n"
 		},
 		{
 			question: "Q2. 결혼을 결심한 계기는?",
-			answer: "오랜 시간 함께 있다 보니 그 어떤 어려움이 있더라도 잘 해쳐 나갈 수 있다고 확신을 갖게 되었습니다.\n\n6년이란 시간을 함께 보내면서 서로에 대한 믿음과 애정이 쌓이게 되었고 이 사람과 살면 평생 재밌겠구나 란 생각이 들었습니다.\n"
+			answer: "6년 사귀면서 싸워도 결국 다시 찾게 되더라고요.\n" +
+				"이 정도면 그냥 평생 같이 살아야겠다 싶었습니다.\n" +
+				"그리고 이 사람이랑 있으면 밥이 맛있어요🍚"
 		},
 		{
 			question: "Q3. 서로에게 어떤 배우자가 될건가요?",
-			groom: "밥 잘 차려주고 삼시세끼 집에서 먹지 않는 멋진 오빠가 되겠습니다😏",
-			bride: "오빠가 집안일 할 수 있게 돈 많이 벌어다 주는 와이프가 되겠습니다🙋🏻‍♀️"
+			groom: "설거지 잘하고, 무거운 거 잘 들고, 벌레 잡아주는 남편 되겠습니다💪",
+			bride: "오빠 월급 안 건드리고 용돈 잘 주는 아내 될게요💰\n" +
+				"(단, 내 월급도 안 건드려야 함)"
+
 		}
 	];
 
@@ -94,23 +93,30 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 				className="flex flex-col items-center w-full max-w-md space-y-8"
 			>
 				{/* 헤더 */}
-				<motion.div variants={itemVariants} className="text-center">
-					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">INTERVIEW</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800 mt-0">우리 두 사람의 이야기</h2>
-					<p className="text-sm text-gray-600 mt-4">결혼을 앞두고 저희 두 사람의<br />인터뷰를 준비했습니다.</p>
+				<motion.div variants={itemVariants} className="text-center pt-8 pb-10">
+					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">INTERVIEW</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">우리 두 사람의 이야기</h2>
+					<div className="w-8 h-[1px] bg-gray-200 mx-auto mb-6"></div>
+					<p className="text-sm font-gowoon text-gray-500">결혼을 앞두고 저희 두 사람의<br />인터뷰를 준비했습니다.</p>
 				</motion.div>
 
 				{/* 사진 */}
 				<motion.div variants={itemVariants} className="grid grid-cols-2 gap-4 w-full px-4">
-					<div className="relative rounded-2xl overflow-hidden shadow-lg">
-						<img
+					<div className="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer group">
+						<motion.img
+							whileHover={{ scale: 1.25 }}
+							whileTap={{ scale: 1.25 }}
+							transition={{ type: "spring", stiffness: 300, damping: 20 }}
 							src={loadImage('wedding-99')}
 							alt="Groom"
 							className="w-full h-64 object-cover"
 						/>
 					</div>
-					<div className="relative rounded-2xl overflow-hidden shadow-lg">
-						<img
+					<div className="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer group">
+						<motion.img
+							whileHover={{ scale: 1.25 }}
+							whileTap={{ scale: 1.25 }}
+							transition={{ type: "spring", stiffness: 300, damping: 20 }}
 							src={loadImage('wedding-98')}
 							alt="Bride"
 							className="w-full h-64 object-cover"
@@ -122,7 +128,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 				<motion.button
 					variants={itemVariants}
 					onClick={() => setIsInterviewOpen(true)}
-					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2"
+					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 font-nanumsquare"
 				>
 					<i className="fa-solid fa-envelope text-xs"></i>
 					<span>신랑 & 신부의 인터뷰 읽어보기</span>
@@ -151,9 +157,9 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 							onClick={(e) => e.stopPropagation()}
 							onWheel={handleModalWheel}
 							onTouchMove={handleModalTouch}
-							className="bg-[#3a3a3a] rounded-2xl p-8 w-full max-w-md max-h-[80vh] overflow-y-auto relative"
+							className="bg-[#3a3a3a] rounded-2xl p-8 w-full max-w-md max-h-[80vh] overflow-y-auto relative scrollbar-hide"
 						>
-							{/* 닫기 버튼 - sticky로 스크롤해도 항상 보임 */}
+							{/* 닫기 버튼 */}
 							<button
 								onClick={() => setIsInterviewOpen(false)}
 								className="sticky top-0 float-right text-white/60 hover:text-white text-2xl z-10 mb-4"
@@ -162,57 +168,55 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 							</button>
 
 							{/* 헤더 */}
-							<div className="text-center mb-8 clear-both">
-								<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">INTERVIEW</p>
-								<h3 className="text-xl text-white font-myeongjo">우리 두 사람의 이야기</h3>
+							<div className="text-center mb-10 clear-both">
+								<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2 font-joseon">INTERVIEW</p>
+								<h3 className="text-2xl text-white font-myeongjo">우리 두 사람의 이야기</h3>
 							</div>
 
 							{/* 인터뷰 내용 */}
-							<div className="space-y-8">
+							<div className="space-y-12">
 								{/* Q1 */}
-								<div>
-									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[0].question}</h4>
-									<div className="space-y-4">
-										<div>
-											<p className="text-sm text-gray-400 mb-2">🤵 신랑 최봉석</p>
-											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+								<div className="space-y-6">
+									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[0].question}</h4>
+									<div className="space-y-6 pl-2 border-l-2 border-white/10">
+										<div className="space-y-2">
+											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Groom</p>
+											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[0].groom}
 											</p>
 										</div>
-										<div>
-											<p className="text-sm text-gray-400 mb-2">👰 신부 김가율</p>
-											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+										<div className="space-y-2">
+											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Bride</p>
+											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[0].bride}
 											</p>
 										</div>
 									</div>
 								</div>
 
-								{/* 구분선 */}
-								<div className="border-t border-gray-600"></div>
-
 								{/* Q2 */}
-								<div>
-									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[1].question}</h4>
-									<p className="text-sm text-white leading-relaxed whitespace-pre-line">
-										{interviews[1].answer}
-									</p>
+								<div className="space-y-6">
+									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[1].question}</h4>
+									<div className="pl-2 border-l-2 border-white/10">
+										<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+											{interviews[1].answer}
+										</p>
+									</div>
 								</div>
-								{/* 구분선 */}
-								<div className="border-t border-gray-600"></div>
+
 								{/* Q3 */}
-								<div>
-									<h4 className="text-base text-gray-300 font-medium mb-4">{interviews[2].question}</h4>
-									<div className="space-y-4">
-										<div>
-											<p className="text-sm text-gray-400 mb-2">🤵 신랑 최봉석</p>
-											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+								<div className="space-y-6">
+									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[2].question}</h4>
+									<div className="space-y-6 pl-2 border-l-2 border-white/10">
+										<div className="space-y-2">
+											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Groom</p>
+											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[2].groom}
 											</p>
 										</div>
-										<div>
-											<p className="text-sm text-gray-400 mb-2">👰 신부 김가율</p>
-											<p className="text-sm text-white leading-relaxed whitespace-pre-line">
+										<div className="space-y-2">
+											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Bride</p>
+											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[2].bride}
 											</p>
 										</div>

@@ -12,28 +12,11 @@ interface GuestbookEntry {
   createdAt: Timestamp;
 }
 
-// Custom hook to get window height
-const useWindowHeight = () => {
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowHeight;
-  return windowHeight;
-};
-
 interface GuestbookProps {
   onModalStateChange: (isOpen: boolean) => void;
 }
 
 const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showWritePopup, setShowWritePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [name, setName] = useState('');
@@ -42,10 +25,8 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 스크롤 컨테이너 ref
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  // 페이지 전환 방지 영역 ref
-  const noScrollAreaRef = useRef<HTMLDivElement>(null);
+  // 스크롤 컨테이너 ref (Location 컴포넌트와 동일한 방식)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // 수정 관련 state
   const [editingEntry, setEditingEntry] = useState<GuestbookEntry | null>(null);
@@ -57,42 +38,17 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
-  const windowHeight = useWindowHeight();
-
   // 커스텀 alert 함수
   const showCustomAlert = (message: string) => {
     setAlertMessage(message);
     setShowAlert(true);
   };
 
-  // Countdown Timer
-  useEffect(() => {
-    const target = new Date("2026-03-14T14:00:00");
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = target.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        clearInterval(interval);
-        return;
-      }
-
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        mins: Math.floor((diff / 1000 / 60) % 60),
-        secs: Math.floor((diff / 1000) % 60)
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // 실시간 방명록 불러오기 (오래된 순서 - 채팅 스타일)
+  // 실시간 방명록 불러오기 (오래된 순서 - 시안 스타일대로 렌더링)
   useEffect(() => {
     const q = query(
       collection(db, 'guestbook'),
-      orderBy('createdAt', 'asc') // 오래된 글이 위, 최신 글이 아래
+      orderBy('createdAt', 'desc')
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -107,6 +63,28 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
     });
 
     return () => unsubscribe();
+  }, []);
+
+  // 스크롤 이벤트 제어 (Location.tsx 방식 도입)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isScrollDown = e.deltaY > 0;
+      const isScrollUp = e.deltaY < 0;
+
+      const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+      const isAtTop = scrollTop <= 0;
+
+      if ((isScrollDown && !isAtBottom) || (isScrollUp && !isAtTop)) {
+        e.stopPropagation();
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
   }, []);
 
   // 방명록 작성
@@ -202,48 +180,9 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
     }
   };
 
-  // --- 반응형 로직 ---
-  const isVerySmallScreen = windowHeight < 680;
-  const isSmallScreen = windowHeight < 750;
-
-  const useSmallFont = isSmallScreen; // 750px 미만일때 모두 작은 폰트 사용
-  // --- 반응형 로직 끝 ---
-
-  // 새 메시지나 엔트리 변경 시 맨 아래로 스크롤
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
-    }
-  }, [entries]);
-
-  // 방명록 영역에서 페이지 전환 완전 차단 (모바일 포함)
-  useEffect(() => {
-    const noScrollArea = noScrollAreaRef.current;
-    if (!noScrollArea) return;
-
-    // 모든 스크롤 이벤트 차단
-    const preventScroll = (e: Event) => {
-      e.stopPropagation();
-    };
-
-    // 네이티브 이벤트 리스너로 강제 차단
-    noScrollArea.addEventListener('wheel', preventScroll, { passive: false });
-    noScrollArea.addEventListener('touchstart', preventScroll, { passive: false });
-    noScrollArea.addEventListener('touchmove', preventScroll, { passive: false });
-    noScrollArea.addEventListener('touchend', preventScroll, { passive: false });
-
-    return () => {
-      noScrollArea.removeEventListener('wheel', preventScroll);
-      noScrollArea.removeEventListener('touchstart', preventScroll);
-      noScrollArea.removeEventListener('touchmove', preventScroll);
-      noScrollArea.removeEventListener('touchend', preventScroll);
-    };
-  }, []);
-
-  // [MIG] 팝업 오픈 시 배경 스크롤 잠금 및 부모에게 알림 (작성, 수정, 비밀번호, 알림)
+  // 팝업 오픈 시 배경 스크롤 잠금
   useEffect(() => {
     const isAnyPopupOpen = showWritePopup || showEditPopup || showPasswordPopup || showAlert;
-
     if (isAnyPopupOpen) {
       document.body.style.overflow = 'hidden';
       onModalStateChange(true);
@@ -251,7 +190,6 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
       document.body.style.overflow = '';
       onModalStateChange(false);
     }
-
     return () => {
       document.body.style.overflow = '';
       onModalStateChange(false);
@@ -259,384 +197,300 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   }, [showWritePopup, showEditPopup, showPasswordPopup, showAlert, onModalStateChange]);
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-gray-900 text-white pt-12 px-3 pb-3 overflow-hidden">
-      {/* 카운트다운 - 페이지 이동 가능한 유일한 영역 */}
+    <div
+      ref={containerRef}
+      className="relative h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-y-auto overflow-x-hidden no-scrollbar pb-20"
+      onTouchStart={(e) => {
+        const container = containerRef.current;
+        if (!container) return;
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isAtTop = scrollTop <= 0;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        if (!isAtTop && !isAtBottom) {
+          e.stopPropagation();
+        }
+      }}
+      onTouchMove={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      {/* 헤더 섹션 */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center"
+        viewport={{ once: true }}
+        className="text-center pt-8 pb-10 px-6 shrink-0"
       >
-        <h2 className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">COUNTDOWN</h2>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex gap-2 justify-center items-center"
-        >
-          {[
-            { label: 'Days', val: timeLeft.days },
-            { label: 'Hours', val: timeLeft.hours },
-            { label: 'Mins', val: timeLeft.mins },
-            { label: 'Secs', val: timeLeft.secs }
-          ].map((item, i) => (
-            <div key={i} className="flex flex-col items-center">
-              <div className="w-12 h-14 md:w-16 md:h-18 glass-card rounded-xl flex items-center justify-center text-xl md:text-3xl font-light">
-                {String(item.val).padStart(2, '0')}
-              </div>
-              <span className="text-[9px] uppercase text-white/40 mt-1 tracking-widest">{item.label}</span>
-            </div>
-          ))}
-        </motion.div>
+        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">MESSAGE</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">축하의 한마디</h2>
+        <div className="w-8 h-[1px] bg-gray-200 mx-auto mb-8"></div>
+        <p className="text-sm font-gowoon text-gray-500">저희 둘에게 따뜻한 방명록을 남겨주세요</p>
       </motion.div>
 
-      {/* 카운트다운 아래 영역 - 페이지 전환 방지 */}
-      <div
-        ref={noScrollAreaRef}
-        className="w-full max-w-md flex flex-col flex-1"
-      >
-        {/* 방명록 목록 - 카톡 스타일 */}
-        <motion.div
-          ref={scrollContainerRef}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="w-full flex-1 overflow-y-auto space-y-3 mb-3 px-2"
-          style={{
-            maxHeight: 'calc(100vh - 320px)',
-            minHeight: '300px'
-          }}
-        >
-          {entries.length > 0 ? (
-            entries.map((entry, index) => {
-              // 인덱스 기반으로 번갈아가며 배치 (짝수는 왼쪽, 홀수는 오른쪽)
-              const isRight = index % 2 === 1;
+      {/* 방명록 목록 (시안 카드 스타일) */}
+      <div className="w-full max-w-sm px-6 space-y-4">
+        {entries.length > 0 ? (
+          entries.map((entry) => (
+            <motion.div
+              key={entry.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+            >
+              {/* 수정 버튼 (아이콘) */}
+              <button
+                onClick={() => handleEditClick(entry)}
+                className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors"
+              >
+                <i className="fa-solid fa-xmark text-sm"></i>
+              </button>
 
-              return (
-                <motion.div
-                  key={entry.id}
-                  initial={{ opacity: 0, x: isRight ? 20 : -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className={`flex flex-col ${isRight ? 'items-end' : 'items-start'}`}
-                >
-                  {/* 이름과 날짜 */}
-                  <div className={`flex items-center gap-2 mb-1 ${isRight ? 'flex-row-reverse' : ''}`}>
-                    <span className="text-[10px] text-white/90 font-medium">{entry.name}</span>
-                    <span className="text-[9px] text-white/40">
-                      {entry.createdAt?.toDate().toLocaleDateString('ko-KR')}
-                    </span>
-                  </div>
+              {/* 메시지 본문 */}
+              <p className="text-[14px] leading-relaxed text-gray-700 font-nanumsquare mb-6 whitespace-pre-wrap break-words">
+                {entry.message}
+              </p>
 
-                  {/* 말풍선 */}
-                  <div className={`relative max-w-[80%] ${isRight ? 'items-end' : 'items-start'} flex flex-col`}>
-                    <div
-                      className={`px-3 py-2 rounded-2xl ${isRight
-                        ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
-                        : 'bg-white/10 text-white/90 rounded-tl-sm'
-                        }`}
-                    >
-                      <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{entry.message}</p>
-                    </div>
+              {/* 하단 정보 */}
+              <div className="flex justify-between items-center text-[11px] font-nanumsquare">
+                <span className="text-gray-400">From {entry.name}</span>
+                <span className="text-gray-300">
+                  {entry.createdAt ? (
+                    entry.createdAt.toDate().toLocaleDateString('ko-KR') + ' ' +
+                    entry.createdAt.toDate().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
+                  ) : ''}
+                </span>
+              </div>
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-center text-gray-400 text-xs py-10 font-gowoon">아직 작성된 방명록이 없습니다.</p>
+        )}
 
-                    {/* Edit 버튼 */}
-                    <button
-                      onClick={() => handleEditClick(entry)}
-                      className={`mt-1 text-[9px] text-white/50 hover:text-white/80 transition-colors ${isRight ? 'self-end' : 'self-start'
-                        }`}
-                    >
-                      수정
-                    </button>
-                  </div>
-                </motion.div>
-              );
-            })
-          ) : (
-            <p className="text-center text-white/40 text-xs py-4">아직 작성된 방명록이 없습니다.</p>
-          )}
-        </motion.div>
+      </div>
 
-        {/* 축하메세지 작성 버튼 */}
+      {/* 버튼 고정 영역 - 컨테이너 외부가 아닌 내부에 sticky로 배치하여 스크롤 영향 최소화 */}
+      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-10 pt-4 bg-gradient-to-t from-[#f8f8f8] via-[#f8f8f8] to-transparent shrink-0 mt-auto">
         <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
           onClick={() => setShowWritePopup(true)}
-          className="w-full mb-2 px-6 py-2.5 bg-white text-gray-900 rounded-xl font-bold tracking-widest hover:bg-yellow-100/80 transition-colors text-xs"
+          className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95"
         >
-          💍 축하메세지 작성 💍
+          메시지 남기기
         </motion.button>
       </div>
 
       {/* 작성 팝업 */}
       <AnimatePresence>
         {showWritePopup && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowWritePopup(false)}
-            className="absolute inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-            }}
-          >
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-3xl p-8 space-y-4"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowWritePopup(false)}
+              className="absolute inset-0 bg-black/40"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="w-full max-w-sm bg-white rounded-3xl p-8 space-y-6 z-10 shadow-2xl relative"
             >
-              <h3 className="text-center font-myeongjo text-xl text-white mb-6">축하메세지 작성</h3>
-              <input
-                type="text"
-                placeholder="이름"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full bg-white/10 border border-white/20 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all placeholder:text-white/40"
-              />
-              <input
-                type="password"
-                placeholder="비밀번호 (숫자 4자리)"
-                value={password}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '').slice(0, 4);
-                  setPassword(value);
-                }}
-                maxLength={4}
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="w-full bg-white/10 border border-white/20 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all placeholder:text-white/40"
-              />
-              <div className="relative">
-                <textarea
-                  placeholder="축하의 메시지를 남겨주세요"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value.slice(0, 300))}
-                  maxLength={300}
-                  className="w-full h-32 bg-white/10 border border-white/20 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all placeholder:text-white/40 resize-none"
+              <button
+                onClick={() => setShowWritePopup(false)}
+                className="absolute top-6 right-6 text-gray-400"
+              >
+                <i className="fa-solid fa-xmark text-lg"></i>
+              </button>
+
+              <div className="text-center space-y-2">
+                <h3 className="text-xl font-myeongjo text-gray-800">축하 메시지 작성하기</h3>
+                <p className="text-xs font-gowoon text-gray-500">저희 둘의 결혼을 함께 축하해 주세요</p>
+              </div>
+
+              <div className="space-y-4 pt-4">
+                <input
+                  type="text"
+                  placeholder="성함을 남겨주세요"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-300 font-nanumsquare shadow-inner"
                 />
-                <div className="absolute bottom-3 right-3 text-xs text-white/40">
-                  {message.length}/300
-                </div>
+                <input
+                  type="password"
+                  placeholder="비밀번호를 입력해 주세요 (숫자 4자리)"
+                  value={password}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                    setPassword(value);
+                  }}
+                  maxLength={4}
+                  inputMode="numeric"
+                  className="w-full bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-300 font-nanumsquare shadow-inner"
+                />
+                <textarea
+                  placeholder="200자 이내로 작성해 주세요"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value.slice(0, 200))}
+                  maxLength={200}
+                  className="w-full h-40 bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-300 font-nanumsquare resize-none shadow-inner"
+                />
               </div>
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => setShowWritePopup(false)}
-                  className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium text-sm hover:bg-white/20 transition-colors"
-                >
-                  취소
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={loading}
-                  className="flex-1 py-3 bg-white text-gray-900 rounded-xl font-bold text-sm hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? '등록 중...' : '등록'}
-                </button>
-              </div>
+
+              <button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare font-bold hover:bg-[#7a7a7a] transition-all disabled:opacity-50"
+              >
+                {loading ? '작성 중...' : '작성 완료'}
+              </button>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
-      {/* 비밀번호 확인 팝업 */}
+      {/* 비밀번호 확인 팝업 (디자인 리뉴얼) */}
       <AnimatePresence>
         {showPasswordPopup && editingEntry && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => {
-              setShowPasswordPopup(false);
-              setEditingEntry(null);
-              setEditPassword('');
-            }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-            }}
-          >
+          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-sm rounded-3xl p-8 space-y-4"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => {
+                setShowPasswordPopup(false);
+                setEditingEntry(null);
+                setEditPassword('');
               }}
+              className="absolute inset-0 bg-black/40"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-xs bg-white rounded-2xl p-8 space-y-6 z-10 shadow-2xl"
             >
-              <h3 className="text-center font-myeongjo text-xl text-white mb-6">비밀번호 확인</h3>
-              <div className="bg-white/10 rounded-xl p-3 mb-4">
-                <p className="text-xs text-white/60">작성자</p>
-                <p className="text-sm text-white font-medium">{editingEntry.name}</p>
-              </div>
+              <h3 className="text-center font-myeongjo text-lg text-gray-800">비밀번호 확인</h3>
               <input
                 type="password"
-                placeholder="비밀번호 (숫자 4자리)"
+                placeholder="비밀번호 숫자 4자리"
                 value={editPassword}
                 onChange={(e) => {
                   const value = e.target.value.replace(/\D/g, '').slice(0, 4);
                   setEditPassword(value);
                 }}
                 maxLength={4}
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="w-full bg-white/10 border border-white/20 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all placeholder:text-white/40"
+                autoFocus
+                className="w-full bg-[#f8f8f8] border border-gray-100 rounded-xl p-4 text-center text-sm font-nanumsquare focus:outline-none"
               />
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2">
                 <button
                   onClick={() => {
                     setShowPasswordPopup(false);
                     setEditingEntry(null);
                     setEditPassword('');
                   }}
-                  className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium text-sm hover:bg-white/20 transition-colors"
+                  className="flex-1 py-3 bg-gray-100 text-gray-500 rounded-xl text-xs font-nanumsquare"
                 >
                   취소
                 </button>
                 <button
                   onClick={handlePasswordVerify}
-                  className="flex-1 py-3 bg-white text-gray-900 rounded-xl font-bold text-sm hover:bg-gray-100 transition-colors"
+                  className="flex-1 py-3 bg-[#8E8E8E] text-white rounded-xl text-xs font-nanumsquare font-bold"
                 >
                   확인
                 </button>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
-      {/* 수정 팝업 */}
+      {/* 수정 팝업 (디자인 리뉴얼) */}
       <AnimatePresence>
         {showEditPopup && editingEntry && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowEditPopup(false)}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-            }}
-          >
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowEditPopup(false)}
+              className="absolute inset-0 bg-black/40"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md rounded-3xl p-8 space-y-4"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05))',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-              }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-sm bg-white rounded-3xl p-8 space-y-6 z-10 shadow-2xl relative"
             >
-              <h3 className="text-center font-myeongjo text-xl text-white mb-6">메시지 수정</h3>
-              <div className="bg-white/10 rounded-xl p-3 mb-4">
-                <p className="text-xs text-white/60">작성자</p>
-                <p className="text-sm text-white font-medium">{editingEntry.name}</p>
-              </div>
-              <div className="relative">
-                <textarea
-                  placeholder="수정할 메시지를 입력해주세요"
-                  value={editMessage}
-                  onChange={(e) => setEditMessage(e.target.value.slice(0, 300))}
-                  maxLength={300}
-                  className="w-full h-32 bg-white/10 border border-white/20 rounded-xl p-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white/40 transition-all placeholder:text-white/40 resize-none"
-                />
-                <div className="absolute bottom-3 right-3 text-xs text-white/40">
-                  {editMessage.length}/300
+              <button
+                onClick={() => setShowEditPopup(false)}
+                className="absolute top-6 right-6 text-gray-400"
+              >
+                <i className="fa-solid fa-xmark text-lg"></i>
+              </button>
+
+              <h3 className="text-center font-myeongjo text-xl text-gray-800">메시지 수정하기</h3>
+
+              <div className="space-y-4 pt-4">
+                <div className="px-4 py-2 bg-gray-50 rounded-lg text-xs font-nanumsquare text-gray-400">
+                  작성자: {editingEntry.name}
                 </div>
+                <textarea
+                  value={editMessage}
+                  onChange={(e) => setEditMessage(e.target.value.slice(0, 200))}
+                  maxLength={200}
+                  className="w-full h-40 bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all font-nanumsquare resize-none"
+                />
               </div>
-              <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => {
-                    setShowEditPopup(false);
-                    setEditingEntry(null);
-                    setEditPassword('');
-                    setEditMessage('');
-                  }}
-                  className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium text-sm hover:bg-white/20 transition-colors"
-                >
-                  취소
-                </button>
-                <button
-                  onClick={handleEdit}
-                  disabled={loading}
-                  className="flex-1 py-3 bg-white text-gray-900 rounded-xl font-bold text-sm hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? '수정 중...' : '수정'}
-                </button>
-              </div>
+
+              <button
+                onClick={handleEdit}
+                disabled={loading}
+                className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare font-bold hover:bg-[#7a7a7a] transition-all"
+              >
+                {loading ? '수정 중...' : '수정 완료'}
+              </button>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
-      {/* 커스텀 Alert 팝업 */}
+      {/* 커스텀 Alert (디자인 리뉴얼) */}
       <AnimatePresence>
         {showAlert && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowAlert(false)}
-            className="fixed inset-0 z-[200] flex items-center justify-center p-4 cursor-pointer"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4))',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-            }}
-          >
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowAlert(false)}
+              className="absolute inset-0 bg-black/40"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-sm rounded-2xl p-6 text-center"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-              }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-[280px] bg-white rounded-2xl p-6 text-center z-10 shadow-2xl"
             >
-              <p className="text-white text-sm leading-relaxed whitespace-pre-line mb-6">
+              <p className="text-gray-800 text-sm font-nanumsquare mb-6 leading-relaxed">
                 {alertMessage}
               </p>
               <button
                 onClick={() => setShowAlert(false)}
-                className="w-full py-3 bg-white text-gray-900 rounded-xl font-bold text-sm hover:bg-gray-100 transition-colors"
+                className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold text-xs"
               >
                 확인
               </button>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
-
-      <p className="mt-2 text-white/30 text-[9px] text-center font-light uppercase tracking-[0.3em]">
-        Design by Gayul
-      </p>
     </div>
   );
 };

@@ -17,7 +17,8 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
         'wedding-01', 'wedding-02', 'wedding-03', 'wedding-04',
         'wedding-05', 'wedding-06', 'wedding-07', 'wedding-08',
         'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12',
-        'wedding-13', 'wedding-14', 'wedding-15', 'wedding-16', 'wedding-17'
+        'wedding-13', 'wedding-14', 'wedding-15', 'wedding-16',
+        'wedding-17'
     ];
 
     const images = imageNames.map(name => loadImage(name));
@@ -122,15 +123,18 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
     };
 
     return (
-        <div className="h-full w-full flex flex-col items-center bg-white pt-12 px-6 pb-6 md:pt-12 md:px-12 md:pb-12 overflow-hidden">
+        <div className="h-full w-full flex flex-col items-center bg-white px-6 pb-6 md:px-12 md:pb-12 overflow-hidden">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-center mb-10"
+                viewport={{ once: true }}
+                className="text-center pt-8 pb-10"
             >
-                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">GALLERY</p>
-                <h2 className="text-2xl font-myeongjo text-gray-800 mt-0">소중한 순간들을 기록합니다</h2>
+                <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">GALLERY</p>
+                <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">소중한 순간들</h2>
+                <div className="w-8 h-[1px] bg-gray-200 mx-auto mb-6"></div>
+                <p className="text-sm font-gowoon text-gray-500">저희의 아름다운 순간을 함께해주세요</p>
             </motion.div>
 
             <motion.div

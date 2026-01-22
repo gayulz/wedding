@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
             hidden: { opacity: 0, y: 10 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
           }}
-          className="text-white/80 tracking-[0.3em] uppercase text-[10px] mb-3"
+          className="text-white/70 tracking-[0.4em] uppercase text-[10px] mb-4 font-joseon"
         >
           Wedding Invitation
         </motion.p>
@@ -58,16 +58,16 @@ const Hero: React.FC = () => {
             hidden: { opacity: 0, y: 10 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
           }}
-          className="text-xl md:text-3xl text-white font-maruburi mb-6 leading-tight text-glow-subtle"
+          className="text-4xl md:text-5xl text-white font-myeongjo mb-8 leading-tight text-glow-subtle tracking-tight"
         >
-          최봉석 <span className="text-sm align-middle mx-1">💍</span> 김가율
+          최봉석 <span className="text-xl align-middle mx-1 opacity-80">💍</span> 김가율
         </motion.h1>
         <motion.p
           variants={{
             hidden: { opacity: 0, y: 10 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
           }}
-          className="text-white font-light text-base md:text-[17px] tracking-widest"
+          className="text-white font-myeongjo text-lg md:text-xl tracking-widest mb-3"
         >
           2026. 03. 14. 토 PM 2:00
         </motion.p>
@@ -76,7 +76,7 @@ const Hero: React.FC = () => {
             hidden: { opacity: 0, y: 10 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
           }}
-          className="text-white/70 mt-2 text-xs md:text-sm"
+          className="text-white/80 mt-1 text-sm md:text-base font-gowoon"
         >
           구미 토미스퀘어가든, 4층 스퀘어가든 홀
         </motion.p>

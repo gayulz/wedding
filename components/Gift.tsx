@@ -91,13 +91,13 @@ const Gift: React.FC = () => {
 				className="w-full max-w-md"
 			>
 				{/* 헤더 */}
-				<div className="text-center mb-10">
-					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">ACCOUNT</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-6">마음 전하실 곳</h2>
-					<p className="text-xs text-gray-500 leading-relaxed">
+				<div className="text-center pt-8 pb-10">
+					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">ACCOUNT</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">마음 전하실 곳</h2>
+					<div className="w-8 h-[1px] bg-gray-200 mx-auto mb-8"></div>
+					<p className="text-[13px] font-gowoon text-gray-500 leading-relaxed">
 						참석이 어려우신 분들을 위해<br />
-						계좌번호를 기재하였습니다.<br />
-						너그러운 마음으로 양해 부탁드립니다.
+						계좌번호를 기재하였습니다.
 					</p>
 				</div>
 
@@ -105,21 +105,19 @@ const Gift: React.FC = () => {
 				<div className="flex gap-2 mb-10 bg-gray-100/80 p-2 rounded-full">
 					<button
 						onClick={() => setActiveTab('groom')}
-						className={`flex-1 py-3.5 rounded-full text-sm font-medium transition-all ${
-							activeTab === 'groom'
-								? 'bg-white text-gray-800 shadow-md'
-								: 'text-gray-500'
-						}`}
+						className={`flex-1 py-3.5 rounded-full text-sm font-medium transition-all ${activeTab === 'groom'
+							? 'bg-white text-gray-800 shadow-md'
+							: 'text-gray-500'
+							}`}
 					>
 						신랑측
 					</button>
 					<button
 						onClick={() => setActiveTab('bride')}
-						className={`flex-1 py-3.5 rounded-full text-sm font-medium transition-all ${
-							activeTab === 'bride'
-								? 'bg-white text-gray-800 shadow-md'
-								: 'text-gray-500'
-						}`}
+						className={`flex-1 py-3.5 rounded-full text-sm font-medium transition-all ${activeTab === 'bride'
+							? 'bg-white text-gray-800 shadow-md'
+							: 'text-gray-500'
+							}`}
 					>
 						신부측
 					</button>
@@ -148,9 +146,10 @@ const Gift: React.FC = () => {
 
 			<motion.p
 				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ duration: 0.5, delay: 0.8 }}
-				className="mt-10 text-xs text-gray-400 text-center leading-relaxed"
+				whileInView={{ opacity: 1 }}
+				viewport={{ once: true }}
+				transition={{ duration: 0.5, delay: 0.5 }}
+				className="mt-10 text-[11px] font-nanumsquare text-gray-400 text-center leading-relaxed"
 			>
 				화훼 화환은 정중히 사양합니다.<br />
 				보내주시는 따뜻한 마음 감사히 받겠습니다.

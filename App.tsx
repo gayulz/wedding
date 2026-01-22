@@ -6,7 +6,7 @@ import Intro from './components/Intro';
 import OpeningSequence from './components/OpeningSequence';
 import Profiles from './components/Profiles';
 import Location from './components/Location';
-import Transport from './components/Transport';
+import Rsvp from './components/Rsvp';
 import Gallery from './components/Gallery';
 import Gift from './components/Gift';
 import Guestbook from './components/Guestbook';
@@ -20,7 +20,7 @@ const SECTIONS = [
   'profiles',
   'gallery',
   'location',
-  'transport',
+  'rsvp',
   'gift',
   'guestbook'
 ];
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
-  const [isAnyModalOpen, setIsAnyModalOpen] = useState(false); // [MIG] 모달 오픈 상태 관리
+  const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
   const touchStartY = useRef(0);
 
   // 카카오톡 웹뷰에서 외부 브라우저로 열기
@@ -40,16 +40,14 @@ const App: React.FC = () => {
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
 
     if (isAndroid) {
-      // Android: 크롬으로 열기
       window.location.href = `intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
     } else if (isIOS) {
-      // iOS: Safari로 열기 (iOS에서는 Safari가 기본)
       window.location.href = currentUrl;
     }
   };
 
   const handleScroll = useCallback((delta: number) => {
-    if (isScrolling || isAnyModalOpen || showOpening) return; // [MIG] 모달이 열려있거나 오프닝 중일 때는 스크롤 방지
+    if (isScrolling || isAnyModalOpen || showOpening) return;
 
     if (delta > 0 && currentIdx < SECTIONS.length - 1) {
       setIsScrolling(true);
@@ -60,7 +58,7 @@ const App: React.FC = () => {
     }
 
     setTimeout(() => setIsScrolling(false), 800);
-  }, [isScrolling, currentIdx, isAnyModalOpen, showOpening]); // [MIG] isAnyModalOpen 종속성 추가
+  }, [isScrolling, currentIdx, isAnyModalOpen, showOpening]);
 
   // 카카오톡 웹뷰 감지 및 팝업 표시
   useEffect(() => {
@@ -73,20 +71,16 @@ const App: React.FC = () => {
   // 주소창과 하단 바 자동 숨김 (모바일 브라우저)
   useEffect(() => {
     const hideAddressBar = () => {
-      // 페이지 로드 후 약간의 스크롤을 트리거해서 주소창 숨김
       setTimeout(() => {
         window.scrollTo(0, 1);
       }, 100);
 
-      // 추가로 안정성을 위해 한번 더
       setTimeout(() => {
         window.scrollTo(0, 0);
       }, 300);
     };
 
     hideAddressBar();
-
-    // orientation 변경 시에도 다시 적용
     window.addEventListener('orientationchange', hideAddressBar);
 
     return () => {
@@ -123,17 +117,11 @@ const App: React.FC = () => {
   }, [handleScroll]);
 
   return (
-    // [MIG] 데스크탑에서 모바일 뷰 시뮬레이션 (배경)
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
-      {/* [MIG] 실제 앱 컨텐츠 (모바일 규격 제한) */}
       <div className="relative w-full h-full max-w-[430px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
-        {/* 오프닝 시퀀스 */}
         {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
-
-        {/* 떠다니는 파티클 효과 */}
         <FloatingParticles />
 
-        {/* 카카오톡 브라우저 전환 안내 팝업 */}
         {showBrowserPrompt && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[9999]">
             <motion.div
@@ -181,7 +169,7 @@ const App: React.FC = () => {
             {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
             {currentIdx === 3 && <Gallery onModalStateChange={setIsAnyModalOpen} />}
             {currentIdx === 4 && <Location />}
-            {currentIdx === 5 && <Transport />}
+            {currentIdx === 5 && <Rsvp onModalStateChange={setIsAnyModalOpen} />}
             {currentIdx === 6 && <Gift />}
             {currentIdx === 7 && <Guestbook onModalStateChange={setIsAnyModalOpen} />}
           </motion.div>

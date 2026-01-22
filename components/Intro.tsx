@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader';
 
 const Intro: React.FC = () => {
@@ -63,13 +63,7 @@ const Intro: React.FC = () => {
     return (
         <div
             className="relative h-full w-full flex flex-col items-center pt-12 px-8 pb-12 text-center"
-            style={{
-                backgroundImage: `url(${loadImage('wedding-80')})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-            }}
         >
-            <div className="absolute inset-0 bg-white/80 z-0"></div>
 
             <div className="relative z-10">
                 <motion.div
@@ -79,44 +73,44 @@ const Intro: React.FC = () => {
                     viewport={{ once: true }}
                     className="space-y-8 max-w-lg"
                 >
-                    <motion.div variants={itemVariants} className="text-[10px] text-gray-500 tracking-[0.3em] uppercase">
-                        INVITATION
+                    <motion.div variants={itemVariants} className="pt-8 pb-10">
+                        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">INVITATION</p>
+                        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">소중한 분들을 초대합니다</h2>
+                        <div className="w-8 h-[1px] bg-gray-200 mx-auto mt-2"></div>
                     </motion.div>
 
-                    <motion.h2 variants={itemVariants} className="text-xl font-myeongjo text-gray-800 mb-8">
-                        소중한 분들을 초대합니다
-                    </motion.h2>
+                    <motion.div variants={itemVariants} className="font-myeongjo text-sm leading-relaxed text-gray-700 whitespace-pre-line space-y-6">
+                        <p>
+                            따뜻한 봄에 만난 우리,<br />
+                            오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br />
+                            이제는 함께 걸어가려 합니다.
+                        </p>
 
-                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-700 whitespace-pre-line">
-                        따뜻한 봄에 만난 우리,<br/>
-                        오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br/>
-                        이제는 함께 걸어가려 합니다.
-                    </motion.p>
+                        <p>
+                            봄에는 활짝 핀 벚꽃이 되어주고<br />
+                            여름에는 시원한 바람이 되어주겠습니다.<br />
+                            가을에는 드넓은 하늘이 되어주고<br />
+                            겨울에는 새하얀 눈이 되어<br />
+                            평생을 늘 서로에게 버팀목이 되어주겠습니다.
+                        </p>
 
-                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-700 whitespace-pre-line">
-                        봄에는 활짝 핀 벚꽃이 되어주고<br/>
-                        여름에는 시원한 바람이 되어주겠습니다.<br/>
-                        가을에는 드넓은 하늘이 되어주고<br/>
-                        겨울에는 새하얀 눈이 되어<br/>
-                        평생을 늘 서로에게 버팀목이 되어주겠습니다.
-                    </motion.p>
-
-                    <motion.p variants={itemVariants} className="font-myeongjo text-xs leading-relaxed text-gray-700 whitespace-pre-line">
-                        시작의 한 걸음,<br/>
-                        함께 축복해 주시면 감사드립니다.
-                    </motion.p>
+                        <p>
+                            시작의 한 걸음,<br />
+                            함께 축복해 주시면 감사드립니다.
+                        </p>
+                    </motion.div>
 
                     {/* 부모님 이름 */}
-                    <motion.div variants={itemVariants} className="space-y-2 pt-2">
-                        <p className="text-sm text-gray-700">
-                            <span className="font-light">{contacts.groom.mother.name}</span>
-                            <span className="text-xs text-gray-500 ml-2">의 아들</span>
-                            <span className="font-semibold ml-1">{contacts.groom.name}</span>
+                    <motion.div variants={itemVariants} className="space-y-4 pt-4 font-gowoon">
+                        <p className="text-base text-gray-700">
+                            <span className="font-normal">{contacts.groom.mother.name}</span>
+                            <span className="text-xs text-gray-400 mx-2">의 아들</span>
+                            <span className="font-bold text-lg">{contacts.groom.name}</span>
                         </p>
-                        <p className="text-sm text-gray-700">
-                            <span className="font-light">{contacts.bride.father.name}</span>
-                            <span className="text-xs text-gray-500 ml-2">의 딸</span>
-                            <span className="font-semibold ml-1">{contacts.bride.name}</span>
+                        <p className="text-base text-gray-700">
+                            <span className="font-normal">{contacts.bride.father.name}</span>
+                            <span className="text-xs text-gray-400 mx-2">의 딸</span>
+                            <span className="font-bold text-lg">{contacts.bride.name}</span>
                         </p>
                     </motion.div>
 
