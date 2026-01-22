@@ -42,7 +42,7 @@ const App: React.FC = () => {
     if (isAndroid) {
       window.location.href = `intent://${currentUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end;`;
     } else if (isIOS) {
-      window.location.href = currentUrl;
+      window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(currentUrl)}`;
     }
   };
 
