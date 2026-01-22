@@ -73,13 +73,13 @@ const Intro: React.FC = () => {
                     viewport={{ once: true }}
                     className="space-y-8 max-w-lg"
                 >
-                    <motion.div variants={itemVariants} className="pt-8 pb-10">
+                    <motion.div variants={itemVariants} className="pt-8 pb-3">
                         <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">INVITATION</p>
                         <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">소중한 분들을 초대합니다</h2>
                         <div className="w-8 h-[1px] bg-gray-200 mx-auto mt-2"></div>
                     </motion.div>
 
-                    <motion.div variants={itemVariants} className="font-myeongjo text-sm leading-relaxed text-gray-700 whitespace-pre-line space-y-6">
+                    <motion.div variants={itemVariants} className="font-myeongjo text-[12px] leading-relaxed text-gray-700 whitespace-pre-line space-y-6">
                         <p>
                             따뜻한 봄에 만난 우리,<br />
                             오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br />
