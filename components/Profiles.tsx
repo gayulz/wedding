@@ -66,18 +66,22 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 				"저희 잘 살겠습니다!\n",
 			bride: "2010년 3월에 시작한 만남이\n" +
 				"26년 3월에 끝이 나네요\n" +
-				"앞으로 더 잘하고 잘 살께요 , 지켜봐주세요❤️\n"
+				"앞으로 더 잘하고 잘 살께요,지켜봐주세요❤️\n"
 		},
 		{
 			question: "Q2. 결혼을 결심한 계기는?",
-			answer: "6년 사귀면서 싸워도 결국 다시 찾게 되더라고요.\n" +
-				"이 정도면 그냥 평생 같이 살아야겠다 싶었습니다.\n" +
+			answer: "6년 사귀면서 싸워도 \n" +
+				"결국 다시 찾게 되더라고요.\n" +
+				"이 정도면 그냥 \n" +
+				"평생 같이 살아야겠다 싶었습니다.\n" +
 				"그리고 이 사람이랑 있으면 밥이 맛있어요🍚"
 		},
 		{
-			question: "Q3. 서로에게 어떤 배우자가 될건가요?",
-			groom: "설거지 잘하고, 무거운 거 잘 들고, 벌레 잡아주는 남편 되겠습니다💪",
-			bride: "오빠 월급 안 건드리고 용돈 잘 주는 아내 될게요💰\n" +
+			question: "Q3. 서로 어떤 배우자가 될건가요?",
+			groom: "설거지 잘하고, 무거운 거 잘 들고,\n" +
+				" 벌레 잡아주는 남편 되겠습니다💪",
+			bride: "오빠 월급 안 건드리고 \n" +
+				"용돈 잘 모으는 아내 될게요💰\n" +
 				"(단, 내 월급도 안 건드려야 함)"
 
 		}
@@ -177,17 +181,17 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 							<div className="space-y-12">
 								{/* Q1 */}
 								<div className="space-y-6">
-									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[0].question}</h4>
+									<h4 className="text-md text-yellow-100/90 font-gowoon leading-relaxed">{interviews[0].question}</h4>
 									<div className="space-y-6 pl-2 border-l-2 border-white/10">
 										<div className="space-y-2">
 											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Groom</p>
-											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+											<p className="text-[13px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[0].groom}
 											</p>
 										</div>
 										<div className="space-y-2">
 											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Bride</p>
-											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+											<p className="text-[13px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[0].bride}
 											</p>
 										</div>
@@ -196,9 +200,9 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 
 								{/* Q2 */}
 								<div className="space-y-6">
-									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[1].question}</h4>
+									<h4 className="text-m text-yellow-100/90 font-gowoon leading-relaxed">{interviews[1].question}</h4>
 									<div className="pl-2 border-l-2 border-white/10">
-										<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+										<p className="text-[13px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 											{interviews[1].answer}
 										</p>
 									</div>
@@ -206,17 +210,17 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 
 								{/* Q3 */}
 								<div className="space-y-6">
-									<h4 className="text-lg text-yellow-100/90 font-gowoon leading-relaxed">{interviews[2].question}</h4>
+									<h4 className="text-m text-yellow-100/90 font-gowoon leading-relaxed">{interviews[2].question}</h4>
 									<div className="space-y-6 pl-2 border-l-2 border-white/10">
 										<div className="space-y-2">
 											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Groom</p>
-											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+											<p className="text-[13px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[2].groom}
 											</p>
 										</div>
 										<div className="space-y-2">
 											<p className="text-[11px] text-gray-500 font-joseon uppercase tracking-wider">Bride</p>
-											<p className="text-[15px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
+											<p className="text-[13px] text-white/90 leading-relaxed whitespace-pre-line font-nanumsquare">
 												{interviews[2].bride}
 											</p>
 										</div>

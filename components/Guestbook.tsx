@@ -248,7 +248,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="relative bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
+              className="relative bg-white rounded-2xl p-6 shadow-md border border-gray-50/50"
             >
               {/* 수정 버튼 (아이콘) */}
               <button
