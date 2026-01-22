@@ -205,7 +205,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         if (!container) return;
         const { scrollTop, scrollHeight, clientHeight } = container;
         const isAtTop = scrollTop <= 0;
-        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 2;
         if (!isAtTop && !isAtBottom) {
           e.stopPropagation();
         }
@@ -218,7 +218,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         if (!container) return;
         const { scrollTop, scrollHeight, clientHeight } = container;
         const isAtTop = scrollTop <= 0;
-        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 2;
         if (!isAtTop && !isAtBottom) {
           e.stopPropagation();
         }
@@ -238,8 +238,8 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         <p className="text-sm font-gowoon text-gray-500">저희 둘에게 따뜻한 방명록을 남겨주세요</p>
       </motion.div>
 
-      {/* 방명록 목록 (시안 카드 스타일) */}
-      <div className="w-full max-w-sm px-6 space-y-4">
+      {/* 방명록 목록 (시안 카드 스타일) - 하단 여백 추가하여 버튼에 가려지지 않게 함 */}
+      <div className="w-full max-w-sm px-6 space-y-4 pb-32">
         {entries.length > 0 ? (
           entries.map((entry) => (
             <motion.div
@@ -281,8 +281,8 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
 
       </div>
 
-      {/* 버튼 고정 영역 - 컨테이너 외부가 아닌 내부에 sticky로 배치하여 스크롤 영향 최소화 */}
-      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-10 pt-4 bg-gradient-to-t from-[#f8f8f8] via-[#f8f8f8] to-transparent shrink-0 mt-auto">
+      {/* 버튼 고정 영역 - 뒷 컨텐츠가 비치지 않도록 Solid 배경 적용 및 위치 하단 밀착 */}
+      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-6 pt-4 bg-[#f8f8f8] shrink-0 mt-auto z-[50] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
         <motion.button
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}

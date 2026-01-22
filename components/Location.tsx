@@ -170,7 +170,7 @@ const Location: React.FC = () => {
         if (!container) return;
         const { scrollTop, scrollHeight, clientHeight } = container;
         const isAtTop = scrollTop <= 0;
-        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 2;
 
         if (!isAtTop && !isAtBottom) {
           e.stopPropagation();
@@ -184,7 +184,7 @@ const Location: React.FC = () => {
         if (!container) return;
         const { scrollTop, scrollHeight, clientHeight } = container;
         const isAtTop = scrollTop <= 0;
-        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 2;
 
         if (!isAtTop && !isAtBottom) {
           e.stopPropagation();
