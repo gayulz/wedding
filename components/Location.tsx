@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
+import { weddingData } from '@/data/content';
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ const Location: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null); // Main container ref for scroll logic
   const [mapLoaded, setMapLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   // Scroll logic: Stop propagation if scrolling inside, allow if at boundaries
   useEffect(() => {
@@ -35,27 +37,6 @@ const Location: React.FC = () => {
       // If at boundary, let it bubble up to App.tsx to switch section
     };
 
-    const handleTouchStart = (e: TouchEvent) => {
-      // Store initial touch position if needed, but for simple scroll propagation 
-      // standard behavior + stopPropagation on move usually works differently.
-      // For simple scroll containers, preventing default is not what we want.
-      // We want native scroll, just capturing the "overscroll" to switch sections.
-      // Actually, for touch, we might rely on the natural scroll behavior.
-      // But App.tsx handles touch gestures globally.
-
-      // Strategy: If we are scrolling inside, stop propagation of the touch move 
-      // so App.tsx doesn't trigger section switch.
-      // BUT, App.tsx uses touch start/end delta.
-
-      // Just stopping propagation on touch start/move/end if not at boundary might be tricky.
-      // Simpler approach for touch: stop propagation of ALL touch events if not at boundary?
-      // Let's try stopping propagation of touch end if we moved significantly internally.
-    };
-
-    // Easier approach matching App.tsx logic:
-    // App.tsx uses wheel and touchstart/end.
-    // We should stop propagation of these events if we consumed the scroll.
-
     container.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => {
@@ -67,7 +48,6 @@ const Location: React.FC = () => {
 
   // ... Tmap handler code ...
   const handleTmapRoute = () => {
-    // ... same code ...
     const destination = {
       name: '토미스퀘어가든',
       lat: 36.097854,
@@ -103,7 +83,6 @@ const Location: React.FC = () => {
   useEffect(() => {
     let mounted = true;
     const initNaverMap = () => {
-      // ... same init code ...
       try {
         if (!mapRef.current) return;
         if (!window.naver || !window.naver.maps) return;
@@ -119,7 +98,37 @@ const Location: React.FC = () => {
           pinchZoom: true
         };
         const map = new window.naver.maps.Map(mapRef.current, mapOptions);
-        new window.naver.maps.Marker({ position: location, map: map, title: '토미스퀘어가든' });
+
+        const contentString = [
+          '<div style="padding:10px;min-width:200px;line-height:150%;">',
+          `<h4 style="margin-top:5px;">${weddingData.common.location.name}</h4>`,
+          `<p>${weddingData.common.location.addressShort}<br />`,
+          `  <span style="color:#555;font-size:13px;">${weddingData.common.location.tel}</span>`,
+          '</p>',
+          '</div>'
+        ].join('');
+
+        const marker = new window.naver.maps.Marker({ position: location, map: map, title: weddingData.common.location.name });
+
+        const infowindow = new window.naver.maps.InfoWindow({
+          content: contentString,
+          maxWidth: 300,
+          backgroundColor: "#fff",
+          borderColor: "#ccc",
+          borderWidth: 1,
+          anchorSize: new window.naver.maps.Size(10, 10),
+          anchorSkew: true,
+          anchorColor: "#fff",
+          pixelOffset: new window.naver.maps.Point(20, -20)
+        });
+
+        window.naver.maps.Event.addListener(marker, "click", function () {
+          if (infowindow.getMap()) {
+            infowindow.close();
+          } else {
+            infowindow.open(map, marker);
+          }
+        });
 
         if (mounted) { setMapLoaded(true); setError(null); }
       } catch (err) { }
@@ -136,6 +145,16 @@ const Location: React.FC = () => {
     return () => { mounted = false; clearTimeout(timer); };
   }, []);
 
+  const handleCopyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(weddingData.common.location.address);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy info: ', err);
+    }
+  };
+
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -146,6 +165,8 @@ const Location: React.FC = () => {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } }
   };
+
+  const { transport } = weddingData.location;
 
   return (
     <div
@@ -187,28 +208,29 @@ const Location: React.FC = () => {
         viewport={{ once: true }}
         className="text-center pt-8 pb-10 px-6 shrink-0"
       >
-        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">LOCATION</p>
-        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">오시는 길</h2>
+        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">{weddingData.location.label}</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">{weddingData.location.title}</h2>
         <div className="w-8 h-[1px] bg-gray-200 mx-auto mb-8"></div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-center gap-2">
-            <h3 className="text-lg font-gowoon text-gray-700">토미스퀘어가든</h3>
-            <a href="tel:054-473-6799" className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+            <h3 className="text-lg font-gowoon text-gray-700">{weddingData.common.location.name}</h3>
+            <a href={`tel:${weddingData.common.location.tel}`} className="text-gray-400 hover:text-gray-600 transition-colors p-1">
               <i className="fa-solid fa-phone text-xs"></i>
             </a>
           </div>
 
           <div className="flex items-center justify-center gap-2">
-            <p className="text-[13px] font-nanumsquare text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
+            <p className="text-[13px] font-nanumsquare text-gray-500">{weddingData.common.location.address}</p>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText("경상북도 구미시 인동35길 46");
-                alert("주소가 복사되었습니다.");
-              }}
+              onClick={handleCopyAddress}
               className="text-gray-400 hover:text-gray-600 transition-colors p-1"
             >
-              <i className="fa-regular fa-copy text-xs"></i>
+              {copySuccess ? (
+                <i className="fa-solid fa-check text-green-500 text-xs"></i>
+              ) : (
+                <i className="fa-regular fa-copy text-xs"></i>
+              )}
             </button>
           </div>
         </div>
@@ -253,15 +275,15 @@ const Location: React.FC = () => {
           {/* ... Buttons (Naver, Tmap, Kakao) ... */}
           <a href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('navermap')} alt="네이버지도" className="w-full h-full object-cover" /></div>
-            <span className="text-[11px] text-gray-700 font-medium">네이버</span>
+            <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.naver}</span>
           </a>
           <button onClick={handleTmapRoute} className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200 cursor-pointer">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('tmap')} alt="티맵" className="w-full h-full object-cover" /></div>
-            <span className="text-[11px] text-gray-700 font-medium">티맵</span>
+            <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.tmap}</span>
           </button>
           <a href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753" target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('kakaonav')} alt="카카오내비" className="w-full h-full object-cover" /></div>
-            <span className="text-[11px] text-gray-700 font-medium">카카오</span>
+            <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.kakao}</span>
           </a>
         </div>
       </motion.div>
@@ -278,18 +300,16 @@ const Location: React.FC = () => {
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
             <i className="fa-solid fa-car text-gray-800 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">자가용</h3>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">{transport.car.title}</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
-            <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">내비게이션</p>
-              <p className="text-sm text-gray-500">'토미스퀘어가든' 또는 '인동35길 46' 검색</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">주차 안내</p>
-              <p className="text-sm text-gray-500">건물 내 지하/지상 주차장 이용 (최대 1,400대)</p>
-              <p className="text-sm text-gray-500">웨딩홀 방문객 무료 주차</p>
-            </div>
+            {transport.car.items.map((item, idx) => (
+              <div key={idx}>
+                <p className="text-sm text-gray-800 font-bold mb-1">{item.label}</p>
+                <p className="text-sm text-gray-500">{item.value}</p>
+                {item.subValue && <p className="text-sm text-gray-500">{item.subValue}</p>}
+              </div>
+            ))}
           </div>
           <div className="border-b border-gray-100 mt-8"></div>
         </motion.section>
@@ -298,17 +318,21 @@ const Location: React.FC = () => {
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
             <i className="fa-solid fa-bus text-gray-800 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">버스</h3>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">{transport.bus.title}</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
-            <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">시내버스</p>
-              <p className="text-sm text-gray-500 mb-1">인동정류장 하차 (도보 5분)</p>
-              <div className="text-xs text-gray-500 space-y-1 bg-white border border-gray-100 p-3 rounded-lg">
-                <p><span className="text-green-600 font-medium font-bold">지선</span> 187, 187-1, 188</p>
-                <p><span className="text-blue-600 font-medium font-bold">간선</span> 180, 881, 881-1, 883, 883-1, 884, 884-1, 884-2, 885</p>
+            {transport.bus.items.map((item, idx) => (
+              <div key={idx}>
+                <p className="text-sm text-gray-800 font-bold mb-1">{item.label}</p>
+                <p className="text-sm text-gray-500 mb-1">{item.value}</p>
               </div>
-            </div>
+            ))}
+            {transport.bus.routes && (
+              <div className="text-xs text-gray-500 space-y-1 bg-white border border-gray-100 p-3 rounded-lg">
+                <p><span className="text-green-600 font-medium font-bold">{transport.bus.routes.green.label}</span> {transport.bus.routes.green.value}</p>
+                <p><span className="text-blue-600 font-medium font-bold">{transport.bus.routes.blue.label}</span> {transport.bus.routes.blue.value}</p>
+              </div>
+            )}
           </div>
           <div className="border-b border-gray-100 mt-8"></div>
         </motion.section>
@@ -317,19 +341,16 @@ const Location: React.FC = () => {
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
             <i className="fa-solid fa-train text-gray-800 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">기차 (KTX/SRT)</h3>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">{transport.train.title}</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
-            <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">구미역 (일반열차)</p>
-              <p className="text-sm text-gray-500">구미역 하차 → 택시 이용 (약 15분 소요)</p>
-              <p className="text-sm text-gray-500 mt-1">또는 버스 환승 (인동 방면)</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">김천구미역 (KTX/SRT)</p>
-              <p className="text-sm text-gray-500">김천구미역 하차 → 리무진 버스 또는 택시 이용</p>
-              <p className="text-xs text-gray-500 mt-1">(택시 이용 시 약 30~40분 소요)</p>
-            </div>
+            {transport.train.items.map((item, idx) => (
+              <div key={idx}>
+                <p className="text-sm text-gray-800 font-bold mb-1">{item.label}</p>
+                <p className="text-sm text-gray-500">{item.value}</p>
+                {item.subValue && <p className="text-sm text-gray-500 mt-1">{item.subValue}</p>}
+              </div>
+            ))}
           </div>
         </motion.section>
       </motion.div>

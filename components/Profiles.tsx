@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
+import { weddingData } from '@/data/content';
 
 interface ProfilesProps {
 	onModalStateChange: (isOpen: boolean) => void;
@@ -57,35 +58,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 	};
 
 	// 인터뷰 내용
-	const interviews = [
-		{
-			question: "Q1. 결혼을 앞둔 소감",
-			groom: "드디어 장가갑니다😊\n" +
-				"평생 옆에 있고 싶은 사람을 만났습니다.\n" +
-				"앞으로 더 잘해줄게요.\n" +
-				"저희 잘 살겠습니다!\n",
-			bride: "2010년 3월에 시작한 만남이\n" +
-				"26년 3월에 끝이 나네요\n" +
-				"앞으로 더 잘하고 잘 살께요,지켜봐주세요❤️\n"
-		},
-		{
-			question: "Q2. 결혼을 결심한 계기는?",
-			answer: "6년 사귀면서 싸워도 \n" +
-				"결국 다시 찾게 되더라고요.\n" +
-				"이 정도면 그냥 \n" +
-				"평생 같이 살아야겠다 싶었습니다.\n" +
-				"그리고 이 사람이랑 있으면 밥이 맛있어요🍚"
-		},
-		{
-			question: "Q3. 서로 어떤 배우자가 될건가요?",
-			groom: "설거지 잘하고, 무거운 거 잘 들고,\n" +
-				" 벌레 잡아주는 남편 되겠습니다💪",
-			bride: "오빠 월급 안 건드리고 \n" +
-				"용돈 잘 모으는 아내 될게요💰\n" +
-				"(단, 내 월급도 안 건드려야 함)"
-
-		}
-	];
+	const { interviews } = weddingData.profiles;
 
 	return (
 		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-hidden px-6 pb-12">
@@ -98,10 +71,10 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 			>
 				{/* 헤더 */}
 				<motion.div variants={itemVariants} className="text-center pt-8 pb-10">
-					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">INTERVIEW</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">우리 두 사람의 이야기</h2>
+					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">{weddingData.profiles.label}</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">{weddingData.profiles.title}</h2>
 					<div className="w-8 h-[1px] bg-gray-200 mx-auto mb-6"></div>
-					<p className="text-sm font-gowoon text-gray-500">결혼을 앞두고 저희 두 사람의<br />인터뷰를 준비했습니다.</p>
+					<p className="text-sm font-gowoon text-gray-500 whitespace-pre-line">{weddingData.profiles.subtitle}</p>
 				</motion.div>
 
 				{/* 사진 */}
@@ -135,7 +108,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 font-nanumsquare"
 				>
 					<i className="fa-solid fa-envelope text-xs"></i>
-					<span>어떤 배우자가 될까요 Q&A</span>
+					<span>{weddingData.profiles.button}</span>
 				</motion.button>
 			</motion.div>
 
@@ -173,8 +146,8 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 
 							{/* 헤더 */}
 							<div className="text-center mb-10 clear-both">
-								<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2 font-joseon">INTERVIEW</p>
-								<h3 className="text-2xl text-white font-myeongjo">우리 두 사람의 이야기</h3>
+								<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2 font-joseon">{weddingData.profiles.label}</p>
+								<h3 className="text-2xl text-white font-myeongjo">{weddingData.profiles.title}</h3>
 							</div>
 
 							{/* 인터뷰 내용 */}

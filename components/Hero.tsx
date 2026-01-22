@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
+import { weddingData } from '@/data/content';
 
 const Hero: React.FC = () => {
   return (
@@ -51,7 +52,7 @@ const Hero: React.FC = () => {
           }}
           className="text-white/70 tracking-[0.4em] uppercase text-[10px] mb-4 font-joseon"
         >
-          Wedding Invitation
+          {weddingData.hero.label}
         </motion.p>
         <motion.h1
           variants={{
@@ -60,7 +61,7 @@ const Hero: React.FC = () => {
           }}
           className="text-4xl md:text-5xl text-white font-myeongjo mb-8 leading-tight text-glow-subtle tracking-tight"
         >
-          최봉석 <span className="text-xl align-middle mx-1 opacity-80">💍</span> 김가율
+          {weddingData.hero.title.groom} <span className="text-xl align-middle mx-1 opacity-80">{weddingData.hero.title.connector}</span> {weddingData.hero.title.bride}
         </motion.h1>
         <motion.p
           variants={{
@@ -69,7 +70,7 @@ const Hero: React.FC = () => {
           }}
           className="text-white font-myeongjo text-lg md:text-xl tracking-widest mb-3"
         >
-          2026. 03. 14. 토 PM 2:00
+          {weddingData.common.date.full}
         </motion.p>
         <motion.p
           variants={{
@@ -78,7 +79,7 @@ const Hero: React.FC = () => {
           }}
           className="text-white/80 mt-1 text-sm md:text-base font-gowoon"
         >
-          구미 토미스퀘어가든, 4층 스퀘어가든 홀
+          {weddingData.common.location.name}, {weddingData.common.location.hall}
         </motion.p>
       </motion.div>
 

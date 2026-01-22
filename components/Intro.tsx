@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader';
+import { weddingData } from '@/data/content';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -47,18 +48,7 @@ const Intro: React.FC = () => {
     };
 
     // 연락처 정보
-    const contacts = {
-        groom: {
-            name: '최봉석',
-            phone: '010-4404-1519',
-            mother: { name: '석명순', phone: '010-0000-0000' }
-        },
-        bride: {
-            name: '김가율',
-            phone: '010-8790-1519',
-            father: { name: '김상준', phone: '010-0000-0000' }
-        }
-    };
+    const { groom, bride } = weddingData.common;
 
     return (
         <div
@@ -74,43 +64,26 @@ const Intro: React.FC = () => {
                     className="space-y-8 max-w-lg"
                 >
                     <motion.div variants={itemVariants} className="pt-8 pb-3">
-                        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">INVITATION</p>
-                        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">소중한 분들을 초대합니다</h2>
+                        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">{weddingData.intro.label}</p>
+                        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">{weddingData.intro.title}</h2>
                         <div className="w-8 h-[1px] bg-gray-200 mx-auto mt-2"></div>
                     </motion.div>
 
                     <motion.div variants={itemVariants} className="font-myeongjo text-[12px] leading-relaxed text-gray-700 whitespace-pre-line space-y-6">
-                        <p>
-                            따뜻한 봄에 만난 우리,<br />
-                            오랜 시간 먼 길을 오가며 단단해진 사랑을 믿고<br />
-                            이제는 함께 걸어가려 합니다.
-                        </p>
-
-                        <p>
-                            봄에는 활짝 핀 벚꽃이 되어주고<br />
-                            여름에는 시원한 바람이 되어주겠습니다.<br />
-                            가을에는 드넓은 하늘이 되어주고<br />
-                            겨울에는 새하얀 눈이 되어<br />
-                            평생을 늘 서로에게 버팀목이 되어주겠습니다.
-                        </p>
-
-                        <p>
-                            시작의 한 걸음,<br />
-                            함께 축복해 주시면 감사드립니다.
-                        </p>
+                        {weddingData.intro.mainText}
                     </motion.div>
 
                     {/* 부모님 이름 */}
                     <motion.div variants={itemVariants} className="space-y-4 pt-4 font-gowoon">
                         <p className="text-base text-gray-700">
-                            <span className="font-normal">{contacts.groom.mother.name}</span>
-                            <span className="text-xs text-gray-400 mx-2">의 아들</span>
-                            <span className="font-bold text-lg">{contacts.groom.name}</span>
+                            <span className="font-normal">{groom.parents.mother.name}</span>
+                            <span className="text-xs text-gray-400 mx-2">의 {groom.parents.relation}</span>
+                            <span className="font-bold text-lg">{groom.name}</span>
                         </p>
                         <p className="text-base text-gray-700">
-                            <span className="font-normal">{contacts.bride.father.name}</span>
-                            <span className="text-xs text-gray-400 mx-2">의 딸</span>
-                            <span className="font-bold text-lg">{contacts.bride.name}</span>
+                            <span className="font-normal">{bride.parents.father.name}</span>
+                            <span className="text-xs text-gray-400 mx-2">의 {bride.parents.relation}</span>
+                            <span className="font-bold text-lg">{bride.name}</span>
                         </p>
                     </motion.div>
 
@@ -121,7 +94,7 @@ const Intro: React.FC = () => {
                         className="mt-8 px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 mx-auto"
                     >
                         <i className="fa-solid fa-phone text-xs"></i>
-                        <span>연락하기</span>
+                        <span>{weddingData.intro.contactButton}</span>
                     </motion.button>
                 </motion.div>
             </div>
@@ -157,24 +130,24 @@ const Intro: React.FC = () => {
 
                             {/* 헤더 */}
                             <div className="text-center mb-8">
-                                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">CONTACT</p>
-                                <h3 className="text-xl text-white font-myeongjo">연락하기</h3>
+                                <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-2">{weddingData.intro.modal.label}</p>
+                                <h3 className="text-xl text-white font-myeongjo">{weddingData.intro.modal.title}</h3>
                             </div>
 
                             {/* 신랑측 */}
                             <div className="mb-8">
-                                <h4 className="text-xs text-gray-400 tracking-[0.2em] uppercase mb-4">신랑측 <span className="text-[10px]">GROOM</span></h4>
+                                <h4 className="text-xs text-gray-400 tracking-[0.2em] uppercase mb-4">{weddingData.intro.modal.groomSide} <span className="text-[10px]">{weddingData.intro.modal.groomLabel}</span></h4>
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between py-2 border-b border-gray-600">
                                         <div className="flex items-center gap-3">
                                             <span className="text-sm text-gray-400 w-20">신랑</span>
-                                            <span className="text-white">{contacts.groom.name}</span>
+                                            <span className="text-white">{groom.name}</span>
                                         </div>
                                         <div className="flex gap-3">
-                                            <a href={`tel:${contacts.groom.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`tel:${groom.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-phone"></i>
                                             </a>
-                                            <a href={`sms:${contacts.groom.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`sms:${groom.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-envelope"></i>
                                             </a>
                                         </div>
@@ -182,13 +155,13 @@ const Intro: React.FC = () => {
                                     <div className="flex items-center justify-between py-2 border-b border-gray-600">
                                         <div className="flex items-center gap-3">
                                             <span className="text-sm text-gray-400 w-20">신랑 어머니</span>
-                                            <span className="text-white">{contacts.groom.mother.name}</span>
+                                            <span className="text-white">{groom.parents.mother.name}</span>
                                         </div>
                                         <div className="flex gap-3">
-                                            <a href={`tel:${contacts.groom.mother.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`tel:${groom.parents.mother.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-phone"></i>
                                             </a>
-                                            <a href={`sms:${contacts.groom.mother.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`sms:${groom.parents.mother.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-envelope"></i>
                                             </a>
                                         </div>
@@ -198,18 +171,18 @@ const Intro: React.FC = () => {
 
                             {/* 신부측 */}
                             <div>
-                                <h4 className="text-xs text-gray-400 tracking-[0.2em] uppercase mb-4">신부측 <span className="text-[10px]">BRIDE</span></h4>
+                                <h4 className="text-xs text-gray-400 tracking-[0.2em] uppercase mb-4">{weddingData.intro.modal.brideSide} <span className="text-[10px]">{weddingData.intro.modal.brideLabel}</span></h4>
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between py-2 border-b border-gray-600">
                                         <div className="flex items-center gap-3">
                                             <span className="text-sm text-gray-400 w-20">신부</span>
-                                            <span className="text-white">{contacts.bride.name}</span>
+                                            <span className="text-white">{bride.name}</span>
                                         </div>
                                         <div className="flex gap-3">
-                                            <a href={`tel:${contacts.bride.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`tel:${bride.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-phone"></i>
                                             </a>
-                                            <a href={`sms:${contacts.bride.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`sms:${bride.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-envelope"></i>
                                             </a>
                                         </div>
@@ -217,13 +190,13 @@ const Intro: React.FC = () => {
                                     <div className="flex items-center justify-between py-2 border-b border-gray-600">
                                         <div className="flex items-center gap-3">
                                             <span className="text-sm text-gray-400 w-20">신부 아버지</span>
-                                            <span className="text-white">{contacts.bride.father.name}</span>
+                                            <span className="text-white">{bride.parents.father.name}</span>
                                         </div>
                                         <div className="flex gap-3">
-                                            <a href={`tel:${contacts.bride.father.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`tel:${bride.parents.father.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-phone"></i>
                                             </a>
-                                            <a href={`sms:${contacts.bride.father.phone}`} className="text-white/80 hover:text-white">
+                                            <a href={`sms:${bride.parents.father.phone}`} className="text-white/80 hover:text-white">
                                                 <i className="fa-solid fa-envelope"></i>
                                             </a>
                                         </div>

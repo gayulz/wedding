@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { db } from '../lib/firebase';
+import { db } from '@/lib/firebase';
 import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, updateDoc } from 'firebase/firestore';
+import { weddingData } from '@/data/content';
 
 interface GuestbookEntry {
   id: string;
@@ -90,19 +90,19 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   // 방명록 작성
   const handleSubmit = async () => {
     if (!name.trim()) {
-      showCustomAlert('이름을 입력해주세요.');
+      showCustomAlert(weddingData.guestbook.alert.name);
       return;
     }
     if (!password.trim() || password.length !== 4 || !/^\d{4}$/.test(password)) {
-      showCustomAlert('비밀번호는 4자리 숫자여야 합니다.');
+      showCustomAlert(weddingData.guestbook.alert.password);
       return;
     }
     if (!message.trim()) {
-      showCustomAlert('메시지를 입력해주세요.');
+      showCustomAlert(weddingData.guestbook.alert.message);
       return;
     }
     if (message.length > 300) {
-      showCustomAlert('메시지는 300자를 초과할 수 없습니다.');
+      showCustomAlert(weddingData.guestbook.alert.length);
       return;
     }
 
@@ -118,9 +118,9 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
       setPassword('');
       setMessage('');
       setShowWritePopup(false);
-      showCustomAlert('축하 메시지가 전달되었습니다! 💕');
+      showCustomAlert(weddingData.guestbook.success.create);
     } catch (error: any) {
-      showCustomAlert(`메시지 전송에 실패했습니다.\n${error.message}`);
+      showCustomAlert(`${weddingData.guestbook.alert.fail}\n${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -136,13 +136,13 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   // 비밀번호 확인
   const handlePasswordVerify = () => {
     if (!editPassword.trim() || editPassword.length !== 4 || !/^\d{4}$/.test(editPassword)) {
-      showCustomAlert('비밀번호는 4자리 숫자여야 합니다.');
+      showCustomAlert(weddingData.guestbook.alert.password);
       return;
     }
     if (!editingEntry) return;
 
     if (editPassword !== editingEntry.password) {
-      showCustomAlert('비밀번호가 일치하지 않습니다.');
+      showCustomAlert(weddingData.guestbook.alert.passwordMismatch);
       setEditPassword('');
       return;
     }
@@ -156,11 +156,11 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const handleEdit = async () => {
     if (!editingEntry) return;
     if (!editMessage.trim()) {
-      showCustomAlert('메시지를 입력해주세요.');
+      showCustomAlert(weddingData.guestbook.alert.message);
       return;
     }
     if (editMessage.length > 300) {
-      showCustomAlert('메시지는 300자를 초과할 수 없습니다.');
+      showCustomAlert(weddingData.guestbook.alert.length);
       return;
     }
 
@@ -172,9 +172,9 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
       setEditPassword('');
       setEditMessage('');
       setShowEditPopup(false);
-      showCustomAlert('메시지가 수정되었습니다! ✏️');
+      showCustomAlert(weddingData.guestbook.success.update);
     } catch (error: any) {
-      showCustomAlert(`메시지 수정에 실패했습니다.\n${error.message}`);
+      showCustomAlert(`${weddingData.guestbook.alert.fail}\n${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -199,7 +199,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   return (
     <div
       ref={containerRef}
-      className="relative h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-y-auto overflow-x-hidden no-scrollbar pb-20"
+      className="relative h-full w-full flex flex-col items-center bg-white overflow-y-auto overflow-x-hidden no-scrollbar pb-20"
       onTouchStart={(e) => {
         const container = containerRef.current;
         if (!container) return;
@@ -232,10 +232,10 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         viewport={{ once: true }}
         className="text-center pt-8 pb-10 px-6 shrink-0"
       >
-        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">MESSAGE</p>
-        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">축하의 한마디</h2>
+        <p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">{weddingData.guestbook.label}</p>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">{weddingData.guestbook.title}</h2>
         <div className="w-8 h-[1px] bg-gray-200 mx-auto mb-8"></div>
-        <p className="text-sm font-gowoon text-gray-500">저희 둘에게 따뜻한 방명록을 남겨주세요</p>
+        <p className="text-sm font-gowoon text-gray-500">{weddingData.guestbook.subtitle}</p>
       </motion.div>
 
       {/* 방명록 목록 (시안 카드 스타일) - 하단 여백 추가하여 버튼에 가려지지 않게 함 */}
@@ -276,13 +276,13 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
             </motion.div>
           ))
         ) : (
-          <p className="text-center text-gray-400 text-xs py-10 font-gowoon">아직 작성된 방명록이 없습니다.</p>
+          <p className="text-center text-gray-400 text-xs py-10 font-gowoon">{weddingData.guestbook.empty}</p>
         )}
 
       </div>
 
       {/* 버튼 고정 영역 - 뒷 컨텐츠가 비치지 않도록 Solid 배경 적용 및 위치 하단 밀착 */}
-      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-6 pt-4 bg-[#f8f8f8] shrink-0 mt-auto z-[50] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
+      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-6 pt-4 bg-white shrink-0 mt-auto z-[50] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
         <motion.button
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -290,7 +290,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
           onClick={() => setShowWritePopup(true)}
           className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95"
         >
-          메시지 남기기
+          {weddingData.guestbook.button}
         </motion.button>
       </div>
 
@@ -319,21 +319,21 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
               </button>
 
               <div className="text-center space-y-2">
-                <h3 className="text-xl font-myeongjo text-gray-800">축하 메시지 작성하기</h3>
-                <p className="text-xs font-gowoon text-gray-500">저희 둘의 결혼을 함께 축하해 주세요</p>
+                <h3 className="text-xl font-myeongjo text-gray-800">{weddingData.guestbook.write.title}</h3>
+                <p className="text-xs font-gowoon text-gray-500">{weddingData.guestbook.write.subtitle}</p>
               </div>
 
               <div className="space-y-4 pt-4">
                 <input
                   type="text"
-                  placeholder="성함을 남겨주세요"
+                  placeholder={weddingData.guestbook.write.placeholder.name}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-300 font-nanumsquare shadow-inner"
                 />
                 <input
                   type="password"
-                  placeholder="비밀번호를 입력해 주세요 (숫자 4자리)"
+                  placeholder={weddingData.guestbook.write.placeholder.password}
                   value={password}
                   onChange={(e) => {
                     const value = e.target.value.replace(/\D/g, '').slice(0, 4);
@@ -344,7 +344,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
                   className="w-full bg-[#fcfcfc] border border-gray-100 rounded-xl p-4 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-200 transition-all placeholder:text-gray-300 font-nanumsquare shadow-inner"
                 />
                 <textarea
-                  placeholder="200자 이내로 작성해 주세요"
+                  placeholder={weddingData.guestbook.write.placeholder.message}
                   value={message}
                   onChange={(e) => setMessage(e.target.value.slice(0, 200))}
                   maxLength={200}
@@ -357,7 +357,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
                 disabled={loading}
                 className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare font-bold hover:bg-[#7a7a7a] transition-all disabled:opacity-50"
               >
-                {loading ? '작성 중...' : '작성 완료'}
+                {loading ? weddingData.guestbook.write.submit.loading : weddingData.guestbook.write.submit.default}
               </button>
             </motion.div>
           </div>
@@ -385,10 +385,10 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-xs bg-white rounded-2xl p-8 space-y-6 z-10 shadow-2xl"
             >
-              <h3 className="text-center font-myeongjo text-lg text-gray-800">비밀번호 확인</h3>
+              <h3 className="text-center font-myeongjo text-lg text-gray-800">{weddingData.guestbook.password.title}</h3>
               <input
                 type="password"
-                placeholder="비밀번호 숫자 4자리"
+                placeholder={weddingData.guestbook.password.placeholder}
                 value={editPassword}
                 onChange={(e) => {
                   const value = e.target.value.replace(/\D/g, '').slice(0, 4);
@@ -407,13 +407,13 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
                   }}
                   className="flex-1 py-3 bg-gray-100 text-gray-500 rounded-xl text-xs font-nanumsquare"
                 >
-                  취소
+                  {weddingData.guestbook.password.cancel}
                 </button>
                 <button
                   onClick={handlePasswordVerify}
                   className="flex-1 py-3 bg-[#8E8E8E] text-white rounded-xl text-xs font-nanumsquare font-bold"
                 >
-                  확인
+                  {weddingData.guestbook.password.confirm}
                 </button>
               </div>
             </motion.div>
@@ -445,7 +445,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
                 <i className="fa-solid fa-xmark text-lg"></i>
               </button>
 
-              <h3 className="text-center font-myeongjo text-xl text-gray-800">메시지 수정하기</h3>
+              <h3 className="text-center font-myeongjo text-xl text-gray-800">{weddingData.guestbook.edit.title}</h3>
 
               <div className="space-y-4 pt-4">
                 <div className="px-4 py-2 bg-gray-50 rounded-lg text-xs font-nanumsquare text-gray-400">
@@ -464,7 +464,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
                 disabled={loading}
                 className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare font-bold hover:bg-[#7a7a7a] transition-all"
               >
-                {loading ? '수정 중...' : '수정 완료'}
+                {loading ? weddingData.guestbook.edit.submit.loading : weddingData.guestbook.edit.submit.default}
               </button>
             </motion.div>
           </div>
@@ -488,14 +488,14 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-[280px] bg-white rounded-2xl p-6 text-center z-10 shadow-2xl"
             >
-              <p className="text-gray-800 text-sm font-nanumsquare mb-6 leading-relaxed">
+              <p className="text-gray-800 text-sm font-nanumsquare mb-6 leading-relaxed whitespace-pre-line">
                 {alertMessage}
               </p>
               <button
                 onClick={() => setShowAlert(false)}
                 className="w-full py-3 bg-gray-800 text-white rounded-xl font-bold text-xs"
               >
-                확인
+                {weddingData.guestbook.password.confirm}
               </button>
             </motion.div>
           </div>

@@ -63,7 +63,7 @@ The app uses a **full-page slide/section-based navigation** pattern:
 - Scroll up (`delta < 0`) decrements index; scroll down (`delta > 0`) increments
 - Implements debouncing (800ms) to prevent rapid section jumps
 - Supports both wheel and touch events (touch threshold: 50px delta)
-- FloatingNavMenu component provides visual navigation with section dots
+
 - KakaoTalk webview detection prompts users to open in external browser for better performance
 
 ### Component Structure
@@ -79,7 +79,7 @@ components/
 ├── Gift.tsx               # Registry/gift information
 ├── Guestbook.tsx          # Firebase-backed guestbook with CRUD operations
 ├── ShareButton.tsx        # Kakao Share integration
-├── FloatingNavMenu.tsx    # Section navigation menu with dots
+
 └── FloatingParticles.tsx  # Animated background particles effect
 ```
 

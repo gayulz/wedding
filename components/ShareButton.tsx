@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { weddingData } from '@/data/content';
 
 declare global {
     interface Window {
@@ -48,7 +49,7 @@ const ShareButton: React.FC = () => {
 
     const handleShare = () => {
         if (!isKakaoReady || !window.Kakao) {
-            alert('카카오톡 공유 기능을 사용할 수 없습니다. 페이지를 새로고침해주세요.');
+            alert(weddingData.share.kakao.alert.error);
             return;
         }
 
@@ -60,8 +61,8 @@ const ShareButton: React.FC = () => {
             window.Kakao.Link.sendDefault({
                 objectType: 'feed',
                 content: {
-                    title: '최봉석 ❤️ 김가율 결혼식에 초대합니다',
-                    description: '2026년 3월 14일 오후 2시\n토미스퀘어가든 4층 스퀘어가든홀',
+                    title: weddingData.share.kakao.title,
+                    description: weddingData.share.kakao.description,
                     imageUrl: imageUrl,
                     link: {
                         webUrl: baseUrl,
@@ -70,7 +71,7 @@ const ShareButton: React.FC = () => {
                 },
                 buttons: [
                     {
-                        title: '청첩장 보기',
+                        title: weddingData.share.kakao.button,
                         link: {
                             mobileWebUrl: baseUrl,
                             webUrl: baseUrl,
@@ -82,12 +83,12 @@ const ShareButton: React.FC = () => {
                 },
                 fail: function (error: any) {
                     console.error('카카오톡 공유 실패:', error);
-                    alert('공유 중 오류가 발생했습니다.');
+                    alert(weddingData.share.kakao.alert.fail);
                 },
             });
         } catch (error) {
             console.error('공유 처리 중 오류:', error);
-            alert('공유 중 오류가 발생했습니다.');
+            alert(weddingData.share.kakao.alert.fail);
         }
     };
 

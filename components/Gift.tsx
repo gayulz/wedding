@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
+import { weddingData } from '@/data/content';
 
 interface Account {
 	name: string;
@@ -21,7 +22,7 @@ const AccountCard: React.FC<{
 }> = ({ account, showToast }) => {
 	const handleCopy = () => {
 		navigator.clipboard.writeText(account.num);
-		showToast('계좌번호가 복사되었습니다.');
+		showToast(weddingData.gift.toast);
 	};
 
 	const bankIcon = getBankIcon(account.bank);
@@ -54,7 +55,7 @@ const AccountCard: React.FC<{
 				className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
 			>
 				<i className="fa-regular fa-copy text-gray-600 text-xs"></i>
-				<span className="text-xs text-gray-700 font-medium">복사하기</span>
+				<span className="text-xs text-gray-700 font-medium">{weddingData.gift.copyButton}</span>
 			</button>
 		</div>
 	);
@@ -71,14 +72,8 @@ const Gift: React.FC = () => {
 		}, 2000);
 	};
 
-	const groomAccounts: Account[] = [
-		{ bank: '우리은행', name: '석명순', num: '70820187102001' },
-		{ bank: '기업은행', name: '최봉석', num: '01044041519' }
-	];
-
-	const brideAccounts: Account[] = [
-		{ bank: '카카오뱅크', name: '김가율', num: '3333326228606' }
-	];
+	const groomAccounts = weddingData.gift.accounts.groom;
+	const brideAccounts = weddingData.gift.accounts.bride;
 
 	const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
 
@@ -92,12 +87,11 @@ const Gift: React.FC = () => {
 			>
 				{/* 헤더 */}
 				<div className="text-center pt-8 pb-10">
-					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">ACCOUNT</p>
-					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">마음 전하실 곳</h2>
+					<p className="text-[10px] font-joseon text-gray-400 tracking-[0.4em] uppercase mb-1">{weddingData.gift.label}</p>
+					<h2 className="text-2xl font-myeongjo text-gray-800 mb-6 leading-tight">{weddingData.gift.title}</h2>
 					<div className="w-8 h-[1px] bg-gray-200 mx-auto mb-8"></div>
-					<p className="text-[13px] font-gowoon text-gray-500 leading-relaxed">
-						참석이 어려우신 분들을 위해<br />
-						계좌번호를 기재하였습니다.
+					<p className="text-[13px] font-gowoon text-gray-500 leading-relaxed whitespace-pre-line">
+						{weddingData.gift.subtitle}
 					</p>
 				</div>
 
@@ -110,7 +104,7 @@ const Gift: React.FC = () => {
 							: 'text-gray-500'
 							}`}
 					>
-						신랑측
+						{weddingData.gift.tabs.groom}
 					</button>
 					<button
 						onClick={() => setActiveTab('bride')}
@@ -119,7 +113,7 @@ const Gift: React.FC = () => {
 							: 'text-gray-500'
 							}`}
 					>
-						신부측
+						{weddingData.gift.tabs.bride}
 					</button>
 				</div>
 
@@ -149,10 +143,9 @@ const Gift: React.FC = () => {
 				whileInView={{ opacity: 1 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.5, delay: 0.5 }}
-				className="mt-10 text-[11px] font-nanumsquare text-gray-400 text-center leading-relaxed"
+				className="mt-10 text-[11px] font-nanumsquare text-gray-400 text-center leading-relaxed whitespace-pre-line"
 			>
-				화훼 화환은 정중히 사양합니다.<br />
-				보내주시는 따뜻한 마음 감사히 받겠습니다.
+				{weddingData.gift.footer}
 			</motion.p>
 
 			{/* Toast Popup */}

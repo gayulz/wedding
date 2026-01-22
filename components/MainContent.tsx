@@ -6,6 +6,7 @@ import Location from './Location';
 import Rsvp from './Rsvp';
 import Gift from './Gift';
 import Guestbook from './Guestbook';
+import { weddingData } from '@/data/content';
 
 interface MainContentProps {
     onModalStateChange: (isOpen: boolean) => void;
@@ -94,7 +95,7 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
             </section>
 
             <div className="h-24 flex items-center justify-center text-[#3c1e1e]/40 text-[10px] uppercase tracking-widest pb-8">
-                Copyright ⓒ Gayul Kim. All Rights Reserved.
+                {weddingData.footer.copyright}
             </div>
         </div>
     );

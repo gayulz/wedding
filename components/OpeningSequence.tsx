@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { weddingData } from '@/data/content';
 
 interface OpeningSequenceProps {
     onComplete: () => void;
@@ -7,7 +8,7 @@ interface OpeningSequenceProps {
 
 const OpeningSequence: React.FC<OpeningSequenceProps> = ({ onComplete }) => {
     const [text, setText] = useState('');
-    const fullText = "저희 드디어 결혼합니다.";
+    const fullText = weddingData.opening.text;
     const [isTypingStarted, setIsTypingStarted] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
 
