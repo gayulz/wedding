@@ -2,7 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 
-const Gallery: React.FC = () => {
+interface GalleryProps {
+    onModalStateChange: (isOpen: boolean) => void;
+}
+
+const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -47,18 +51,21 @@ const Gallery: React.FC = () => {
         }
     }, [imagesLoaded]);
 
-    // [MIG] 모달 오픈 시 배경 스크롤 잠금
+    // [MIG] 모달 오픈 시 배경 스크롤 잠금 및 부모에게 알림 (섹션 이동 방지)
     useEffect(() => {
         if (selectedImage) {
             document.body.style.overflow = 'hidden';
+            onModalStateChange(true);
         } else {
             document.body.style.overflow = '';
+            onModalStateChange(false);
         }
 
         return () => {
             document.body.style.overflow = '';
+            onModalStateChange(false);
         };
-    }, [selectedImage]);
+    }, [selectedImage, onModalStateChange]);
 
     // 팝업에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
     const handlePopupWheel = (e: React.WheelEvent) => {

@@ -171,11 +171,11 @@ const App: React.FC = () => {
           {currentIdx === 0 && <Hero />}
           {currentIdx === 1 && <Intro />}
           {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
-          {currentIdx === 3 && <Gallery />}
+          {currentIdx === 3 && <Gallery onModalStateChange={setIsAnyModalOpen} />}
           {currentIdx === 4 && <Location />}
           {currentIdx === 5 && <Transport />}
           {currentIdx === 6 && <Gift />}
-          {currentIdx === 7 && <Guestbook />}
+          {currentIdx === 7 && <Guestbook onModalStateChange={setIsAnyModalOpen} />}
         </motion.div>
       </AnimatePresence>
 

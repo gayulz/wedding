@@ -25,10 +25,14 @@ const useWindowHeight = () => {
   }, []);
 
   return windowHeight;
+  return windowHeight;
 };
 
+interface GuestbookProps {
+  onModalStateChange: (isOpen: boolean) => void;
+}
 
-const Guestbook: React.FC = () => {
+const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showWritePopup, setShowWritePopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -236,18 +240,23 @@ const Guestbook: React.FC = () => {
     };
   }, []);
 
-  // [MIG] 팝업 오픈 시 배경 스크롤 잠금 (작성, 수정, 비밀번호, 알림)
+  // [MIG] 팝업 오픈 시 배경 스크롤 잠금 및 부모에게 알림 (작성, 수정, 비밀번호, 알림)
   useEffect(() => {
-    if (showWritePopup || showEditPopup || showPasswordPopup || showAlert) {
+    const isAnyPopupOpen = showWritePopup || showEditPopup || showPasswordPopup || showAlert;
+
+    if (isAnyPopupOpen) {
       document.body.style.overflow = 'hidden';
+      onModalStateChange(true);
     } else {
       document.body.style.overflow = '';
+      onModalStateChange(false);
     }
 
     return () => {
       document.body.style.overflow = '';
+      onModalStateChange(false);
     };
-  }, [showWritePopup, showEditPopup, showPasswordPopup, showAlert]);
+  }, [showWritePopup, showEditPopup, showPasswordPopup, showAlert, onModalStateChange]);
 
   return (
     <div className="h-full w-full flex flex-col items-center bg-gray-900 text-white pt-12 px-3 pb-3 overflow-hidden">
@@ -323,8 +332,8 @@ const Guestbook: React.FC = () => {
                   <div className={`relative max-w-[80%] ${isRight ? 'items-end' : 'items-start'} flex flex-col`}>
                     <div
                       className={`px-3 py-2 rounded-2xl ${isRight
-                          ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
-                          : 'bg-white/10 text-white/90 rounded-tl-sm'
+                        ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
+                        : 'bg-white/10 text-white/90 rounded-tl-sm'
                         }`}
                     >
                       <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{entry.message}</p>
