@@ -52,7 +52,7 @@ const Guestbook: React.FC = () => {
   // 커스텀 alert 팝업
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  
+
   const windowHeight = useWindowHeight();
 
   // 커스텀 alert 함수
@@ -236,6 +236,19 @@ const Guestbook: React.FC = () => {
     };
   }, []);
 
+  // [MIG] 팝업 오픈 시 배경 스크롤 잠금 (작성, 수정, 비밀번호, 알림)
+  useEffect(() => {
+    if (showWritePopup || showEditPopup || showPasswordPopup || showAlert) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showWritePopup, showEditPopup, showPasswordPopup, showAlert]);
+
   return (
     <div className="h-full w-full flex flex-col items-center bg-gray-900 text-white pt-12 px-3 pb-3 overflow-hidden">
       {/* 카운트다운 - 페이지 이동 가능한 유일한 영역 */}
@@ -285,55 +298,53 @@ const Guestbook: React.FC = () => {
             minHeight: '300px'
           }}
         >
-        {entries.length > 0 ? (
-          entries.map((entry, index) => {
-            // 인덱스 기반으로 번갈아가며 배치 (짝수는 왼쪽, 홀수는 오른쪽)
-            const isRight = index % 2 === 1;
+          {entries.length > 0 ? (
+            entries.map((entry, index) => {
+              // 인덱스 기반으로 번갈아가며 배치 (짝수는 왼쪽, 홀수는 오른쪽)
+              const isRight = index % 2 === 1;
 
-            return (
-              <motion.div
-                key={entry.id}
-                initial={{ opacity: 0, x: isRight ? 20 : -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
-                className={`flex flex-col ${isRight ? 'items-end' : 'items-start'}`}
-              >
-                {/* 이름과 날짜 */}
-                <div className={`flex items-center gap-2 mb-1 ${isRight ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-[10px] text-white/90 font-medium">{entry.name}</span>
-                  <span className="text-[9px] text-white/40">
-                    {entry.createdAt?.toDate().toLocaleDateString('ko-KR')}
-                  </span>
-                </div>
-
-                {/* 말풍선 */}
-                <div className={`relative max-w-[80%] ${isRight ? 'items-end' : 'items-start'} flex flex-col`}>
-                  <div
-                    className={`px-3 py-2 rounded-2xl ${
-                      isRight
-                        ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
-                        : 'bg-white/10 text-white/90 rounded-tl-sm'
-                    }`}
-                  >
-                    <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{entry.message}</p>
+              return (
+                <motion.div
+                  key={entry.id}
+                  initial={{ opacity: 0, x: isRight ? 20 : -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className={`flex flex-col ${isRight ? 'items-end' : 'items-start'}`}
+                >
+                  {/* 이름과 날짜 */}
+                  <div className={`flex items-center gap-2 mb-1 ${isRight ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-[10px] text-white/90 font-medium">{entry.name}</span>
+                    <span className="text-[9px] text-white/40">
+                      {entry.createdAt?.toDate().toLocaleDateString('ko-KR')}
+                    </span>
                   </div>
 
-                  {/* Edit 버튼 */}
-                  <button
-                    onClick={() => handleEditClick(entry)}
-                    className={`mt-1 text-[9px] text-white/50 hover:text-white/80 transition-colors ${
-                      isRight ? 'self-end' : 'self-start'
-                    }`}
-                  >
-                    수정
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })
-        ) : (
-          <p className="text-center text-white/40 text-xs py-4">아직 작성된 방명록이 없습니다.</p>
-        )}
+                  {/* 말풍선 */}
+                  <div className={`relative max-w-[80%] ${isRight ? 'items-end' : 'items-start'} flex flex-col`}>
+                    <div
+                      className={`px-3 py-2 rounded-2xl ${isRight
+                          ? 'bg-yellow-400/90 text-gray-900 rounded-tr-sm'
+                          : 'bg-white/10 text-white/90 rounded-tl-sm'
+                        }`}
+                    >
+                      <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{entry.message}</p>
+                    </div>
+
+                    {/* Edit 버튼 */}
+                    <button
+                      onClick={() => handleEditClick(entry)}
+                      className={`mt-1 text-[9px] text-white/50 hover:text-white/80 transition-colors ${isRight ? 'self-end' : 'self-start'
+                        }`}
+                    >
+                      수정
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })
+          ) : (
+            <p className="text-center text-white/40 text-xs py-4">아직 작성된 방명록이 없습니다.</p>
+          )}
         </motion.div>
 
         {/* 축하메세지 작성 버튼 */}

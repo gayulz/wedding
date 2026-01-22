@@ -3,16 +3,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 
 interface ProfilesProps {
-  onModalStateChange: (isOpen: boolean) => void;
+	onModalStateChange: (isOpen: boolean) => void;
 }
 
 const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 	const [isInterviewOpen, setIsInterviewOpen] = useState(false);
 
-    // [MIG] 모달 상태 변경 시 App.tsx에 알림
-    useEffect(() => {
-        onModalStateChange(isInterviewOpen);
-    }, [isInterviewOpen, onModalStateChange]);
+	// [MIG] 모달 상태 변경 시 App.tsx에 알림 및 스크롤 잠금 처리
+	useEffect(() => {
+		onModalStateChange(isInterviewOpen);
+
+		if (isInterviewOpen) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = '';
+		}
+
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [isInterviewOpen, onModalStateChange]);
 
 	// 모달에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
 	const handleModalWheel = (e: React.WheelEvent) => {
@@ -87,7 +97,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 				<motion.div variants={itemVariants} className="text-center">
 					<p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">INTERVIEW</p>
 					<h2 className="text-2xl font-myeongjo text-gray-800 mt-0">우리 두 사람의 이야기</h2>
-					<p className="text-sm text-gray-600 mt-4">결혼을 앞두고 저희 두 사람의<br/>인터뷰를 준비했습니다.</p>
+					<p className="text-sm text-gray-600 mt-4">결혼을 앞두고 저희 두 사람의<br />인터뷰를 준비했습니다.</p>
 				</motion.div>
 
 				{/* 사진 */}

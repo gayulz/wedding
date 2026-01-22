@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {motion, AnimatePresence} from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 
 const Gallery: React.FC = () => {
@@ -47,6 +47,19 @@ const Gallery: React.FC = () => {
         }
     }, [imagesLoaded]);
 
+    // [MIG] 모달 오픈 시 배경 스크롤 잠금
+    useEffect(() => {
+        if (selectedImage) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, [selectedImage]);
+
     // 팝업에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
     const handlePopupWheel = (e: React.WheelEvent) => {
         e.stopPropagation();
@@ -83,11 +96,11 @@ const Gallery: React.FC = () => {
                         </div>
                     </div>
                 ) : (
-                     <motion.div
-                         ref={carouselRef}
-                         className="w-full overflow-hidden cursor-grab"
-                         whileTap={{ cursor: 'grabbing' }}
-                     >
+                    <motion.div
+                        ref={carouselRef}
+                        className="w-full overflow-hidden cursor-grab"
+                        whileTap={{ cursor: 'grabbing' }}
+                    >
                         <motion.div
                             className="flex gap-4"
                             drag="x"
