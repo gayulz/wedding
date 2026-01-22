@@ -278,6 +278,7 @@ export const weddingData = {
         }
     },
     footer: {
-        copyright: "Copyright ⓒ Gayul Kim. All Rights Reserved."
+        name: "Gayul.kim",
+        copyright: `Copyright ⓒ All Rights Reserved.`
     }
 };

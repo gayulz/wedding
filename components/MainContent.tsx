@@ -94,8 +94,9 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
                 <Guestbook onModalStateChange={onModalStateChange} />
             </section>
 
-            <div className="h-24 flex items-center justify-center text-[#3c1e1e]/40 text-[10px] uppercase tracking-widest pb-8">
-                {weddingData.footer.copyright}
+            <div className="h-32 flex flex-col items-center justify-center text-[#3c1e1e]/40 text-[10px] uppercase tracking-widest pb-8 gap-1">
+                <span className="font-joseon opacity-100 text-[12px]">{weddingData.footer.name}</span>
+                <span>{weddingData.footer.copyright}</span>
             </div>
         </div>
     );
