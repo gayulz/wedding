@@ -376,7 +376,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowWritePopup(false)}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
+            className="absolute inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer"
             style={{
               background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(200, 200, 200, 0.05))',
               backdropFilter: 'blur(30px)',

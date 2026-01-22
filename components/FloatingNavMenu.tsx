@@ -21,7 +21,7 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
   ];
 
   return (
-    <div className="fixed bottom-8 right-8 z-[60] flex flex-col items-end gap-3">
+    <div className="absolute bottom-8 right-8 z-[60] flex flex-col items-end gap-3">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -41,11 +41,10 @@ const FloatingNavMenu: React.FC<FloatingNavMenuProps> = ({ currentSection, onNav
                   onNavigate(item.index);
                   setIsOpen(false);
                 }}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap ${
-                  currentSection === item.index
+                className={`px-3 py-1 rounded-full text-xs font-medium transition-all whitespace-nowrap ${currentSection === item.index
                     ? 'bg-yellow-200 text-gray-900 shadow-lg'
                     : 'bg-yellow-100/90 text-gray-900 hover:bg-yellow-200'
-                }`}
+                  }`}
                 style={{
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)',

@@ -121,66 +121,70 @@ const App: React.FC = () => {
   }, [handleScroll]);
 
   return (
-    <div className="h-screen w-screen relative bg-[#f8f8f8] overflow-hidden select-none">
-      {/* 떠다니는 파티클 효과 */}
-      <FloatingParticles />
+    // [MIG] 데스크탑에서 모바일 뷰 시뮬레이션 (배경)
+    <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
+      {/* [MIG] 실제 앱 컨텐츠 (모바일 규격 제한) */}
+      <div className="relative w-full h-full max-w-[430px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
+        {/* 떠다니는 파티클 효과 */}
+        <FloatingParticles />
 
-      {/* 카카오톡 브라우저 전환 안내 팝업 */}
-      {showBrowserPrompt && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999]">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white rounded-3xl p-8 max-w-sm mx-4 shadow-2xl"
-          >
-            <div className="text-center">
-              <div className="text-4xl mb-4">🌐</div>
-              <h3 className="text-xl font-bold mb-2 text-gray-800">더 나은 경험을 위해</h3>
-              <p className="text-sm text-gray-600 mb-8 leading-relaxed">
-                카카오톡 브라우저보다 외부 브라우저에서<br />더 빠르고 부드럽게 감상할 수 있습니다.
-              </p>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowBrowserPrompt(false)}
-                  className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-all active:scale-95"
-                >
-                  계속 보기
-                </button>
-                <button
-                  onClick={openInExternalBrowser}
-                  className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:shadow-lg transition-all active:scale-95"
-                >
-                  브라우저 열기
-                </button>
+        {/* 카카오톡 브라우저 전환 안내 팝업 */}
+        {showBrowserPrompt && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[9999]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-3xl p-8 max-w-sm mx-4 shadow-2xl"
+            >
+              <div className="text-center">
+                <div className="text-4xl mb-4">🌐</div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800">더 나은 경험을 위해</h3>
+                <p className="text-sm text-gray-600 mb-8 leading-relaxed">
+                  카카오톡 브라우저보다 외부 브라우저에서<br />더 빠르고 부드럽게 감상할 수 있습니다.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowBrowserPrompt(false)}
+                    className="flex-1 py-3 px-4 rounded-xl border-2 border-gray-300 text-gray-700 font-bold hover:bg-gray-50 transition-all active:scale-95"
+                  >
+                    계속 보기
+                  </button>
+                  <button
+                    onClick={openInExternalBrowser}
+                    className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:shadow-lg transition-all active:scale-95"
+                  >
+                    브라우저 열기
+                  </button>
+                </div>
               </div>
-            </div>
+            </motion.div>
+          </div>
+        )}
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={SECTIONS[currentIdx]}
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="h-full w-full"
+          >
+            {currentIdx === 0 && <Hero />}
+            {currentIdx === 1 && <Intro />}
+            {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
+            {currentIdx === 3 && <Gallery onModalStateChange={setIsAnyModalOpen} />}
+            {currentIdx === 4 && <Location />}
+            {currentIdx === 5 && <Transport />}
+            {currentIdx === 6 && <Gift />}
+            {currentIdx === 7 && <Guestbook onModalStateChange={setIsAnyModalOpen} />}
           </motion.div>
-        </div>
-      )}
+        </AnimatePresence>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={SECTIONS[currentIdx]}
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -100 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="h-full w-full"
-        >
-          {currentIdx === 0 && <Hero />}
-          {currentIdx === 1 && <Intro />}
-          {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
-          {currentIdx === 3 && <Gallery onModalStateChange={setIsAnyModalOpen} />}
-          {currentIdx === 4 && <Location />}
-          {currentIdx === 5 && <Transport />}
-          {currentIdx === 6 && <Gift />}
-          {currentIdx === 7 && <Guestbook onModalStateChange={setIsAnyModalOpen} />}
-        </motion.div>
-      </AnimatePresence>
-
-      <ShareButton />
-      <FloatingNavMenu currentSection={currentIdx} onNavigate={setCurrentIdx} />
+        <ShareButton />
+        <FloatingNavMenu currentSection={currentIdx} onNavigate={setCurrentIdx} />
+      </div>
     </div>
   );
 };

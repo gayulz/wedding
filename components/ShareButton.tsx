@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 declare global {
     interface Window {
@@ -96,11 +96,10 @@ const ShareButton: React.FC = () => {
             onClick={handleShare}
             disabled={!isKakaoReady}
             title={isKakaoReady ? '카카오톡으로 공유' : '카카오톡 로딩 중...'}
-            className={`fixed bottom-8 right-24 z-[60] w-11 h-11 rounded-full shadow-2xl flex items-center justify-center transition-all ${
-                isKakaoReady
+            className={`absolute bottom-8 right-24 z-[60] w-11 h-11 rounded-full shadow-2xl flex items-center justify-center transition-all ${isKakaoReady
                     ? 'bg-[#FEE500] text-[#3c1e1e] active:scale-95 hover:scale-110 cursor-pointer'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-60'
-            }`}
+                }`}
         >
             <i className="fa-solid fa-comment text-2xl"></i>
         </button>

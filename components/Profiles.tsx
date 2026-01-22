@@ -139,7 +139,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 						onClick={() => setIsInterviewOpen(false)}
 						onWheel={handleModalWheel}
 						onTouchMove={handleModalTouch}
-						className="fixed inset-0 z-[100] flex items-center justify-center p-6"
+						className="absolute inset-0 z-[100] flex items-center justify-center p-6"
 						style={{
 							background: 'rgba(0, 0, 0, 0.85)',
 						}}

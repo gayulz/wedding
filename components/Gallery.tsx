@@ -52,6 +52,50 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
         }
     }, [imagesLoaded]);
 
+    const [direction, setDirection] = useState(0);
+
+    const variants = {
+        enter: (direction: number) => {
+            return {
+                x: direction > 0 ? 1000 : -1000,
+                opacity: 0
+            };
+        },
+        center: {
+            zIndex: 1,
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction: number) => {
+            return {
+                zIndex: 0,
+                x: direction < 0 ? 1000 : -1000,
+                opacity: 0
+            };
+        }
+    };
+
+    const showNextImage = () => {
+        if (!selectedImage) return;
+        setDirection(1);
+        const currentIndex = images.indexOf(selectedImage);
+        const nextIndex = (currentIndex + 1) % images.length;
+        setSelectedImage(images[nextIndex]);
+    };
+
+    const showPrevImage = () => {
+        if (!selectedImage) return;
+        setDirection(-1);
+        const currentIndex = images.indexOf(selectedImage);
+        const prevIndex = (currentIndex - 1 + images.length) % images.length;
+        setSelectedImage(images[prevIndex]);
+    };
+
+    const swipeConfidenceThreshold = 10000;
+    const swipePower = (offset: number, velocity: number) => {
+        return Math.abs(offset) * velocity;
+    };
+
     // [MIG] 모달 오픈 시 배경 스크롤 잠금 및 부모에게 알림 (섹션 이동 방지)
     useEffect(() => {
         if (selectedImage) {
@@ -118,7 +162,10 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                             {images.map((image, index) => (
                                 <div
                                     key={index}
-                                    onClick={() => setSelectedImage(image)}
+                                    onClick={() => {
+                                        setDirection(0);
+                                        setSelectedImage(image);
+                                    }}
                                     className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden"
                                     style={{ width: '80vw', maxWidth: '400px' }}
                                 >
@@ -135,7 +182,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
             </motion.div>
 
             {/* Image Popup */}
-            <AnimatePresence>
+            <AnimatePresence custom={direction}>
                 {selectedImage && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -144,28 +191,66 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                         onClick={() => setSelectedImage(null)}
                         onWheel={handlePopupWheel}
                         onTouchMove={handlePopupTouch}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 cursor-pointer bg-black/80"
+                        className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
                     >
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative max-w-[90vw] max-h-[90vh]"
-                            onClick={(e) => e.stopPropagation()}
-                            onWheel={handlePopupWheel}
-                            onTouchMove={handlePopupTouch}
+                        {/* 네비게이션 버튼 (PC/태블릿용) */}
+                        <button
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white z-20 p-4 transition-colors hidden md:block"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                showPrevImage();
+                            }}
                         >
-                            <img
+                            <i className="fa-solid fa-chevron-left text-3xl"></i>
+                        </button>
+                        <button
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white z-20 p-4 transition-colors hidden md:block"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                showNextImage();
+                            }}
+                        >
+                            <i className="fa-solid fa-chevron-right text-3xl"></i>
+                        </button>
+
+                        <div
+                            className="relative w-full h-full flex items-center justify-center p-4 overflow-hidden"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <motion.img
+                                key={selectedImage}
                                 src={selectedImage}
+                                custom={direction}
+                                variants={variants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{
+                                    x: { type: "spring", stiffness: 300, damping: 30 },
+                                    opacity: { duration: 0.2 }
+                                }}
+                                drag="x"
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={1}
+                                onDragEnd={(e, { offset, velocity }) => {
+                                    const swipe = swipePower(offset.x, velocity.x);
+
+                                    if (swipe < -swipeConfidenceThreshold) {
+                                        showNextImage();
+                                    } else if (swipe > swipeConfidenceThreshold) {
+                                        showPrevImage();
+                                    }
+                                }}
+                                className="max-w-[95vw] max-h-[85vh] md:max-w-[80vw] lg:max-w-4xl object-contain shadow-2xl"
                                 alt="selected"
-                                className="w-full h-full object-contain"
                             />
-                        </motion.div>
+                        </div>
+
                         <button
                             onClick={() => setSelectedImage(null)}
-                            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors"
+                            className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors z-20"
                         >
-                            <i className="fa-solid fa-xmark text-4xl"></i>
+                            <i className="fa-solid fa-xmark text-3xl"></i>
                         </button>
                     </motion.div>
                 )}
