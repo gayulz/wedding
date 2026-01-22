@@ -165,20 +165,30 @@ const Location: React.FC = () => {
       className="relative h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-y-auto overflow-x-hidden no-scrollbar pb-12"
       // Stop touch propagation to prevent section switch when scrolling inside content
       onTouchStart={(e) => {
+        // Stop propagation if we are inside content to prevent App swipe
         const container = containerRef.current;
         if (!container) return;
         const { scrollTop, scrollHeight, clientHeight } = container;
         const isAtTop = scrollTop <= 0;
         const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
 
-        // Allow default behavior (which might trigger App swipe) ONLY if at boundaries
         if (!isAtTop && !isAtBottom) {
           e.stopPropagation();
         }
       }}
       onTouchMove={(e) => {
-        // Stop propagation if we are scrolling content
         e.stopPropagation();
+      }}
+      onTouchEnd={(e) => {
+        const container = containerRef.current;
+        if (!container) return;
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isAtTop = scrollTop <= 0;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+
+        if (!isAtTop && !isAtBottom) {
+          e.stopPropagation();
+        }
       }}
     >
       {/* 상단 헤더 */}

@@ -213,6 +213,16 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
       onTouchMove={(e) => {
         e.stopPropagation();
       }}
+      onTouchEnd={(e) => {
+        const container = containerRef.current;
+        if (!container) return;
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isAtTop = scrollTop <= 0;
+        const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 1;
+        if (!isAtTop && !isAtBottom) {
+          e.stopPropagation();
+        }
+      }}
     >
       {/* 헤더 섹션 */}
       <motion.div

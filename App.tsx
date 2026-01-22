@@ -100,7 +100,7 @@ const App: React.FC = () => {
     const onTouchEnd = (e: TouchEvent) => {
       const touchEndY = e.changedTouches[0].clientY;
       const delta = touchStartY.current - touchEndY;
-      if (Math.abs(delta) > 50) {
+      if (Math.abs(delta) > 100) { // Threshold increased to 100px for stability
         handleScroll(delta);
       }
     };
