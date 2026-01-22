@@ -12,11 +12,12 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [dragConstraints, setDragConstraints] = useState(0);
 
-    // 12개의 이미지 이름 배열
+    // 17개의 이미지 이름 배열
     const imageNames = [
         'wedding-01', 'wedding-02', 'wedding-03', 'wedding-04',
         'wedding-05', 'wedding-06', 'wedding-07', 'wedding-08',
-        'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12'
+        'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12',
+        'wedding-13', 'wedding-14', 'wedding-15', 'wedding-16', 'wedding-17'
     ];
 
     const images = imageNames.map(name => loadImage(name));
