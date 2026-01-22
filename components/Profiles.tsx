@@ -84,7 +84,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 	];
 
 	return (
-		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-hidden pt-12 px-6 pb-12">
+		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] overflow-hidden px-6 pb-12">
 			<motion.div
 				variants={containerVariants}
 				initial="hidden"

@@ -83,7 +83,7 @@ const Gift: React.FC = () => {
 	const currentAccounts = activeTab === 'groom' ? groomAccounts : brideAccounts;
 
 	return (
-		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] pt-12 px-8 pb-12 overflow-hidden">
+		<div className="h-full w-full flex flex-col items-center bg-[#f8f8f8] px-8 pb-12 overflow-hidden">
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
