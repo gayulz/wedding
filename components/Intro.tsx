@@ -62,7 +62,7 @@ const Intro: React.FC = () => {
 
     return (
         <div
-            className="relative h-full w-full flex flex-col items-center justify-center px-8 text-center"
+            className="relative h-full w-full flex flex-col items-center pt-12 px-8 pb-12 text-center"
             style={{
                 backgroundImage: `url(${loadImage('wedding-80')})`,
                 backgroundSize: 'cover',

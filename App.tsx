@@ -28,6 +28,7 @@ const App: React.FC = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
+  const [isAnyModalOpen, setIsAnyModalOpen] = useState(false); // [MIG] 모달 오픈 상태 관리
   const touchStartY = useRef(0);
 
   // 카카오톡 웹뷰에서 외부 브라우저로 열기
@@ -46,7 +47,7 @@ const App: React.FC = () => {
   };
 
   const handleScroll = useCallback((delta: number) => {
-    if (isScrolling) return;
+    if (isScrolling || isAnyModalOpen) return; // [MIG] 모달이 열려있을 때는 스크롤 방지
 
     if (delta > 0 && currentIdx < SECTIONS.length - 1) {
       setIsScrolling(true);
@@ -57,7 +58,7 @@ const App: React.FC = () => {
     }
 
     setTimeout(() => setIsScrolling(false), 800);
-  }, [isScrolling, currentIdx]);
+  }, [isScrolling, currentIdx, isAnyModalOpen]); // [MIG] isAnyModalOpen 종속성 추가
 
   // 카카오톡 웹뷰 감지 및 팝업 표시
   useEffect(() => {
@@ -169,7 +170,7 @@ const App: React.FC = () => {
         >
           {currentIdx === 0 && <Hero />}
           {currentIdx === 1 && <Intro />}
-          {currentIdx === 2 && <Profiles />}
+          {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
           {currentIdx === 3 && <Gallery />}
           {currentIdx === 4 && <Location />}
           {currentIdx === 5 && <Transport />}

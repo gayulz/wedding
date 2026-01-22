@@ -57,7 +57,7 @@ const Gallery: React.FC = () => {
     };
 
     return (
-        <div className="h-full w-full flex flex-col items-center justify-center bg-white pt-0 px-6 pb-6 md:pt-12 md:px-12 md:pb-12 overflow-hidden">
+        <div className="h-full w-full flex flex-col items-center bg-white pt-12 px-6 pb-6 md:pt-12 md:px-12 md:pb-12 overflow-hidden">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

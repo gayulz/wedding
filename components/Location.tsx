@@ -159,7 +159,7 @@ const Location: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center pt-6 pb-6 px-6"
+        className="text-center pt-12 pb-6 px-6"
       >
         <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">LOCATION</p>
         <h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-6">오시는 길</h2>
@@ -178,7 +178,7 @@ const Location: React.FC = () => {
         transition={{ duration: 0.6, delay: 0.2 }}
         ref={mapContainerRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '250px' }}
+        style={{ height: '270px' }}
       >
         <div
           ref={mapRef}
@@ -207,7 +207,7 @@ const Location: React.FC = () => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 2, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="w-full px-1 py-2"
+        className="w-full px-1 py-3"
       >
 
         {/* 네비게이션 버튼 */}

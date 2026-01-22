@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 
-const Profiles: React.FC = () => {
+interface ProfilesProps {
+  onModalStateChange: (isOpen: boolean) => void;
+}
+
+const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 	const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+
+    // [MIG] 모달 상태 변경 시 App.tsx에 알림
+    useEffect(() => {
+        onModalStateChange(isInterviewOpen);
+    }, [isInterviewOpen, onModalStateChange]);
 
 	// 모달에서 스크롤 이벤트가 부모로 전파되지 않도록 차단
 	const handleModalWheel = (e: React.WheelEvent) => {

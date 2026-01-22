@@ -48,7 +48,7 @@ const Transport: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 text-center pt-6 pb-6 px-16"
+        className="relative z-10 text-center pt-12 pb-6 px-16"
       >
         <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">TRANSPORT</p>
         <h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-2">오시는 길</h2>
