@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -11,31 +11,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
     <style>
-        html, body {
+        html,
+        body {
             font-family: 'Noto+Sans+KR', sans-serif;
-            overflow: hidden; /* Prevent default scrolling for one-page experience */
+            overflow: hidden;
+            /* Prevent default scrolling for one-page experience */
             height: 100%;
             width: 100%;
             margin: 0;
             padding: 0;
-            position: fixed; /* 모바일에서 주소창 숨김을 위한 고정 */
+            position: fixed;
+            /* 모바일에서 주소창 숨김을 위한 고정 */
         }
+
         .font-myeongjo {
             font-family: 'Nanum Myeongjo', serif;
         }
+
         /* Custom scrollbar hiding */
         ::-webkit-scrollbar {
             display: none;
         }
+
         .scrollbar-hide {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
+
         .scrollbar-hide::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari, Opera */
+            display: none;
+            /* Chrome, Safari, Opera */
         }
+
         /* Glass Design Utilities */
         .glass-card {
             background: rgba(255, 255, 255, 0.12);
@@ -44,14 +57,112 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
         }
+
         .liquid-glass {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 20px;
         }
+
+        @font-face {
+            font-family: 'MaruBuri';
+            src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-ExtraLight.woff2);
+            font-weight: 200;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MaruBuri';
+            src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff2);
+            font-weight: 300;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MaruBuri';
+            src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2);
+            font-weight: 400;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MaruBuri';
+            src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2);
+            font-weight: 600;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MaruBuri';
+            src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2);
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        .font-maruburi {
+            font-family: 'MaruBuri', serif;
+        }
+
+        /* Premium Visual Effects */
+        .premium-glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle shine effect for the glass */
+        .premium-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: skewX(-25deg);
+            pointer-events: none;
+            animation: shimmer 6s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -150%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            40% {
+                left: 150%;
+                opacity: 0;
+            }
+
+            100% {
+                left: 150%;
+                opacity: 0;
+            }
+        }
+
+        .text-glow-subtle {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",
@@ -63,6 +174,7 @@
 }
 </script>
 </head>
+
 <body class="bg-gray-50 text-gray-800">
     <div id="root"></div>
 
@@ -73,4 +185,5 @@
 
     <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

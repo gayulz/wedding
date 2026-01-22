@@ -5,10 +5,19 @@ import { loadImage } from '@/lib/image-loader.ts';
 
 const Hero: React.FC = () => {
   return (
-    <div className="relative h-full w-full flex items-start justify-center pt-44 md:pt-56">
+    <div className="relative h-full w-full flex items-end justify-center pb-32 md:pb-36">
       {/* Background Image - wedding-100.png */}
-      <div
+      {/* Background Image - wedding-100.png with Ken Burns Effect */}
+      <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        initial={{ scale: 1.0 }}
+        animate={{ scale: 1.1 }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          repeatType: "reverse",
+          ease: "linear"
+        }}
         style={{
           backgroundImage: `url(${loadImage('wedding-100')})`,
           backgroundSize: 'cover',
@@ -16,31 +25,61 @@ const Hero: React.FC = () => {
         }}
       >
         <div className="absolute inset-0 bg-black/40" />
-      </div>
+      </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.3, duration: 1 }}
-        className="relative z-10 p-6 md:p-8 w-4/5 max-w-md text-center rounded-3xl"
-        style={{
-          background: 'rgba(255, 255, 255, 0.02)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, scale: 0.9 },
+          visible: {
+            opacity: 1,
+            scale: 1,
+            transition: {
+              delayChildren: 0.3,
+              staggerChildren: 0.2,
+              duration: 0.8
+            }
+          }
         }}
+        className="relative z-10 p-4 md:p-6 w-full max-w-md text-center drop-shadow-2xl"
       >
-        <p className="text-white/80 tracking-[0.3em] uppercase text-[10px] mb-3">Wedding Invitation</p>
-        <h1 className="text-xl md:text-2xl text-white font-myeongjo mb-6 leading-tight">
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}
+          className="text-white/80 tracking-[0.3em] uppercase text-[10px] mb-3"
+        >
+          Wedding Invitation
+        </motion.p>
+        <motion.h1
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}
+          className="text-xl md:text-3xl text-white font-maruburi mb-6 leading-tight text-glow-subtle"
+        >
           최봉석 <span className="text-sm align-middle mx-1">💍</span> 김가율
-        </h1>
-        <p className="text-white font-light text-base md:text-lg tracking-widest">
-          2026. 03. 14. 토
-          <br /> PM 2:00
-        </p>
-        <p className="text-white/70 mt-2 text-xs md:text-sm">
+        </motion.h1>
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}
+          className="text-white font-light text-base md:text-[17px] tracking-widest"
+        >
+          2026. 03. 14. 토 PM 2:00
+        </motion.p>
+        <motion.p
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}
+          className="text-white/70 mt-2 text-xs md:text-sm"
+        >
           구미 토미스퀘어가든, 4층 스퀘어가든 홀
-        </p>
+        </motion.p>
       </motion.div>
 
       <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center">

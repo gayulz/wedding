@@ -71,7 +71,7 @@ const Location: React.FC = () => {
         }
 
         const location = new window.naver.maps.LatLng(36.097854, 128.435753);
-        
+
         const mapOptions = {
           center: location,
           zoom: 17,
@@ -162,12 +162,28 @@ const Location: React.FC = () => {
         className="text-center pt-12 pb-6 px-6"
       >
         <p className="text-[10px] text-gray-400 tracking-[0.3em] uppercase mb-0">LOCATION</p>
-        <h2 className="text-2xl font-myeongjo text-gray-800 mt-0 mb-6">오시는 길</h2>
+        <h2 className="text-2xl font-myeongjo text-gray-800 mt-1 mb-6">오시는 길</h2>
 
-        <div className="space-y-0">
-          <h3 className="text-m font-bold text-gray-600">토미스퀘어가든</h3>
-          <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
-          <p className="text-sm text-gray-600">Tel. 054-473-6799</p>
+        <div className="space-y-1">
+          <div className="flex items-center justify-center gap-2">
+            <h3 className="text-lg text-gray-600">토미스퀘어가든</h3>
+            <a href="tel:054-473-6799" className="text-gray-400 hover:text-gray-600 transition-colors p-1">
+              <i className="fa-solid fa-phone text-xs"></i>
+            </a>
+          </div>
+
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-sm text-gray-500">경상북도 구미시 인동35길 46, 4층</p>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText("경상북도 구미시 인동35길 46");
+                alert("주소가 복사되었습니다.");
+              }}
+              className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+            >
+              <i className="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
         </div>
       </motion.div>
 

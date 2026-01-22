@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Hero from './components/Hero';
 import Intro from './components/Intro';
+import OpeningSequence from './components/OpeningSequence';
 import Profiles from './components/Profiles';
 import Location from './components/Location';
 import Transport from './components/Transport';
@@ -28,6 +29,7 @@ const App: React.FC = () => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
+  const [showOpening, setShowOpening] = useState(true);
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false); // [MIG] 모달 오픈 상태 관리
   const touchStartY = useRef(0);
 
@@ -47,7 +49,7 @@ const App: React.FC = () => {
   };
 
   const handleScroll = useCallback((delta: number) => {
-    if (isScrolling || isAnyModalOpen) return; // [MIG] 모달이 열려있을 때는 스크롤 방지
+    if (isScrolling || isAnyModalOpen || showOpening) return; // [MIG] 모달이 열려있거나 오프닝 중일 때는 스크롤 방지
 
     if (delta > 0 && currentIdx < SECTIONS.length - 1) {
       setIsScrolling(true);
@@ -58,7 +60,7 @@ const App: React.FC = () => {
     }
 
     setTimeout(() => setIsScrolling(false), 800);
-  }, [isScrolling, currentIdx, isAnyModalOpen]); // [MIG] isAnyModalOpen 종속성 추가
+  }, [isScrolling, currentIdx, isAnyModalOpen, showOpening]); // [MIG] isAnyModalOpen 종속성 추가
 
   // 카카오톡 웹뷰 감지 및 팝업 표시
   useEffect(() => {
@@ -125,6 +127,9 @@ const App: React.FC = () => {
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
       {/* [MIG] 실제 앱 컨텐츠 (모바일 규격 제한) */}
       <div className="relative w-full h-full max-w-[430px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
+        {/* 오프닝 시퀀스 */}
+        {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
+
         {/* 떠다니는 파티클 효과 */}
         <FloatingParticles />
 
