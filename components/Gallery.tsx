@@ -7,7 +7,7 @@ interface GalleryProps {
 }
 
 const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+    // Removed imagesLoaded state as we will show immediately
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const [dragConstraints, setDragConstraints] = useState(0);
@@ -17,41 +17,19 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
         'wedding-01', 'wedding-02', 'wedding-03', 'wedding-04',
         'wedding-05', 'wedding-06', 'wedding-07', 'wedding-08',
         'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12',
-        'wedding-13', 'wedding-14', 'wedding-15', 'wedding-16',
-        'wedding-17'
+        'wedding-13', 'wedding-14', 'wedding-15'
     ];
 
     const images = imageNames.map(name => loadImage(name));
 
-
-    // 이미지 프리로드
-    useEffect(() => {
-        const preloadImage = (src: string) => {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.src = src;
-                img.onload = resolve;
-                img.onerror = reject;
-            });
-        };
-
-        Promise.all(images.map(src => preloadImage(src)))
-            .then(() => {
-                setImagesLoaded(true);
-            })
-            .catch(err => {
-                console.error('Image preload error:', err);
-                setImagesLoaded(true);
-            });
-    }, []);
-
+    // Calculate constraints on mount
     useEffect(() => {
         if (carouselRef.current) {
             const carouselWidth = carouselRef.current.offsetWidth;
             const contentWidth = carouselRef.current.scrollWidth;
             setDragConstraints(contentWidth - carouselWidth);
         }
-    }, [imagesLoaded]);
+    }, []);
 
     const [direction, setDirection] = useState(0);
 
@@ -143,46 +121,40 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative w-full max-w-4xl flex flex-col items-center"
             >
-                {!imagesLoaded ? (
-                    // 로딩 중 표시
-                    <div className="h-[70vh] flex items-center justify-center">
-                        <div className="text-center">
-                            <i className="fa-solid fa-spinner fa-spin text-3xl text-gray-400 mb-3"></i>
-                            <p className="text-sm text-gray-500">사진을 불러오는 중...</p>
-                        </div>
-                    </div>
-                ) : (
+                <motion.div
+                    ref={carouselRef}
+                    className="w-full overflow-hidden cursor-grab"
+                    whileTap={{ cursor: 'grabbing' }}
+                >
                     <motion.div
-                        ref={carouselRef}
-                        className="w-full overflow-hidden cursor-grab"
-                        whileTap={{ cursor: 'grabbing' }}
+                        className="flex gap-4"
+                        drag="x"
+                        dragConstraints={{ right: 0, left: -dragConstraints }}
+                        dragTransition={{ bounceStiffness: 200, bounceDamping: 20 }}
                     >
-                        <motion.div
-                            className="flex gap-4"
-                            drag="x"
-                            dragConstraints={{ right: 0, left: -dragConstraints }}
-                            dragTransition={{ bounceStiffness: 200, bounceDamping: 20 }}
-                        >
-                            {images.map((image, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => {
-                                        setDirection(0);
-                                        setSelectedImage(image);
-                                    }}
-                                    className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden"
-                                    style={{ width: '80vw', maxWidth: '400px' }}
-                                >
-                                    <img
-                                        src={image}
-                                        alt={`gallery-${index + 1}`}
-                                        className="w-full h-full object-cover pointer-events-none"
-                                    />
-                                </div>
-                            ))}
-                        </motion.div>
+                        {images.map((image, index) => (
+                            <div
+                                key={index}
+                                onClick={() => {
+                                    setDirection(0);
+                                    setSelectedImage(image);
+                                }}
+                                className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden bg-gray-100"
+                                style={{ width: '80vw', maxWidth: '400px' }}
+                            >
+                                <img
+                                    src={image}
+                                    alt={`gallery-${index + 1}`}
+                                    loading={index < 2 ? "eager" : "lazy"}
+                                    decoding={index < 2 ? "sync" : "async"}
+                                    className="w-full h-full object-cover pointer-events-none transition-opacity duration-300"
+                                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                                    style={{ opacity: 0 }} // Start invisible, fade in on load
+                                />
+                            </div>
+                        ))}
                     </motion.div>
-                )}
+                </motion.div>
             </motion.div>
 
             {/* Image Popup */}

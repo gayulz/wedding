@@ -1,37 +1,23 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Hero from './components/Hero';
 import Intro from './components/Intro';
+import MainContent from './components/MainContent';
 import OpeningSequence from './components/OpeningSequence';
-import Profiles from './components/Profiles';
-import Location from './components/Location';
-import Rsvp from './components/Rsvp';
-import Gallery from './components/Gallery';
-import Gift from './components/Gift';
-import Guestbook from './components/Guestbook';
 import ShareButton from './components/ShareButton';
 import FloatingParticles from './components/FloatingParticles';
-import FloatingNavMenu from './components/FloatingNavMenu';
 
-const SECTIONS = [
-  'hero',
-  'intro',
-  'profiles',
-  'gallery',
-  'location',
-  'rsvp',
-  'gift',
-  'guestbook'
-];
+const SECTIONS = ['hero', 'intro', 'main'];
 
 const App: React.FC = () => {
-  const [currentIdx, setCurrentIdx] = useState(0);
+  const [currentIdx, setCurrentIdx] = useState(0); // 0, 1, or 2
   const [isScrolling, setIsScrolling] = useState(false);
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
+
   const touchStartY = useRef(0);
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   // 카카오톡 웹뷰에서 외부 브라우저로 열기
   const openInExternalBrowser = () => {
@@ -49,15 +35,29 @@ const App: React.FC = () => {
   const handleScroll = useCallback((delta: number) => {
     if (isScrolling || isAnyModalOpen || showOpening) return;
 
+    if (currentIdx === 2) {
+      // Logic for MainContent
+      if (mainContentRef.current) {
+        if (mainContentRef.current.scrollTop <= 0 && delta < 0) {
+          // Top of MainContent and scrolling UP -> Go to Intro
+          setIsScrolling(true);
+          setCurrentIdx(1);
+          setTimeout(() => setIsScrolling(false), 800);
+        }
+        // Otherwise let native scroll happen
+      }
+      return;
+    }
+
     if (delta > 0 && currentIdx < SECTIONS.length - 1) {
       setIsScrolling(true);
       setCurrentIdx(prev => prev + 1);
+      setTimeout(() => setIsScrolling(false), 800);
     } else if (delta < 0 && currentIdx > 0) {
       setIsScrolling(true);
       setCurrentIdx(prev => prev - 1);
+      setTimeout(() => setIsScrolling(false), 800);
     }
-
-    setTimeout(() => setIsScrolling(false), 800);
   }, [isScrolling, currentIdx, isAnyModalOpen, showOpening]);
 
   // 카카오톡 웹뷰 감지 및 팝업 표시
@@ -90,7 +90,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
-      handleScroll(e.deltaY);
+      // Only hijack wheel if NOT in MainContent or if at top of MainContent going up
+      if (currentIdx !== 2) {
+        handleScroll(e.deltaY);
+      } else {
+        if (mainContentRef.current && mainContentRef.current.scrollTop <= 0 && e.deltaY < 0) {
+          handleScroll(e.deltaY);
+        }
+      }
     };
 
     const onTouchStart = (e: TouchEvent) => {
@@ -100,8 +107,15 @@ const App: React.FC = () => {
     const onTouchEnd = (e: TouchEvent) => {
       const touchEndY = e.changedTouches[0].clientY;
       const delta = touchStartY.current - touchEndY;
-      if (Math.abs(delta) > 100) { // Threshold increased to 100px for stability
-        handleScroll(delta);
+      if (Math.abs(delta) > 50) {
+        // Only hijack touch if NOT in MainContent or if at top of MainContent going up
+        if (currentIdx !== 2) {
+          handleScroll(delta);
+        } else {
+          if (mainContentRef.current && mainContentRef.current.scrollTop <= 0 && delta < 0) {
+            handleScroll(delta);
+          }
+        }
       }
     };
 
@@ -114,7 +128,7 @@ const App: React.FC = () => {
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
     };
-  }, [handleScroll]);
+  }, [handleScroll, currentIdx]);
 
   return (
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
@@ -166,17 +180,16 @@ const App: React.FC = () => {
           >
             {currentIdx === 0 && <Hero />}
             {currentIdx === 1 && <Intro />}
-            {currentIdx === 2 && <Profiles onModalStateChange={setIsAnyModalOpen} />}
-            {currentIdx === 3 && <Gallery onModalStateChange={setIsAnyModalOpen} />}
-            {currentIdx === 4 && <Location />}
-            {currentIdx === 5 && <Rsvp onModalStateChange={setIsAnyModalOpen} />}
-            {currentIdx === 6 && <Gift />}
-            {currentIdx === 7 && <Guestbook onModalStateChange={setIsAnyModalOpen} />}
+            {currentIdx === 2 && (
+              <MainContent
+                ref={mainContentRef}
+                onModalStateChange={setIsAnyModalOpen}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 
-        <ShareButton />
-        <FloatingNavMenu currentSection={currentIdx} onNavigate={setCurrentIdx} />
+        {currentIdx >= 2 && <ShareButton />}
       </div>
     </div>
   );

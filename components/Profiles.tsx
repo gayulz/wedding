@@ -135,7 +135,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 font-nanumsquare"
 				>
 					<i className="fa-solid fa-envelope text-xs"></i>
-					<span>신랑 & 신부의 인터뷰 읽어보기</span>
+					<span>어떤 배우자가 될까요 Q&A</span>
 				</motion.button>
 			</motion.div>
 

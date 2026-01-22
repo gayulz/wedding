@@ -159,8 +159,8 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                             {step === 'form' ? (
                                 <>
                                     <div className="text-center mb-8">
-                                        <h3 className="text-xl font-myeongjo text-gray-800 mb-2">참석 의사 체크하기</h3>
-                                        <p className="text-xs text-gray-400">
+                                        <h3 className="text-xl font-myeongjo text-gray-900 mb-2">참석 의사 체크하기</h3>
+                                        <p className="text-xs text-gray-600 font-medium">
                                             한 분 한 분을 소중히 모실 수 있도록<br />
                                             참석 의사를 전해주시면 감사하겠습니다.
                                         </p>
@@ -169,22 +169,22 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                                     <div className="space-y-6 text-left">
                                         {/* Side Selection */}
                                         <div>
-                                            <label className="block text-xs text-gray-500 mb-2 font-joseon">어느 분의 하객이신가요? <span className="text-red-400">*</span></label>
+                                            <label className="block text-sm text-gray-800 mb-2 font-joseon font-bold">어느 분의 하객이신가요? <span className="text-red-500">*</span></label>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <button
                                                     onClick={() => setSide('groom')}
-                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare ${side === 'groom'
-                                                        ? 'bg-[#8E8E8E] text-white border-[#8E8E8E]'
-                                                        : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'
+                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare font-medium ${side === 'groom'
+                                                        ? 'bg-[#5A4D4D] text-white border-[#5A4D4D]'
+                                                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                                                         }`}
                                                 >
                                                     신랑
                                                 </button>
                                                 <button
                                                     onClick={() => setSide('bride')}
-                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare ${side === 'bride'
-                                                        ? 'bg-[#8E8E8E] text-white border-[#8E8E8E]'
-                                                        : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'
+                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare font-medium ${side === 'bride'
+                                                        ? 'bg-[#5A4D4D] text-white border-[#5A4D4D]'
+                                                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                                                         }`}
                                                 >
                                                     신부
@@ -194,22 +194,22 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
 
                                         {/* Attendance Selection */}
                                         <div>
-                                            <label className="block text-xs text-gray-500 mb-2 font-joseon">참석하실 수 있나요? <span className="text-red-400">*</span></label>
+                                            <label className="block text-sm text-gray-800 mb-2 font-joseon font-bold">참석하실 수 있나요? <span className="text-red-500">*</span></label>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <button
                                                     onClick={() => setAttendance('yes')}
-                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare ${attendance === 'yes'
-                                                        ? 'bg-[#8E8E8E] text-white border-[#8E8E8E]'
-                                                        : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'
+                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare font-medium ${attendance === 'yes'
+                                                        ? 'bg-[#5A4D4D] text-white border-[#5A4D4D]'
+                                                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                                                         }`}
                                                 >
                                                     참석할게요
                                                 </button>
                                                 <button
                                                     onClick={() => setAttendance('no')}
-                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare ${attendance === 'no'
-                                                        ? 'bg-[#8E8E8E] text-white border-[#8E8E8E]'
-                                                        : 'bg-white text-gray-400 border-gray-200 hover:border-gray-300'
+                                                    className={`py-3 rounded-xl border text-sm transition-all font-nanumsquare font-medium ${attendance === 'no'
+                                                        ? 'bg-[#5A4D4D] text-white border-[#5A4D4D]'
+                                                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                                                         }`}
                                                 >
                                                     참석이 어려워요
@@ -219,19 +219,19 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
 
                                         {/* Name Input */}
                                         <div>
-                                            <label className="block text-xs text-gray-500 mb-2 font-joseon">성함이 어떻게 되시나요? <span className="text-red-400">*</span></label>
+                                            <label className="block text-sm text-gray-800 mb-2 font-joseon font-bold">성함이 어떻게 되시나요? <span className="text-red-500">*</span></label>
                                             <input
                                                 type="text"
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                                 placeholder="참석자 본인 성함"
-                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-gray-400 transition-colors font-nanumsquare"
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-500 transition-colors font-nanumsquare placeholder:text-gray-400"
                                             />
                                         </div>
 
                                         {/* Phone Input */}
                                         <div>
-                                            <label className="block text-xs text-gray-500 mb-2 font-joseon">동명이인 체크를 위한 번호를 알려주세요 <span className="text-red-400">*</span></label>
+                                            <label className="block text-sm text-gray-800 mb-2 font-joseon font-bold">동명이인 체크를 위한 번호를 알려주세요 <span className="text-red-500">*</span></label>
                                             <input
                                                 type="text"
                                                 value={phone}
@@ -241,14 +241,14 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                                                     setPhone(val);
                                                 }}
                                                 placeholder="핸드폰 번호 뒤 4자리"
-                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-gray-400 transition-colors font-nanumsquare"
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-300 text-gray-900 text-sm focus:outline-none focus:border-gray-500 transition-colors font-nanumsquare placeholder:text-gray-400"
                                             />
                                         </div>
 
                                         <button
                                             onClick={handleSubmit}
                                             disabled={submitting}
-                                            className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-colors disabled:opacity-50 mt-4"
+                                            className="w-full py-4 bg-[#5A4D4D] text-white rounded-xl text-base font-bold font-nanumsquare hover:bg-[#4a3d3d] transition-colors disabled:opacity-50 mt-4 shadow-lg"
                                         >
                                             {submitting ? <i className="fa-solid fa-spinner fa-spin"></i> : '체크 완료하기'}
                                         </button>
@@ -256,19 +256,19 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                                 </>
                             ) : (
                                 <div className="text-center py-10">
-                                    <div className="w-16 h-16 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <div className="w-16 h-16 bg-[#5A4D4D]/10 text-[#5A4D4D] rounded-full flex items-center justify-center mx-auto mb-6">
                                         <i className="fa-solid fa-check text-2xl"></i>
                                     </div>
-                                    <h3 className="text-xl font-myeongjo text-gray-800 mb-2">
+                                    <h3 className="text-xl font-myeongjo text-gray-900 mb-2 font-bold">
                                         {isUpdate ? '제출하신 내용을 수정했습니다' : '제출되었습니다'}
                                     </h3>
-                                    <p className="text-sm text-gray-500 mb-8">
+                                    <p className="text-sm text-gray-600 mb-8 font-medium">
                                         소중한 의사 전달 감사합니다.<br />
                                         예식일에 뵙겠습니다.
                                     </p>
                                     <button
                                         onClick={handleClose}
-                                        className="px-8 py-3 bg-[#8E8E8E] text-white rounded-xl text-sm font-medium hover:bg-[#7a7a7a] transition-colors"
+                                        className="px-8 py-3 bg-[#5A4D4D] text-white rounded-xl text-sm font-bold hover:bg-[#4a3d3d] transition-colors"
                                     >
                                         닫기
                                     </button>

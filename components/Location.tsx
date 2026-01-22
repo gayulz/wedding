@@ -63,27 +63,7 @@ const Location: React.FC = () => {
     };
   }, []);
 
-  // Map scroll prevention (keep existing logic but scoped)
-  useEffect(() => {
-    const mapContainer = mapContainerRef.current;
-    if (!mapContainer) return;
 
-    const preventMapScroll = (e: Event) => {
-      e.stopPropagation(); // Stop everything on map
-    };
-
-    mapContainer.addEventListener('wheel', preventMapScroll, { passive: false });
-    mapContainer.addEventListener('touchstart', preventMapScroll, { passive: false });
-    mapContainer.addEventListener('touchmove', preventMapScroll, { passive: false });
-    mapContainer.addEventListener('touchend', preventMapScroll, { passive: false });
-
-    return () => {
-      mapContainer.removeEventListener('wheel', preventMapScroll);
-      mapContainer.removeEventListener('touchstart', preventMapScroll);
-      mapContainer.removeEventListener('touchmove', preventMapScroll);
-      mapContainer.removeEventListener('touchend', preventMapScroll);
-    };
-  }, []);
 
   // ... Tmap handler code ...
   const handleTmapRoute = () => {
@@ -129,7 +109,15 @@ const Location: React.FC = () => {
         if (!window.naver || !window.naver.maps) return;
 
         const location = new window.naver.maps.LatLng(36.097854, 128.435753);
-        const mapOptions = { center: location, zoom: 17, zoomControl: true, zoomControlOptions: { position: window.naver.maps.Position.TOP_RIGHT } };
+        const mapOptions = {
+          center: location,
+          zoom: 17,
+          zoomControl: true,
+          zoomControlOptions: { position: window.naver.maps.Position.TOP_RIGHT },
+          scrollWheel: true,
+          draggable: true,
+          pinchZoom: true
+        };
         const map = new window.naver.maps.Map(mapRef.current, mapOptions);
         new window.naver.maps.Marker({ position: location, map: map, title: '토미스퀘어가든' });
 
@@ -289,18 +277,18 @@ const Location: React.FC = () => {
         {/* 자가용 */}
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
-            <i className="fa-solid fa-car text-gray-300 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-400 uppercase tracking-wider">자가용</h3>
+            <i className="fa-solid fa-car text-gray-800 text-lg"></i>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">자가용</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
             <div>
               <p className="text-sm text-gray-800 font-bold mb-1">내비게이션</p>
-              <p className="text-sm text-gray-600">'토미스퀘어가든' 또는 '인동35길 46' 검색</p>
+              <p className="text-sm text-gray-500">'토미스퀘어가든' 또는 '인동35길 46' 검색</p>
             </div>
             <div>
               <p className="text-sm text-gray-800 font-bold mb-1">주차 안내</p>
-              <p className="text-sm text-gray-600">건물 내 지하/지상 주차장 이용 (최대 1,400대)</p>
-              <p className="text-sm text-gray-600">웨딩홀 방문객 무료 주차</p>
+              <p className="text-sm text-gray-500">건물 내 지하/지상 주차장 이용 (최대 1,400대)</p>
+              <p className="text-sm text-gray-500">웨딩홀 방문객 무료 주차</p>
             </div>
           </div>
           <div className="border-b border-gray-100 mt-8"></div>
@@ -309,16 +297,16 @@ const Location: React.FC = () => {
         {/* 버스 */}
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
-            <i className="fa-solid fa-bus text-gray-300 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-400 uppercase tracking-wider">버스</h3>
+            <i className="fa-solid fa-bus text-gray-800 text-lg"></i>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">버스</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
             <div>
               <p className="text-sm text-gray-800 font-bold mb-1">시내버스</p>
-              <p className="text-sm text-gray-600 mb-1">인동정류장 하차 (도보 5분)</p>
+              <p className="text-sm text-gray-500 mb-1">인동정류장 하차 (도보 5분)</p>
               <div className="text-xs text-gray-500 space-y-1 bg-white border border-gray-100 p-3 rounded-lg">
                 <p><span className="text-green-600 font-medium font-bold">지선</span> 187, 187-1, 188</p>
-                <p><span className="text-blue-600 font-medium font-bold">간선</span> 180, 881, 883, 884, 885</p>
+                <p><span className="text-blue-600 font-medium font-bold">간선</span> 180, 881, 881-1, 883, 883-1, 884, 884-1, 884-2, 885</p>
               </div>
             </div>
           </div>
@@ -328,18 +316,18 @@ const Location: React.FC = () => {
         {/* 기차 (KTX/SRT) */}
         <motion.section variants={itemVariants} className="w-full">
           <div className="flex items-center gap-2 mb-4">
-            <i className="fa-solid fa-train text-gray-300 text-lg"></i>
-            <h3 className="text-base font-joseon text-gray-400 uppercase tracking-wider">기차 (KTX/SRT)</h3>
+            <i className="fa-solid fa-train text-gray-800 text-lg"></i>
+            <h3 className="text-base font-joseon text-gray-900 uppercase tracking-wider font-bold">기차 (KTX/SRT)</h3>
           </div>
           <div className="space-y-6 font-nanumsquare">
             <div>
-              <p className="text-sm text-gray-800 font-bold mb-1">구미역 (일반열차/KTX)</p>
-              <p className="text-sm text-gray-600">구미역 하차 → 택시 이용 (약 15분 소요)</p>
-              <p className="text-sm text-gray-600 mt-1">또는 버스 환승 (인동 방면)</p>
+              <p className="text-sm text-gray-800 font-bold mb-1">구미역 (일반열차)</p>
+              <p className="text-sm text-gray-500">구미역 하차 → 택시 이용 (약 15분 소요)</p>
+              <p className="text-sm text-gray-500 mt-1">또는 버스 환승 (인동 방면)</p>
             </div>
             <div>
               <p className="text-sm text-gray-800 font-bold mb-1">김천구미역 (KTX/SRT)</p>
-              <p className="text-sm text-gray-600">김천구미역 하차 → 리무진 버스 또는 택시 이용</p>
+              <p className="text-sm text-gray-500">김천구미역 하차 → 리무진 버스 또는 택시 이용</p>
               <p className="text-xs text-gray-500 mt-1">(택시 이용 시 약 30~40분 소요)</p>
             </div>
           </div>
