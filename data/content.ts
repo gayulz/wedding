@@ -226,6 +226,7 @@ export const weddingData = {
         subtitle: "저희 둘에게 따뜻한 방명록을 남겨주세요",
         empty: "아직 작성된 방명록이 없습니다.",
         button: "메시지 남기기",
+        loadMore: "더보기",
         write: {
             title: "축하 메시지 작성하기",
             subtitle: "저희 둘의 결혼을 함께 축하해 주세요",

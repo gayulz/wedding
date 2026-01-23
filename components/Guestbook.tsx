@@ -24,6 +24,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [message, setMessage] = useState('');
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // 스크롤 컨테이너 ref (Location 컴포넌트와 동일한 방식)
   const containerRef = useRef<HTMLDivElement>(null);
@@ -241,44 +242,57 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
       {/* 방명록 목록 (시안 카드 스타일) - 하단 여백 추가하여 버튼에 가려지지 않게 함 */}
       <div className="w-full max-w-sm px-6 space-y-4 pb-32">
         {entries.length > 0 ? (
-          entries.map((entry) => (
-            <motion.div
-              key={entry.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="relative bg-white rounded-2xl p-6 shadow-md border border-gray-50/50"
-            >
-              {/* 수정 버튼 (아이콘) */}
-              <button
-                onClick={() => handleEditClick(entry)}
-                className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors"
+          <>
+            {(isExpanded ? entries : entries.slice(0, 3)).map((entry) => (
+              <motion.div
+                key={entry.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className="relative bg-white rounded-2xl p-6 shadow-md border border-gray-50/50"
               >
-                <i className="fa-solid fa-xmark text-sm"></i>
-              </button>
+                {/* 수정 버튼 (아이콘) */}
+                <button
+                  onClick={() => handleEditClick(entry)}
+                  className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors"
+                >
+                  <i className="fa-solid fa-xmark text-sm"></i>
+                </button>
 
-              {/* 메시지 본문 */}
-              <p className="text-[14px] leading-relaxed text-gray-700 font-nanumsquare mb-6 whitespace-pre-wrap break-words">
-                {entry.message}
-              </p>
+                {/* 메시지 본문 */}
+                <p className="text-[14px] leading-relaxed text-gray-700 font-nanumsquare mb-6 whitespace-pre-wrap break-words">
+                  {entry.message}
+                </p>
 
-              {/* 하단 정보 */}
-              <div className="flex justify-between items-center text-[11px] font-nanumsquare">
-                <span className="text-gray-400">From {entry.name}</span>
-                <span className="text-gray-300">
-                  {entry.createdAt ? (
-                    entry.createdAt.toDate().toLocaleDateString('ko-KR') + ' ' +
-                    entry.createdAt.toDate().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
-                  ) : ''}
-                </span>
-              </div>
-            </motion.div>
-          ))
+                {/* 하단 정보 */}
+                <div className="flex justify-between items-center text-[11px] font-nanumsquare">
+                  <span className="text-gray-400">From {entry.name}</span>
+                  <span className="text-gray-300">
+                    {entry.createdAt ? (
+                      entry.createdAt.toDate().toLocaleDateString('ko-KR') + ' ' +
+                      entry.createdAt.toDate().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
+                    ) : ''}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+
+            {!isExpanded && entries.length > 3 && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                onClick={() => setIsExpanded(true)}
+                className="w-full py-3 bg-white border border-gray-200 text-gray-500 rounded-xl text-xs font-nanumsquare hover:bg-gray-50 transition-colors flex items-center justify-center gap-1 shadow-sm"
+              >
+                <span>{weddingData.guestbook.loadMore}</span>
+                <i className="fa-solid fa-chevron-down text-[10px]"></i>
+              </motion.button>
+            )}
+          </>
         ) : (
           <p className="text-center text-gray-400 text-xs py-10 font-gowoon">{weddingData.guestbook.empty}</p>
         )}
-
       </div>
 
       {/* 버튼 고정 영역 - 뒷 컨텐츠가 비치지 않도록 Solid 배경 적용 및 위치 하단 밀착 */}
