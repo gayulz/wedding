@@ -133,43 +133,41 @@ const RsvpManager: React.FC = () => {
             </div>
 
             <div className="overflow-x-auto">
-                <table className="w-full text-left text-white border-collapse text-sm md:text-base">
+                <table className="w-full text-left text-white border-collapse text-xs md:text-base">
                     <thead>
-                        <tr className="border-b-2 border-white bg-gray-800">
-                            <th className="p-3 whitespace-nowrap">NO</th>
-                            <th className="p-3 whitespace-nowrap">구분</th>
-                            <th className="p-3 whitespace-nowrap">참석</th>
-                            <th className="p-3 whitespace-nowrap">이름</th>
-                            <th className="p-3 whitespace-nowrap">연락처</th>
-                            <th className="p-3 whitespace-nowrap">성인</th>
-                            <th className="p-3 whitespace-nowrap">아동</th>
-                            <th className="p-3 whitespace-nowrap text-center">삭제</th>
+                        <tr className="border-b-2 border-white bg-gray-800 text-gray-300">
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">NO</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">구분</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">참석</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap">이름</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap">연락처</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">성인</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">아동</th>
+                            <th className="p-2 md:p-3 whitespace-nowrap text-center">삭제</th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredEntries.map((entry, index) => (
                             <tr key={entry.id} className="border-b border-gray-700 hover:bg-gray-800 transition-colors">
-                                <td className="p-3">{filteredEntries.length - index}</td>
-                                <td className="p-3">
-                                    <span className={`px-2 py-1 rounded text-xs ${entry.guest === '신랑' ? 'bg-blue-900 text-blue-200' : 'bg-pink-900 text-pink-200'}`}>
-                                        {entry.guest}
+                                <td className="p-2 md:p-3 text-center">{filteredEntries.length - index}</td>
+                                <td className="p-2 md:p-3 text-center">
+                                    <div className={`w-3 h-3 md:w-4 md:h-4 rounded-full mx-auto ${entry.guest === '신랑' ? 'bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.6)]' : 'bg-pink-400 shadow-[0_0_8px_rgba(244,114,182,0.6)]'}`} title={entry.guest}></div>
+                                </td>
+                                <td className="p-2 md:p-3 text-center">
+                                    <span className={`font-bold text-sm md:text-lg ${entry.visited ? 'text-green-400' : 'text-red-400'}`}>
+                                        {entry.visited ? 'O' : 'X'}
                                     </span>
                                 </td>
-                                <td className="p-3">
-                                    <span className={`font-bold ${entry.visited ? 'text-green-400' : 'text-red-400'}`}>
-                                        {entry.visited ? '⭕ 참석' : '❌ 불참'}
-                                    </span>
-                                </td>
-                                <td className="p-3 font-bold">{entry.guest_name}</td>
-                                <td className="p-3 font-mono text-gray-400">{entry.guest_phone}</td>
-                                <td className="p-3">{entry.adult_count}</td>
-                                <td className="p-3 text-gray-400">{entry.child_count > 0 ? entry.child_count : '-'}</td>
-                                <td className="p-3 text-center">
+                                <td className="p-2 md:p-3 font-bold whitespace-nowrap">{entry.guest_name}</td>
+                                <td className="p-2 md:p-3 font-mono text-gray-400 whitespace-nowrap">{entry.guest_phone}</td>
+                                <td className="p-2 md:p-3 text-center">{entry.adult_count}</td>
+                                <td className="p-2 md:p-3 text-center text-gray-400">{entry.child_count > 0 ? entry.child_count : '-'}</td>
+                                <td className="p-2 md:p-3 text-center">
                                     <button
                                         onClick={() => handleDelete(entry.id)}
-                                        className="border border-red-500 text-red-500 w-8 h-8 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all mx-auto rounded"
+                                        className="border border-red-500 text-red-500 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all mx-auto rounded"
                                     >
-                                        X
+                                        <i className="fa-solid fa-xmark text-xs md:text-sm"></i>
                                     </button>
                                 </td>
                             </tr>
