@@ -135,15 +135,15 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative w-full max-w-4xl flex flex-col items-center"
+                className="relative w-full max-w-4xl flex flex-col items-center min-h-[50vh] md:min-h-[600px]"
             >
                 <motion.div
                     ref={carouselRef}
-                    className="w-full overflow-hidden cursor-grab"
+                    className="w-full overflow-hidden cursor-grab h-full py-4"
                     whileTap={{ cursor: 'grabbing' }}
                 >
                     <motion.div
-                        className="flex gap-4"
+                        className="flex gap-4 h-full items-center"
                         drag="x"
                         dragConstraints={{ right: 0, left: -dragConstraints }}
                         dragTransition={{ bounceStiffness: 200, bounceDamping: 20 }}
@@ -159,7 +159,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                 onTouchEnd={(e) => {
                                     e.stopPropagation();
                                 }}
-                                className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden bg-gray-100 interactive"
+                                className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden bg-gray-100 interactive relative"
                                 style={{ width: '80vw', maxWidth: '400px' }}
                             >
                                 <img
