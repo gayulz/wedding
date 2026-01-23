@@ -6,6 +6,7 @@ import MainContent from './components/MainContent';
 import OpeningSequence from './components/OpeningSequence';
 import ShareButton from './components/ShareButton';
 import FloatingParticles from './components/FloatingParticles';
+import AdminPage from './components/Admin/AdminPage';
 
 const SECTIONS = ['hero', 'main'];
 
@@ -15,6 +16,19 @@ const App: React.FC = () => {
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
+
+  // URL에 admin=true가 포함되어 있으면 초기값부터 true로 설정 (깜빡임 방지)
+  const [isAdminMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const searchParams = new URLSearchParams(window.location.search);
+      return searchParams.get('admin') === 'true';
+    }
+    return false;
+  });
+
+  if (isAdminMode) {
+    return <AdminPage />;
+  }
 
 
   const touchStartY = useRef(0);

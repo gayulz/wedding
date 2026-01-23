@@ -26,14 +26,26 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
 
     const images = imageNames.map(name => loadImage(name));
 
-    // Calculate constraints on mount
+    // Calculate constraints and handle resize
     useEffect(() => {
-        if (carouselRef.current) {
-            const carouselWidth = carouselRef.current.offsetWidth;
-            const contentWidth = carouselRef.current.scrollWidth;
-            setDragConstraints(contentWidth - carouselWidth);
-        }
-    }, []);
+        const updateConstraints = () => {
+            if (carouselRef.current) {
+                const carouselWidth = carouselRef.current.offsetWidth;
+                const contentWidth = carouselRef.current.scrollWidth;
+                setDragConstraints(contentWidth - carouselWidth);
+            }
+        };
+
+        // 초기 실행 및 약간의 지연 후 재실행 (이미지 렌더링 등 고려)
+        updateConstraints();
+        const timer = setTimeout(updateConstraints, 500);
+
+        window.addEventListener('resize', updateConstraints);
+        return () => {
+            window.removeEventListener('resize', updateConstraints);
+            clearTimeout(timer);
+        };
+    }, [images]); // images가 변경되면 재계산
 
     const [direction, setDirection] = useState(0);
 
@@ -155,9 +167,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                     alt={`gallery-${index + 1}`}
                                     loading={index < 2 ? "eager" : "lazy"}
                                     decoding={index < 2 ? "sync" : "async"}
-                                    className="w-full h-full object-cover pointer-events-none transition-opacity duration-300"
-                                    onLoad={(e) => (e.currentTarget.style.opacity = '1')}
-                                    style={{ opacity: 0 }} // Start invisible, fade in on load
+                                    className="w-full h-full object-cover pointer-events-none"
                                 />
                             </div>
                         ))}
