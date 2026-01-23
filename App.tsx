@@ -133,7 +133,7 @@ const App: React.FC = () => {
 
     const timer = setTimeout(() => {
       handleScroll(100);
-    }, 3000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, [currentIdx, showOpening, isAnyModalOpen, handleScroll]);

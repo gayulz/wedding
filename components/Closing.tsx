@@ -29,7 +29,7 @@ const Closing: React.FC = () => {
                 viewport={{ once: true }}
                 className="relative z-10 text-center px-6"
             >
-                <p className="text-gray-600 font-myeongjo text-sm md:text-m leading-loose whitespace-pre-line drop-shadow-lg">
+                <p className="text-gray-600 font-myeongjo text-sm md:text-lg leading-loose whitespace-pre-line drop-shadow-2xl">
                     {weddingData.closing.text}
                 </p>
             </motion.div>

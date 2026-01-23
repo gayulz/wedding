@@ -169,14 +169,14 @@ const Gift: React.FC = () => {
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
 						transition={{ duration: 0.3 }}
-						className="fixed bottom-16 left-1/2 -translate-x-1/2 p-4 rounded-xl shadow-lg"
+						className="fixed bottom-16 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg shadow-lg"
 						style={{
-							backgroundColor: 'rgba(0, 0, 0, 0.5)',
-							backdropFilter: 'blur(10px)',
-							WebkitBackdropFilter: 'blur(10px)',
+							backgroundColor: 'rgba(0, 0, 0, 0.6)',
+							backdropFilter: 'blur(8px)',
+							WebkitBackdropFilter: 'blur(8px)',
 						}}
 					>
-						<p className="text-white text-sm">{toast.message}</p>
+						<p className="text-white text-xs whitespace-nowrap">{toast.message}</p>
 					</motion.div>
 				)}
 			</AnimatePresence>
