@@ -133,7 +133,7 @@ const App: React.FC = () => {
 
     const timer = setTimeout(() => {
       handleScroll(100);
-    }, 2500);
+    }, 3500);
 
     return () => clearTimeout(timer);
   }, [currentIdx, showOpening, isAnyModalOpen, handleScroll]);
@@ -297,7 +297,7 @@ const App: React.FC = () => {
             transition={{ duration: 0.6, ease: "easeInOut" }}
             className="h-full w-full will-change-transform transform-gpu"
           >
-            {currentIdx === 0 && <Hero />}
+            {currentIdx === 0 && <Hero startAnimation={!showOpening} />}
             {currentIdx === 1 && (
               <MainContent
                 ref={mainContentRef}

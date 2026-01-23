@@ -6,6 +6,7 @@ import { weddingData } from '@/data/content';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);
+    const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 
     // ESC 키 및 뒤로가기 버튼으로 팝업 닫기
     useModalBackHandler(isContactOpen, () => setIsContactOpen(false));
@@ -27,6 +28,15 @@ const Intro: React.FC = () => {
             };
         }
     }, [isContactOpen]);
+
+    // 3초 후 스크롤 인디케이터 숨기기 (2번 애니메이션 후)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowScrollIndicator(false);
+        }, 3000); // 1.5초 x 2번 = 3초
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -100,9 +110,44 @@ const Intro: React.FC = () => {
                         <i className="fa-solid fa-phone text-xs"></i>
                         <span>{weddingData.intro.contactButton}</span>
                     </motion.button>
+
+                    {/* 스크롤 가이드 인디케이터 - 화면 중앙에 표시 후 사라짐 */}
+                    <AnimatePresence>
+                        {showScrollIndicator && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -30 }}
+                                transition={{ duration: 0.5 }}
+                                className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+                            >
+                                <div className="flex flex-col items-center">
+                                    <div className="relative w-10 h-16 rounded-full border-2 border-gray-500/60 flex justify-center bg-white/10 backdrop-blur-sm">
+                                        <motion.div
+                                            className="absolute top-3 w-2.5 h-2.5 bg-gray-600 rounded-full"
+                                            animate={{
+                                                y: [0, 28, 0],
+                                            }}
+                                            transition={{
+                                                duration: 1.5,
+                                                repeat: 1, // 2번만 반복 (처음 1번 + repeat 1번)
+                                                ease: 'easeInOut',
+                                            }}
+                                        />
+                                    </div>
+                                    <motion.div
+                                        className="mt-3 text-gray-500 text-xs tracking-widest uppercase font-medium"
+                                        animate={{ opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 1.5, repeat: 1 }}
+                                    >
+                                        Scroll Down
+                                    </motion.div>
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </motion.div>
             </div>
-
 
             {/* 연락처 모달 */}
             <AnimatePresence>
