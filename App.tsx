@@ -15,9 +15,12 @@ const App: React.FC = () => {
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const touchStartY = useRef(0);
   const mainContentRef = useRef<HTMLDivElement>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // 카카오톡 웹뷰에서 외부 브라우저로 열기
   const openInExternalBrowser = () => {
@@ -60,13 +63,7 @@ const App: React.FC = () => {
     }
   }, [isScrolling, currentIdx, isAnyModalOpen, showOpening]);
 
-  // 카카오톡 웹뷰 감지 및 팝업 표시
-  useEffect(() => {
-    const isKakaoTalk = /KAKAOTALK/.test(navigator.userAgent);
-    if (isKakaoTalk) {
-      setShowBrowserPrompt(true);
-    }
-  }, []);
+
 
   // 주소창과 하단 바 자동 숨김 (모바일 브라우저)
   useEffect(() => {
@@ -130,9 +127,70 @@ const App: React.FC = () => {
     };
   }, [handleScroll, currentIdx]);
 
+  // 마우스 드래그 스크롤 (PC용)
+  useEffect(() => {
+    if (currentIdx !== 1) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    let isDown = false;
+    let startY = 0;
+    let startScrollTop = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (isAnyModalOpen || showOpening || !mainContentRef.current) return;
+
+      isDown = true;
+      setIsDragging(true);
+      startY = e.clientY;
+      startScrollTop = mainContentRef.current.scrollTop;
+
+      // 드래그 중 텍스트 선택 방지 및 커서 변경 (즉각적인 반응을 위해 직접 스타일 조작)
+      document.body.style.userSelect = 'none';
+
+      // 이벤트 버블링 방지 (필요시)
+      // e.stopPropagation();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDown || !mainContentRef.current) return;
+      e.preventDefault();
+
+      const y = e.clientY;
+      const walk = (startY - y) * 2.5; // 스크롤 속도 조절 (2.5배)
+      mainContentRef.current.scrollTop = startScrollTop + walk;
+    };
+
+    const handleMouseUp = () => {
+      if (!isDown) return;
+      isDown = false;
+      setIsDragging(false);
+
+      document.body.style.userSelect = '';
+    };
+
+    container.addEventListener('mousedown', handleMouseDown);
+
+    // 드래그가 컨테이너 밖으로 나가도 끊기지 않도록 window에 이벤트 부착
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      container.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.userSelect = '';
+    };
+  }, [currentIdx, isAnyModalOpen, showOpening]);
+
   return (
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
-      <div className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
+      <div
+        ref={containerRef}
+        className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none"
+        style={{ cursor: currentIdx === 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
+      >
         {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
         <FloatingParticles />
 

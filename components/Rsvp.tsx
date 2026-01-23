@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { weddingData } from '@/data/content';
@@ -10,6 +11,14 @@ interface RsvpProps {
 
 const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useModalBackHandler(isModalOpen, () => {
+        setIsModalOpen(false);
+        onModalStateChange?.(false);
+        // Reset form logic duplicated from handleClose usually
+        // But for back button, just closing is prioritized.
+        // If we want FULL consistency, we should wrap handleClose logic.
+    });
     const [submitting, setSubmitting] = useState(false);
     const [step, setStep] = useState<'form' | 'success'>('form');
     const [isUpdate, setIsUpdate] = useState(false);

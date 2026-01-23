@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { loadImage } from '@/lib/image-loader.ts';
 import { weddingData } from '@/data/content';
 
@@ -12,6 +13,8 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const carouselRef = useRef<HTMLDivElement>(null);
     const [dragConstraints, setDragConstraints] = useState(0);
+
+    useModalBackHandler(!!selectedImage, () => setSelectedImage(null));
 
     // 17개의 이미지 이름 배열
     const imageNames = [

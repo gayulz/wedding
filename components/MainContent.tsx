@@ -7,6 +7,7 @@ import Location from './Location';
 import Rsvp from './Rsvp';
 import Gift from './Gift';
 import Guestbook from './Guestbook';
+import Closing from './Closing';
 import { weddingData } from '@/data/content';
 
 interface MainContentProps {
@@ -100,6 +101,8 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
             <section id="guestbook">
                 <Guestbook onModalStateChange={onModalStateChange} />
             </section>
+
+            <Closing />
 
             <div className="h-32 flex flex-col items-center justify-center text-[#3c1e1e]/40 text-[10px] uppercase tracking-widest pb-8 gap-1">
                 <span className="font-joseon opacity-100 text-[12px]">{weddingData.footer.name}</span>

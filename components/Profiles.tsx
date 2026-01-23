@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { loadImage } from '@/lib/image-loader.ts';
 import { weddingData } from '@/data/content';
 
@@ -9,6 +10,8 @@ interface ProfilesProps {
 
 const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 	const [isInterviewOpen, setIsInterviewOpen] = useState(false);
+
+	useModalBackHandler(isInterviewOpen, () => setIsInterviewOpen(false));
 
 	// [MIG] 모달 상태 변경 시 App.tsx에 알림 및 스크롤 잠금 처리
 	useEffect(() => {

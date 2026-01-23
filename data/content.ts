@@ -227,6 +227,7 @@ export const weddingData = {
         empty: "아직 작성된 방명록이 없습니다.",
         button: "메시지 남기기",
         loadMore: "더보기",
+        fold: "접기",
         write: {
             title: "축하 메시지 작성하기",
             subtitle: "저희 둘의 결혼을 함께 축하해 주세요",
@@ -265,6 +266,11 @@ export const weddingData = {
             create: "축하 메시지가 전달되었습니다! 💕",
             update: "메시지가 수정되었습니다! ✏️"
         }
+    },
+    closing: {
+        text: `응원하고 격려해주신 모든 분들께 감사드리며
+행복하게 잘 살겠습니다.`,
+        image: '/images/wedding-81.webp'
     },
     share: {
         kakao: {

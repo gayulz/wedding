@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, updateDoc } from 'firebase/firestore';
 import { weddingData } from '@/data/content';
@@ -26,7 +27,33 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [loading, setLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // 스크롤 컨테이너 ref (Location 컴포넌트와 동일한 방식)
+  // PC Drag-to-Scroll State
+  const [isDragging, setIsDragging] = useState(false);
+  const [startY, setStartY] = useState(0);
+  const [startScrollTop, setStartScrollTop] = useState(0);
+
+
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    setIsDragging(true);
+    setStartY(e.pageY);
+    setStartScrollTop(containerRef.current.scrollTop);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const y = e.pageY;
+    const walk = (y - startY) * 1.5; // Drag speed multiplier
+    containerRef.current.scrollTop = startScrollTop - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
+
+  // 스크롤 컨테이너 ref
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 수정 관련 state
@@ -39,13 +66,39 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
+  // [MIG] 통합 뒤로가기 핸들러
+  // 어떤 팝업이든 열려있으면 true
+  const isAnyPopupOpen = showWritePopup || showEditPopup || showPasswordPopup || showAlert;
+
+  useModalBackHandler(isAnyPopupOpen, () => {
+    // 열려있는 순서대로 닫기 (우선순위가 있다면 조정)
+    if (showAlert) {
+      setShowAlert(false);
+      return;
+    }
+    if (showPasswordPopup) {
+      setShowPasswordPopup(false);
+      setEditingEntry(null);
+      setEditPassword('');
+      return;
+    }
+    if (showEditPopup) {
+      setShowEditPopup(false);
+      return;
+    }
+    if (showWritePopup) {
+      setShowWritePopup(false);
+      return;
+    }
+  });
+
   // 커스텀 alert 함수
   const showCustomAlert = (message: string) => {
     setAlertMessage(message);
     setShowAlert(true);
   };
 
-  // 실시간 방명록 불러오기 (오래된 순서 - 시안 스타일대로 렌더링)
+  // 실시간 방명록 불러오기
   useEffect(() => {
     const q = query(
       collection(db, 'guestbook'),
@@ -66,7 +119,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
     return () => unsubscribe();
   }, []);
 
-  // 스크롤 이벤트 제어 (Location.tsx 방식 도입)
+  // 스크롤 이벤트 제어
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -200,7 +253,11 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   return (
     <div
       ref={containerRef}
-      className="relative h-full w-full flex flex-col items-center bg-white overflow-y-auto overflow-x-hidden no-scrollbar pb-20"
+      className={`relative h-full w-full flex flex-col items-center bg-white overflow-y-auto overflow-x-hidden no-scrollbar pb-20 select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUpOrLeave}
+      onMouseLeave={handleMouseUpOrLeave}
       onTouchStart={(e) => {
         const container = containerRef.current;
         if (!container) return;
@@ -239,70 +296,97 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         <p className="text-sm font-gowoon text-gray-500">{weddingData.guestbook.subtitle}</p>
       </motion.div>
 
-      {/* 방명록 목록 (시안 카드 스타일) - 하단 여백 추가하여 버튼에 가려지지 않게 함 */}
-      <div className="w-full max-w-sm px-6 space-y-4 pb-32">
+      {/* 방명록 목록 */}
+      <div className="w-full max-w-sm px-6 space-y-4 pb-12">
         {entries.length > 0 ? (
           <>
-            {(isExpanded ? entries : entries.slice(0, 3)).map((entry) => (
-              <motion.div
-                key={entry.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className="relative bg-white rounded-2xl p-6 shadow-md border border-gray-50/50"
-              >
-                {/* 수정 버튼 (아이콘) */}
-                <button
-                  onClick={() => handleEditClick(entry)}
-                  className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors"
+            {(isExpanded ? entries : entries.slice(0, 4)).map((entry, index) => {
+              const isPeekItem = !isExpanded && index === 3;
+              return (
+                <motion.div
+                  key={entry.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className={`relative bg-white rounded-2xl p-6 shadow-md border border-gray-50/50`}
                 >
-                  <i className="fa-solid fa-xmark text-sm"></i>
-                </button>
+                  {isPeekItem && (
+                    <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent via-white/80 to-white z-10" />
+                  )}
+                  {/* 수정 버튼 (아이콘) */}
+                  <button
+                    onClick={() => handleEditClick(entry)}
+                    className="absolute top-4 right-4 text-gray-300 hover:text-gray-500 transition-colors"
+                  >
+                    <i className="fa-solid fa-xmark text-sm"></i>
+                  </button>
 
-                {/* 메시지 본문 */}
-                <p className="text-[14px] leading-relaxed text-gray-700 font-nanumsquare mb-6 whitespace-pre-wrap break-words">
-                  {entry.message}
-                </p>
+                  {/* 메시지 본문 */}
+                  <p className="text-[14px] leading-relaxed text-gray-700 font-nanumsquare mb-6 whitespace-pre-wrap break-words">
+                    {entry.message}
+                  </p>
 
-                {/* 하단 정보 */}
-                <div className="flex justify-between items-center text-[11px] font-nanumsquare">
-                  <span className="text-gray-400">From {entry.name}</span>
-                  <span className="text-gray-300">
-                    {entry.createdAt ? (
-                      entry.createdAt.toDate().toLocaleDateString('ko-KR') + ' ' +
-                      entry.createdAt.toDate().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
-                    ) : ''}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
+                  {/* 하단 정보 */}
+                  <div className="flex justify-between items-center text-[11px] font-nanumsquare">
+                    <span className="text-gray-400">From {entry.name}</span>
+                    <span className="text-gray-300">
+                      {entry.createdAt ? (
+                        entry.createdAt.toDate().toLocaleDateString('ko-KR') + ' ' +
+                        entry.createdAt.toDate().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false })
+                      ) : ''}
+                    </span>
+                  </div>
+                </motion.div>
+              );
+            })}
 
             {!isExpanded && entries.length > 3 && (
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 onClick={() => setIsExpanded(true)}
-                className="w-full py-3 bg-white border border-gray-200 text-gray-500 rounded-xl text-xs font-nanumsquare hover:bg-gray-50 transition-colors flex items-center justify-center gap-1 shadow-sm"
+                className="w-full flex items-center gap-3 py-6 group -mt-16 relative z-20"
               >
-                <span>{weddingData.guestbook.loadMore}</span>
-                <i className="fa-solid fa-chevron-down text-[10px]"></i>
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-900/20 to-transparent group-hover:via-gray-900/40 transition-all" />
+                <span className="text-xs font-nanumsquare text-gray-400 group-hover:text-gray-600 transition-colors">
+                  {weddingData.guestbook.loadMore}
+                </span>
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-900/20 to-transparent group-hover:via-gray-900/40 transition-all" />
               </motion.button>
+            )}
+
+            {isExpanded && (
+              <div className="space-y-4 pt-4">
+                <motion.button
+                  key="fold-btn-static"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  onClick={() => {
+                    setIsExpanded(false);
+                    // 접었을 때 상단으로 스크롤 이동
+                    containerRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full flex items-center gap-3 py-4 group"
+                >
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-900/20 to-transparent group-hover:via-gray-900/40 transition-all" />
+                  <span className="text-xs font-nanumsquare text-gray-400 group-hover:text-gray-600 transition-colors">
+                    {weddingData.guestbook.fold}
+                  </span>
+                  <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-gray-900/20 to-transparent group-hover:via-gray-900/40 transition-all" />
+                </motion.button>
+              </div>
             )}
           </>
         ) : (
           <p className="text-center text-gray-400 text-xs py-10 font-gowoon">{weddingData.guestbook.empty}</p>
         )}
-      </div>
 
-      {/* 버튼 고정 영역 - 뒷 컨텐츠가 비치지 않도록 Solid 배경 적용 및 위치 하단 밀착 */}
-      <div className="sticky bottom-0 w-full max-w-sm px-6 pb-6 pt-4 bg-white shrink-0 mt-auto z-[50] shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.03)]">
         <motion.button
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
           onClick={() => setShowWritePopup(true)}
-          className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95"
+          className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95 z-30 relative"
         >
           {weddingData.guestbook.button}
         </motion.button>
@@ -378,7 +462,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         )}
       </AnimatePresence>
 
-      {/* 비밀번호 확인 팝업 (디자인 리뉴얼) */}
+      {/* 비밀번호 확인 팝업 */}
       <AnimatePresence>
         {showPasswordPopup && editingEntry && (
           <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
@@ -435,7 +519,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         )}
       </AnimatePresence>
 
-      {/* 수정 팝업 (디자인 리뉴얼) */}
+      {/* 수정 팝업 */}
       <AnimatePresence>
         {showEditPopup && editingEntry && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -485,7 +569,7 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         )}
       </AnimatePresence>
 
-      {/* 커스텀 Alert (디자인 리뉴얼) */}
+      {/* 커스텀 Alert */}
       <AnimatePresence>
         {showAlert && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">

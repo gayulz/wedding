@@ -93,8 +93,8 @@ const Location: React.FC = () => {
           zoom: 17,
           zoomControl: true,
           zoomControlOptions: { position: window.naver.maps.Position.TOP_RIGHT },
-          scrollWheel: true,
-          draggable: true,
+          scrollWheel: false,
+          draggable: false,
           pinchZoom: true
         };
         const map = new window.naver.maps.Map(mapRef.current, mapOptions);
