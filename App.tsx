@@ -7,10 +7,10 @@ import OpeningSequence from './components/OpeningSequence';
 import ShareButton from './components/ShareButton';
 import FloatingParticles from './components/FloatingParticles';
 
-const SECTIONS = ['hero', 'intro', 'main'];
+const SECTIONS = ['hero', 'main'];
 
 const App: React.FC = () => {
-  const [currentIdx, setCurrentIdx] = useState(0); // 0, 1, or 2
+  const [currentIdx, setCurrentIdx] = useState(0); // 0 or 1
   const [isScrolling, setIsScrolling] = useState(false);
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
@@ -35,13 +35,13 @@ const App: React.FC = () => {
   const handleScroll = useCallback((delta: number) => {
     if (isScrolling || isAnyModalOpen || showOpening) return;
 
-    if (currentIdx === 2) {
-      // Logic for MainContent
+    if (currentIdx === 1) {
+      // Logic for MainContent (index 1)
       if (mainContentRef.current) {
         if (mainContentRef.current.scrollTop <= 0 && delta < 0) {
-          // Top of MainContent and scrolling UP -> Go to Intro
+          // Top of MainContent and scrolling UP -> Go to Hero
           setIsScrolling(true);
-          setCurrentIdx(1);
+          setCurrentIdx(0);
           setTimeout(() => setIsScrolling(false), 800);
         }
         // Otherwise let native scroll happen
@@ -91,7 +91,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       // Only hijack wheel if NOT in MainContent or if at top of MainContent going up
-      if (currentIdx !== 2) {
+      if (currentIdx !== 1) {
         handleScroll(e.deltaY);
       } else {
         if (mainContentRef.current && mainContentRef.current.scrollTop <= 0 && e.deltaY < 0) {
@@ -109,7 +109,7 @@ const App: React.FC = () => {
       const delta = touchStartY.current - touchEndY;
       if (Math.abs(delta) > 50) {
         // Only hijack touch if NOT in MainContent or if at top of MainContent going up
-        if (currentIdx !== 2) {
+        if (currentIdx !== 1) {
           handleScroll(delta);
         } else {
           if (mainContentRef.current && mainContentRef.current.scrollTop <= 0 && delta < 0) {
@@ -172,15 +172,14 @@ const App: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={SECTIONS[currentIdx]}
-            initial={{ opacity: 0, y: currentIdx === 2 ? 20 : 100 }}
+            initial={{ opacity: 0, y: currentIdx === 1 ? 20 : 100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
             className="h-full w-full will-change-transform transform-gpu"
           >
             {currentIdx === 0 && <Hero />}
-            {currentIdx === 1 && <Intro />}
-            {currentIdx === 2 && (
+            {currentIdx === 1 && (
               <MainContent
                 ref={mainContentRef}
                 onModalStateChange={setIsAnyModalOpen}
@@ -189,7 +188,7 @@ const App: React.FC = () => {
           </motion.div>
         </AnimatePresence>
 
-        {currentIdx >= 2 && <ShareButton />}
+        {currentIdx >= 1 && <ShareButton />}
       </div>
     </div>
   );
