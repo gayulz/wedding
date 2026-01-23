@@ -88,7 +88,7 @@ const RsvpManager: React.FC = () => {
             {/* 상단 통계 카드 */}
             <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="bg-gray-800 p-4 border border-gray-600 text-center">
-                    <h3 className="text-gray-400 text-sm mb-1">총 참석 인원</h3>
+                    <h3 className="text-gray-400 text-sm mb-1">총 합계</h3>
                     <p className="text-2xl font-bold text-white">{totalPeople}명</p>
                 </div>
                 <div className="bg-gray-800 p-4 border border-gray-600 text-center">
