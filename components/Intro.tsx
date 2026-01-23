@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { loadImage } from '@/lib/image-loader';
 import { weddingData } from '@/data/content';
 
 const Intro: React.FC = () => {
     const [isContactOpen, setIsContactOpen] = useState(false);
+
+    // ESC 키 및 뒤로가기 버튼으로 팝업 닫기
+    useModalBackHandler(isContactOpen, () => setIsContactOpen(false));
 
     // 팝업 열릴 때 스크롤 차단
     useEffect(() => {
