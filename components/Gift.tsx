@@ -118,17 +118,16 @@ const Gift: React.FC = () => {
 				</div>
 
 				{/* 계좌 카드 슬라이드 */}
-				<div className="relative -mx-8 px-8">
-					<div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory">
-						<div className={`flex gap-4 pb-2 ${currentAccounts.length === 1 ? 'justify-center' : ''}`}>
+				<div className="relative -mx-8 px-8 md:px-0 md:mx-0">
+					<div className="overflow-x-auto scrollbar-hide snap-x snap-mandatory md:overflow-visible md:snap-none">
+						<div className={`flex gap-4 pb-2 md:flex-col md:gap-4 md:pb-0 ${currentAccounts.length === 1 ? 'justify-center' : ''}`}>
 							{currentAccounts.map((account, index) => (
 								<motion.div
 									key={`${activeTab}-${index}`}
 									initial={{ opacity: 0, x: 20 }}
 									animate={{ opacity: 1, x: 0 }}
 									transition={{ duration: 0.3, delay: index * 0.1 }}
-									className="snap-start flex-shrink-0"
-									style={{ width: 'calc(100% - 3rem)' }}
+									className="snap-start flex-shrink-0 w-[calc(100%-3rem)] md:w-full"
 								>
 									<AccountCard account={account} showToast={showToast} />
 								</motion.div>

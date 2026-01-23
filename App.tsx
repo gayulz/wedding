@@ -132,7 +132,7 @@ const App: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
-      <div className="relative w-full h-full max-w-[430px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
+      <div className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none">
         {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
         <FloatingParticles />
 
