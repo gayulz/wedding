@@ -1,5 +1,6 @@
 import React, { forwardRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Intro from './Intro';
 import Profiles from './Profiles';
 import Gallery from './Gallery';
 import Location from './Location';
@@ -14,7 +15,7 @@ interface MainContentProps {
     onActiveSectionChange?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['profiles', 'gallery', 'location', 'rsvp', 'gift', 'guestbook'];
+const SECTIONS = ['intro', 'profiles', 'gallery', 'location', 'rsvp', 'gift', 'guestbook'];
 
 const SectionDivider = () => (
     <div className="py-28 flex items-center justify-center opacity-30">
@@ -59,6 +60,12 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
             onScroll={onScroll}
         >
             <div className="pb-8" />
+
+            <section id="intro">
+                <Intro />
+            </section>
+
+            <SectionDivider />
 
             <section id="profiles">
                 <Profiles onModalStateChange={onModalStateChange} />
