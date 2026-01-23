@@ -56,7 +56,7 @@ const ShareButton: React.FC = () => {
         try {
             const baseUrl = window.location.origin;
             // 카카오톡 캐시 우회를 위한 버전 파라미터 추가
-            const imageUrl = `${baseUrl}/images/wedding-100.png?v=3`;
+            const imageUrl = `https://wedding-gayul.netlify.app/images/wedding-02.jpg?v=2`;
 
             window.Kakao.Link.sendDefault({
                 objectType: 'feed',
