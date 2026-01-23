@@ -107,8 +107,14 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 				{/* 인터뷰 읽어보기 버튼 */}
 				<motion.button
 					variants={itemVariants}
-					onClick={() => setIsInterviewOpen(true)}
-					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 font-nanumsquare"
+					onClick={(e) => {
+						e.stopPropagation();
+						setIsInterviewOpen(true);
+					}}
+					onTouchEnd={(e) => {
+						e.stopPropagation();
+					}}
+					className="px-12 py-3 rounded-full border border-gray-300 text-sm text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-2 font-nanumsquare interactive"
 				>
 					<i className="fa-solid fa-envelope text-xs"></i>
 					<span>{weddingData.profiles.button}</span>
@@ -125,7 +131,7 @@ const Profiles: React.FC<ProfilesProps> = ({ onModalStateChange }) => {
 						onClick={() => setIsInterviewOpen(false)}
 						onWheel={handleModalWheel}
 						onTouchMove={handleModalTouch}
-						className="absolute inset-0 z-[100] flex items-center justify-center p-6"
+						className="fixed inset-0 z-[100] flex items-center justify-center p-6"
 						style={{
 							background: 'rgba(0, 0, 0, 0.85)',
 						}}

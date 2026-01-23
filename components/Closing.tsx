@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { loadImage } from '@/lib/image-loader.ts';
 import { weddingData } from '@/data/content';
 
 const Closing: React.FC = () => {
@@ -14,7 +15,7 @@ const Closing: React.FC = () => {
                 }}
             >
                 <img
-                    src={weddingData.closing.image}
+                    src={loadImage(weddingData.closing.image)}
                     alt="Closing"
                     className="w-full h-full object-cover opacity-50"
                 />

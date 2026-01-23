@@ -15,7 +15,7 @@ const App: React.FC = () => {
   const [showBrowserPrompt, setShowBrowserPrompt] = useState(false);
   const [showOpening, setShowOpening] = useState(true);
   const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+
 
   const touchStartY = useRef(0);
   const mainContentRef = useRef<HTMLDivElement>(null);
@@ -127,69 +127,130 @@ const App: React.FC = () => {
     };
   }, [handleScroll, currentIdx]);
 
+  // Hero 섹션 자동 스크롤 (3초 후 이동)
+  useEffect(() => {
+    if (currentIdx !== 0 || showOpening || isAnyModalOpen) return;
+
+    const timer = setTimeout(() => {
+      handleScroll(100);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [currentIdx, showOpening, isAnyModalOpen, handleScroll]);
+
   // 마우스 드래그 스크롤 (PC용)
   useEffect(() => {
-    if (currentIdx !== 1) return;
-
     const container = containerRef.current;
     if (!container) return;
 
     let isDown = false;
     let startY = 0;
     let startScrollTop = 0;
+    let isDraggingAction = false; // 실제 드래그가 발생했는지 체크
+
+    // 모바일(터치 디바이스) 감지 - 간단한 체크
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
     const handleMouseDown = (e: MouseEvent) => {
-      if (isAnyModalOpen || showOpening || !mainContentRef.current) return;
+      // 모바일에서는 마우스 로직 무시 (터치 이벤트와 충돌 방지 및 불필요한 실행 방지)
+      if (isTouchDevice) return;
+
+      if (isAnyModalOpen || showOpening) return;
+
+      // 버튼이나 인터랙티브 요소 클릭 시 드래그 로직 실행 방지
+      const target = e.target as HTMLElement;
+      if (target.closest('button, a, input, textarea, [role="button"], .interactive')) {
+        return;
+      }
+
+      // MainContent(1)가 아닐 때(Hero) 또는 MainContent일 때 로직 분기
+      // Hero(0) 또는 MainContent(1) 모두 드래그 제스처 지원
 
       isDown = true;
-      setIsDragging(true);
+      isDraggingAction = false;
       startY = e.clientY;
-      startScrollTop = mainContentRef.current.scrollTop;
 
-      // 드래그 중 텍스트 선택 방지 및 커서 변경 (즉각적인 반응을 위해 직접 스타일 조작)
+      // Cursor change via DOM to avoid re-render
+      container.style.cursor = 'grabbing';
+
+      if (currentIdx === 1 && mainContentRef.current) {
+        startScrollTop = mainContentRef.current.scrollTop;
+      }
+
       document.body.style.userSelect = 'none';
-
-      // 이벤트 버블링 방지 (필요시)
-      // e.stopPropagation();
+      if (currentIdx === 0) {
+        document.body.style.cursor = 'grabbing';
+      }
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDown || !mainContentRef.current) return;
+      if (!isDown) return;
       e.preventDefault();
 
       const y = e.clientY;
-      const walk = (startY - y) * 2.5; // 스크롤 속도 조절 (2.5배)
-      mainContentRef.current.scrollTop = startScrollTop + walk;
+      const deltaY = startY - y; // 양수면 아래로 스크롤(손가락 위로), 음수면 위로 스크롤(손가락 아래로)
+
+      // 아주 작은 움직임은 무시 (오클릭 방지)
+      if (Math.abs(deltaY) > 5) {
+        isDraggingAction = true;
+      }
+
+      if (currentIdx === 1 && mainContentRef.current) {
+        // MainContent: 실제 스크롤 이동
+        const walk = deltaY * 2.5; // 감도 2.5
+        mainContentRef.current.scrollTop = startScrollTop + walk;
+      }
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: MouseEvent) => {
       if (!isDown) return;
       isDown = false;
-      setIsDragging(false);
 
+      container.style.cursor = currentIdx === 1 ? 'grab' : 'default';
       document.body.style.userSelect = '';
+      if (currentIdx === 0) {
+        document.body.style.cursor = '';
+      }
+
+      // Hero(0) 섹션에서의 드래그 처리 (섹션 이동)
+      if (currentIdx === 0 && isDraggingAction) {
+        const y = e.clientY;
+        const deltaY = startY - y;
+
+        // 위로 드래그 (다음 섹션으로) - 감도 조절 (50 -> 30)
+        if (deltaY > 30) {
+          handleScroll(100);
+        }
+      }
     };
 
     container.addEventListener('mousedown', handleMouseDown);
-
-    // 드래그가 컨테이너 밖으로 나가도 끊기지 않도록 window에 이벤트 부착
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
+
+    // 초기 커서 설정
+    if (!isTouchDevice && currentIdx === 1) {
+      container.style.cursor = 'grab';
+    } else {
+      container.style.cursor = 'default';
+    }
 
     return () => {
       container.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
       document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+      container.style.cursor = '';
     };
-  }, [currentIdx, isAnyModalOpen, showOpening]);
+  }, [currentIdx, isAnyModalOpen, showOpening, handleScroll]);
 
   return (
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
       <div
         ref={containerRef}
         className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden select-none"
-        style={{ cursor: currentIdx === 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
+
       >
         {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
         <FloatingParticles />

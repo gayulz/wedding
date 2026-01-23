@@ -36,6 +36,13 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
+
+    // Ignore interactive elements
+    const target = e.target as HTMLElement;
+    if (target.closest('button, a, input, textarea, [role="button"], .interactive')) {
+      return;
+    }
+
     setIsDragging(true);
     setStartY(e.pageY);
     setStartScrollTop(containerRef.current.scrollTop);
@@ -385,8 +392,14 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          onClick={() => setShowWritePopup(true)}
-          className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95 z-30 relative"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowWritePopup(true);
+          }}
+          onTouchEnd={(e) => {
+            e.stopPropagation();
+          }}
+          className="w-full py-4 bg-[#8E8E8E] text-white rounded-xl text-sm font-nanumsquare hover:bg-[#7a7a7a] transition-all shadow-lg active:scale-95 z-30 relative interactive"
         >
           {weddingData.guestbook.button}
         </motion.button>

@@ -139,11 +139,15 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                         {images.map((image, index) => (
                             <div
                                 key={index}
-                                onClick={() => {
+                                onClick={(e) => {
+                                    e.stopPropagation();
                                     setDirection(0);
                                     setSelectedImage(image);
                                 }}
-                                className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden bg-gray-100"
+                                onTouchEnd={(e) => {
+                                    e.stopPropagation();
+                                }}
+                                className="flex-shrink-0 aspect-[3/4] rounded-lg shadow-lg overflow-hidden bg-gray-100 interactive"
                                 style={{ width: '80vw', maxWidth: '400px' }}
                             >
                                 <img
@@ -171,7 +175,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                         onClick={() => setSelectedImage(null)}
                         onWheel={handlePopupWheel}
                         onTouchMove={handlePopupTouch}
-                        className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
                     >
                         {/* 네비게이션 버튼 (PC/태블릿용) */}
                         <button

@@ -28,6 +28,8 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
     const [attendance, setAttendance] = useState<'yes' | 'no' | null>(null);
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
+    const [adultCount, setAdultCount] = useState(1); // 성인 최소 1명
+    const [childCount, setChildCount] = useState(0); // 미취학아동 0명 가능
 
     const handleSubmit = async () => {
         if (!side || !attendance || !name || !phone) {
@@ -54,6 +56,8 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                 await updateDoc(docRef, {
                     guest: side === 'groom' ? '신랑' : '신부',
                     visited: attendance === 'yes',
+                    adult_count: adultCount,
+                    child_count: childCount,
                     timestamp: serverTimestamp()
                 });
 
@@ -68,6 +72,8 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                 guest_name: name,
                 guest_phone: phone,
                 visited: attendance === 'yes',
+                adult_count: adultCount,
+                child_count: childCount,
                 timestamp: serverTimestamp()
             });
             setIsUpdate(false);
@@ -91,6 +97,8 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
             setAttendance(null);
             setName('');
             setPhone('');
+            setAdultCount(1);
+            setChildCount(0);
             setIsUpdate(false);
         }, 300);
     };
@@ -224,6 +232,61 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                                                 </button>
                                             </div>
                                         </div>
+
+                                        {/* Guest Count - 참석 시에만 표시 */}
+                                        {attendance === 'yes' && (
+                                            <div className="space-y-4">
+                                                <label className="block text-sm text-gray-800 font-joseon font-bold">참석 인원 <span className="text-red-500">*</span></label>
+
+                                                {/* 성인 인원 */}
+                                                <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+                                                    <span className="text-sm text-gray-700 font-nanumsquare">성인</span>
+                                                    <div className="flex items-center gap-4">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setAdultCount(prev => Math.max(1, prev - 1))}
+                                                            disabled={adultCount <= 1}
+                                                            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all interactive"
+                                                        >
+                                                            <i className="fa-solid fa-minus text-xs"></i>
+                                                        </button>
+                                                        <span className="w-8 text-center font-bold text-gray-800">{adultCount}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setAdultCount(prev => Math.min(10, prev + 1))}
+                                                            disabled={adultCount >= 10}
+                                                            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all interactive"
+                                                        >
+                                                            <i className="fa-solid fa-plus text-xs"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* 미취학아동 인원 */}
+                                                <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+                                                    <span className="text-sm text-gray-700 font-nanumsquare">미취학아동</span>
+                                                    <div className="flex items-center gap-4">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setChildCount(prev => Math.max(0, prev - 1))}
+                                                            disabled={childCount <= 0}
+                                                            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all interactive"
+                                                        >
+                                                            <i className="fa-solid fa-minus text-xs"></i>
+                                                        </button>
+                                                        <span className="w-8 text-center font-bold text-gray-800">{childCount}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setChildCount(prev => Math.min(10, prev + 1))}
+                                                            disabled={childCount >= 10}
+                                                            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-all interactive"
+                                                        >
+                                                            <i className="fa-solid fa-plus text-xs"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         {/* Name Input */}
                                         <div>

@@ -20,9 +20,27 @@ const AccountCard: React.FC<{
 	account: Account;
 	showToast: (message: string) => void;
 }> = ({ account, showToast }) => {
-	const handleCopy = () => {
-		navigator.clipboard.writeText(account.num);
-		showToast(weddingData.gift.toast);
+	const handleCopy = async () => {
+		try {
+			if (navigator.clipboard && navigator.clipboard.writeText) {
+				await navigator.clipboard.writeText(account.num);
+			} else {
+				// Fallback for older browsers or non-HTTPS environments
+				const textArea = document.createElement('textarea');
+				textArea.value = account.num;
+				textArea.style.position = 'fixed';
+				textArea.style.left = '-9999px';
+				document.body.appendChild(textArea);
+				textArea.focus();
+				textArea.select();
+				document.execCommand('copy');
+				document.body.removeChild(textArea);
+			}
+			showToast(weddingData.gift.toast);
+		} catch (error) {
+			console.error('Copy failed:', error);
+			showToast('복사에 실패했습니다. 직접 복사해주세요.');
+		}
 	};
 
 	const bankIcon = getBankIcon(account.bank);
@@ -52,7 +70,7 @@ const AccountCard: React.FC<{
 			{/* 복사하기 버튼 */}
 			<button
 				onClick={handleCopy}
-				className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+				className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 interactive"
 			>
 				<i className="fa-regular fa-copy text-gray-600 text-xs"></i>
 				<span className="text-xs text-gray-700 font-medium">{weddingData.gift.copyButton}</span>

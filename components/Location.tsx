@@ -91,7 +91,7 @@ const Location: React.FC = () => {
         const mapOptions = {
           center: location,
           zoom: 17,
-          zoomControl: true,
+          zoomControl: false,
           zoomControlOptions: { position: window.naver.maps.Position.TOP_RIGHT },
           scrollWheel: false,
           draggable: false,

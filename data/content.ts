@@ -270,7 +270,7 @@ export const weddingData = {
     closing: {
         text: `응원하고 격려해주신 모든 분들께 감사드리며
 행복하게 잘 살겠습니다.`,
-        image: '/images/wedding-81.webp'
+        image: 'wedding-81'
     },
     share: {
         kakao: {
