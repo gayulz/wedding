@@ -35,7 +35,7 @@ export const weddingData = {
         }
     },
     opening: {
-        text: "저희 드디어 결혼합니다."
+        text: "봄날의 설렘, 저희 결혼합니다."
     },
     hero: {
         label: "Wedding Invitation",
@@ -85,8 +85,8 @@ export const weddingData = {
 앞으로 더 잘해줄게요.
 저희 잘 살겠습니다!
 `,
-                bride: `2010년 3월에 시작한 만남이
-26년 3월에 끝이 나네요
+                bride: `2020년 3월에 설레던 첫 만남이
+2026년 3월에 인생의 동반자로 새로 시작합니다.
 앞으로 더 잘하고 잘 살께요,지켜봐주세요❤️
 `
             },
@@ -103,7 +103,7 @@ export const weddingData = {
                 groom: `설거지 잘하고, 무거운 거 잘 들고,
  빨래 개주는 남편 되겠습니다💪`,
                 bride: `오빠 월급 안 건드리고 
-용돈 잘 모으는 아내 될게요💰
+검소한 아내 될게요💰
 (단, 내 월급도 안 건드려야 함)`
             }
         ]

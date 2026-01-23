@@ -172,11 +172,11 @@ const App: React.FC = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={SECTIONS[currentIdx]}
-            initial={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, y: currentIdx === 2 ? 20 : 100 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -100 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-            className="h-full w-full"
+            className="h-full w-full will-change-transform transform-gpu"
           >
             {currentIdx === 0 && <Hero />}
             {currentIdx === 1 && <Intro />}
