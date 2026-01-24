@@ -53,19 +53,19 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
         enter: (direction: number) => {
             return {
                 x: direction > 0 ? 1000 : -1000,
-                opacity: 0
+                // opacity 제거: 깜빡임 방지
             };
         },
         center: {
             zIndex: 1,
             x: 0,
-            opacity: 1
+            // opacity 제거
         },
         exit: (direction: number) => {
             return {
                 zIndex: 0,
                 x: direction < 0 ? 1000 : -1000,
-                opacity: 0
+                // opacity 제거
             };
         }
     };
@@ -233,8 +233,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                 animate="center"
                                 exit="exit"
                                 transition={{
-                                    x: { type: "spring", stiffness: 300, damping: 30 },
-                                    opacity: { duration: 0.2 }
+                                    x: { type: "spring", stiffness: 300, damping: 30 }
                                 }}
                                 drag="x"
                                 dragConstraints={{ left: 0, right: 0 }}
@@ -250,6 +249,13 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                 }}
                                 className="max-w-[95vw] max-h-[85vh] md:max-w-[80vw] lg:max-w-4xl object-contain shadow-2xl"
                                 alt="selected"
+                                style={{
+                                    willChange: 'transform',
+                                    backfaceVisibility: 'hidden',
+                                    WebkitBackfaceVisibility: 'hidden',
+                                    transform: 'translateZ(0)',
+                                    WebkitTransform: 'translateZ(0)'
+                                }}
                             />
                         </div>
 
