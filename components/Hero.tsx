@@ -26,7 +26,12 @@ const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
         style={{
           backgroundImage: `url(${loadImage('wedding-100')})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          transform: 'translateZ(0)',
+          WebkitTransform: 'translateZ(0)'
         }}
       >
         <div className="absolute inset-0 bg-black/40" />

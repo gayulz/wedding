@@ -147,6 +147,13 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                         drag="x"
                         dragConstraints={{ right: 0, left: -dragConstraints }}
                         dragTransition={{ bounceStiffness: 200, bounceDamping: 20 }}
+                        style={{
+                            willChange: 'transform',
+                            backfaceVisibility: 'hidden',
+                            WebkitBackfaceVisibility: 'hidden',
+                            transform: 'translateZ(0)',
+                            WebkitTransform: 'translateZ(0)'
+                        }}
                     >
                         {images.map((image, index) => (
                             <div
@@ -165,9 +172,15 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                 <img
                                     src={image}
                                     alt={`gallery-${index + 1}`}
-                                    loading={index < 2 ? "eager" : "lazy"}
-                                    decoding={index < 2 ? "sync" : "async"}
+                                    loading="lazy"
+                                    decoding="async"
                                     className="w-full h-full object-cover pointer-events-none"
+                                    style={{
+                                        backfaceVisibility: 'hidden',
+                                        WebkitBackfaceVisibility: 'hidden',
+                                        transform: 'translateZ(0)',
+                                        WebkitTransform: 'translateZ(0)'
+                                    }}
                                 />
                             </div>
                         ))}
