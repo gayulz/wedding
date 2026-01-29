@@ -172,7 +172,6 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                 <img
                                     src={image}
                                     alt={`gallery-${index + 1}`}
-                                    loading="lazy"
                                     decoding="async"
                                     className="w-full h-full object-cover pointer-events-none"
                                     style={{

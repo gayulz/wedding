@@ -12,7 +12,7 @@ const images: Record<string, string> = {};
 for (const path in imageModules) {
     // 모듈에서 기본 내보내기(이미지 경로)를 가져옵니다.
     const mod = imageModules[path] as { default: string };
-    
+
     // 경로에서 파일 이름(확장자 제외)을 추출합니다. 예: 'wedding-01'
     const filename = path.split('/').pop()?.replace(/\.\w+$/, '');
 
@@ -36,4 +36,37 @@ export function loadImage(name: string): string {
         return '';
     }
     return images[name];
+}
+
+/**
+ * [NEW] 갤러리 이미지들을 백그라운드에서 미리 로드합니다.
+ * Hero 애니메이션 동안 호출하여 갤러리 진입 시 이미지가 이미 캐시되어 있도록 합니다.
+ * 
+ * @author gayul.kim
+ * @since 2026-01-29
+ * @returns Promise<void> 모든 이미지 로드 완료 시 resolve
+ */
+export function preloadGalleryImages(): Promise<void> {
+    const galleryImageNames = [
+        'wedding-01', 'wedding-02', 'wedding-03', 'wedding-04',
+        'wedding-05', 'wedding-06', 'wedding-07', 'wedding-08',
+        'wedding-09', 'wedding-10', 'wedding-11', 'wedding-12',
+        'wedding-13', 'wedding-14', 'wedding-15'
+    ];
+
+    const preloadPromises = galleryImageNames.map(name => {
+        const src = loadImage(name);
+        if (!src) return Promise.resolve();
+
+        return new Promise<void>((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve();
+            img.onerror = () => resolve(); // 에러 시에도 계속 진행
+            img.src = src;
+        });
+    });
+
+    return Promise.all(preloadPromises).then(() => {
+        console.log('[Preloader] Gallery images preloaded successfully');
+    });
 }

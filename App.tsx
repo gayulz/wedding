@@ -5,7 +5,8 @@ import Intro from './components/Intro';
 import MainContent from './components/MainContent';
 import OpeningSequence from './components/OpeningSequence';
 import ShareButton from './components/ShareButton';
-import FloatingParticles from './components/FloatingParticles';
+import ForsythiaParticles from './components/ForsythiaParticles';
+import { preloadGalleryImages } from './lib/image-loader';
 import AdminPage from './components/Admin/AdminPage';
 
 const SECTIONS = ['hero', 'main'];
@@ -30,9 +31,13 @@ const App: React.FC = () => {
     return <AdminPage />;
   }
 
-
   const touchStartY = useRef(0);
   const mainContentRef = useRef<HTMLDivElement>(null);
+
+  // [NEW] 오프닝 시작 시 갤러리 이미지 백그라운드 프리로드
+  useEffect(() => {
+    preloadGalleryImages();
+  }, []);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -267,7 +272,7 @@ const App: React.FC = () => {
 
       >
         {showOpening && <OpeningSequence onComplete={() => setShowOpening(false)} />}
-        <FloatingParticles />
+        <ForsythiaParticles />
 
         {showBrowserPrompt && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-[9999]">

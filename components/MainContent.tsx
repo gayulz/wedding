@@ -16,7 +16,7 @@ interface MainContentProps {
     onActiveSectionChange?: (sectionId: string) => void;
 }
 
-const SECTIONS = ['intro', 'profiles', 'gallery', 'location', 'rsvp', 'gift', 'guestbook'];
+const SECTIONS = ['intro', 'rsvp', 'profiles', 'gallery', 'location', 'gift', 'guestbook'];
 
 const SectionDivider = () => (
     <div className="py-28 flex items-center justify-center opacity-30">
@@ -68,6 +68,12 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
 
             <SectionDivider />
 
+            <section id="rsvp">
+                <Rsvp onModalStateChange={onModalStateChange} />
+            </section>
+
+            <SectionDivider />
+
             <section id="profiles">
                 <Profiles onModalStateChange={onModalStateChange} />
             </section>
@@ -82,12 +88,6 @@ const MainContent = forwardRef<HTMLDivElement, MainContentProps>(({ onModalState
 
             <section id="location">
                 <Location />
-            </section>
-
-            <SectionDivider />
-
-            <section id="rsvp">
-                <Rsvp onModalStateChange={onModalStateChange} />
             </section>
 
             <SectionDivider />
