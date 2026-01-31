@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { loadImage } from '@/lib/image-loader';
-import { weddingData } from '@/data/content';
+import { useWeddingData } from '@/hooks/useWeddingData';
 
 const Intro: React.FC = () => {
+    const { weddingData } = useWeddingData();
     const [isContactOpen, setIsContactOpen] = useState(false);
     const [showScrollIndicator, setShowScrollIndicator] = useState(true);
 

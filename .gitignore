@@ -60,3 +60,5 @@ CLAUDE.md
 .gemini-clipboard/
 .idea/
 
+# Images (hosted on Cloudinary)
+images/

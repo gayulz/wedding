@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
-import { weddingData } from '@/data/content';
+import { useWeddingData } from '@/hooks/useWeddingData';
 
 interface Account {
 	name: string;
@@ -19,7 +19,9 @@ const getBankIcon = (bankName: string): string => {
 const AccountCard: React.FC<{
 	account: Account;
 	showToast: (message: string) => void;
-}> = ({ account, showToast }) => {
+	toastMessage: string;
+	copyButtonText: string;
+}> = ({ account, showToast, toastMessage, copyButtonText }) => {
 	const handleCopy = async () => {
 		try {
 			if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -36,7 +38,7 @@ const AccountCard: React.FC<{
 				document.execCommand('copy');
 				document.body.removeChild(textArea);
 			}
-			showToast(weddingData.gift.toast);
+			showToast(toastMessage);
 		} catch (error) {
 			console.error('Copy failed:', error);
 			showToast('복사에 실패했습니다. 직접 복사해주세요.');
@@ -73,13 +75,14 @@ const AccountCard: React.FC<{
 				className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 interactive"
 			>
 				<i className="fa-regular fa-copy text-gray-600 text-xs"></i>
-				<span className="text-xs text-gray-700 font-medium">{weddingData.gift.copyButton}</span>
+				<span className="text-xs text-gray-700 font-medium">{copyButtonText}</span>
 			</button>
 		</div>
 	);
 };
 
 const Gift: React.FC = () => {
+	const { weddingData } = useWeddingData();
 	const [activeTab, setActiveTab] = useState<'groom' | 'bride'>('groom');
 	const [toast, setToast] = useState({ show: false, message: '' });
 
@@ -145,7 +148,12 @@ const Gift: React.FC = () => {
 							transition={{ duration: 0.3, delay: index * 0.1 }}
 							className="w-full"
 						>
-							<AccountCard account={account} showToast={showToast} />
+							<AccountCard
+								account={account}
+								showToast={showToast}
+								toastMessage={weddingData.gift.toast}
+								copyButtonText={weddingData.gift.copyButton}
+							/>
 						</motion.div>
 					))}
 				</div>
