@@ -264,9 +264,9 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                     WebkitTransform: 'translateZ(0)',
                                     WebkitTouchCallout: 'none',
                                     WebkitUserSelect: 'none',
-                                    userSelect: 'none',
-                                    pointerEvents: 'auto'
+                                    userSelect: 'none'
                                 }}
+                                draggable={false}
                             />
                         </div>
 
