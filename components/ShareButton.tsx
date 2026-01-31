@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { weddingData } from '@/data/content';
+import { uiText } from '@/config/ui-text';
 
 declare global {
     interface Window {
@@ -96,7 +97,7 @@ const ShareButton: React.FC = () => {
         <button
             onClick={handleShare}
             disabled={!isKakaoReady}
-            title={isKakaoReady ? '카카오톡으로 공유' : '카카오톡 로딩 중...'}
+            title={isKakaoReady ? uiText.share.kakao.tooltip.ready : uiText.share.kakao.tooltip.loading}
             className={`absolute bottom-8 right-8 z-[60] w-12 h-12 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.08)] flex items-center justify-center transition-all duration-300 border border-[#e8dfdf] ${isKakaoReady
                 ? 'bg-[#ffffff]/90 backdrop-blur-sm text-[#5a4d4d] hover:bg-[#fffbf2] hover:text-[#3c1e1e] hover:border-[#d4c5c5] hover:scale-105 hover:shadow-[0_4px_25px_rgba(60,30,30,0.12)] cursor-pointer'
                 : 'bg-gray-100/50 text-gray-300 cursor-not-allowed opacity-60'

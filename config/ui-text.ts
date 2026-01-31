@@ -52,6 +52,12 @@ export const uiText = {
             naver: "네이버",
             tmap: "티맵",
             kakao: "카카오"
+        },
+        map: {
+            loading: "지도를 불러오는 중...",
+            timeout: "네이버 지도를 로드하는데 시간이 초과되었습니다.",
+            locationDenied: "위치 권한 거부:",
+            browserNotSupported: "이 브라우저는 위치 서비스를 지원하지 않습니다."
         }
     },
 
@@ -92,7 +98,17 @@ export const uiText = {
         },
         alert: {
             error: "오류가 발생했습니다.",
-            allFields: "모든 항목을 입력해주세요."
+            allFields: "모든 항목을 입력해주세요.",
+            firebaseHint: "(Firebase 콘솔의 규칙(Rules)이나 API 키를 확인해주세요)"
+        },
+        guestCount: {
+            label: "참석 인원",
+            adult: "성인",
+            child: "미취학아동"
+        },
+        guestValue: {
+            groom: "신랑",
+            bride: "신부"
         },
         success: {
             new: "제출되었습니다",
@@ -172,7 +188,22 @@ export const uiText = {
             alert: {
                 error: "카카오톡 공유 기능을 사용할 수 없습니다. 페이지를 새로고침해주세요.",
                 fail: "공유 중 오류가 발생했습니다."
+            },
+            tooltip: {
+                ready: "카카오톡으로 공유",
+                loading: "카카오톡 로딩 중..."
             }
         }
+    },
+
+    thankYou: {
+        label: "Thank You",
+        title: "방문해 주셔서\n감사합니다",
+        daysSince: {
+            dating: "연인으로 시작한 지",
+            married: "인생을 함께하기 시작한 지",
+            unit: "일째"
+        },
+        message: "함께해 주신 모든 분들께 진심으로 감사드립니다.\n받은 사랑 잊지 않고 행복하게 잘 살겠습니다."
     }
 };

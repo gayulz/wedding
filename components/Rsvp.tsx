@@ -4,6 +4,7 @@ import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { weddingData } from '@/data/content';
+import { uiText } from '@/config/ui-text';
 
 interface RsvpProps {
     onModalStateChange?: (isOpen: boolean) => void;
@@ -54,7 +55,7 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                 const docRef = doc(db, 'rsvp', docId);
 
                 await updateDoc(docRef, {
-                    guest: side === 'groom' ? '신랑' : '신부',
+                    guest: side === 'groom' ? uiText.rsvp.guestValue.groom : uiText.rsvp.guestValue.bride,
                     visited: attendance === 'yes',
                     adult_count: adultCount,
                     child_count: childCount,
@@ -68,7 +69,7 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
 
             // 없으면 새로 추가
             await addDoc(collection(db, 'rsvp'), {
-                guest: side === 'groom' ? '신랑' : '신부',
+                guest: side === 'groom' ? uiText.rsvp.guestValue.groom : uiText.rsvp.guestValue.bride,
                 guest_name: name,
                 guest_phone: phone,
                 visited: attendance === 'yes',
@@ -81,7 +82,7 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
         } catch (error) {
             console.error('Error saving document: ', error);
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            alert(`${weddingData.rsvp.alert.error}: ${errorMessage}\n(Firebase 콘솔의 규칙(Rules)이나 API 키를 확인해주세요)`);
+            alert(`${weddingData.rsvp.alert.error}: ${errorMessage}\n${uiText.rsvp.alert.firebaseHint}`);
         } finally {
             setSubmitting(false);
         }
@@ -236,11 +237,11 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
                                         {/* Guest Count - 참석 시에만 표시 */}
                                         {attendance === 'yes' && (
                                             <div className="space-y-4">
-                                                <label className="block text-sm text-gray-800 font-joseon font-bold">참석 인원 <span className="text-red-500">*</span></label>
+                                                <label className="block text-sm text-gray-800 font-joseon font-bold">{uiText.rsvp.guestCount.label} <span className="text-red-500">*</span></label>
 
                                                 {/* 성인 인원 */}
                                                 <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-                                                    <span className="text-sm text-gray-700 font-nanumsquare">성인</span>
+                                                    <span className="text-sm text-gray-700 font-nanumsquare">{uiText.rsvp.guestCount.adult}</span>
                                                     <div className="flex items-center gap-4">
                                                         <button
                                                             type="button"
@@ -264,7 +265,7 @@ const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
 
                                                 {/* 미취학아동 인원 */}
                                                 <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-                                                    <span className="text-sm text-gray-700 font-nanumsquare">미취학아동</span>
+                                                    <span className="text-sm text-gray-700 font-nanumsquare">{uiText.rsvp.guestCount.child}</span>
                                                     <div className="flex items-center gap-4">
                                                         <button
                                                             type="button"

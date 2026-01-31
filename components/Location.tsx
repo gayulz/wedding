@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 import { weddingData } from '@/data/content';
+import { uiText } from '@/config/ui-text';
 
 declare global {
   interface Window {
@@ -49,7 +50,7 @@ const Location: React.FC = () => {
   // ... Tmap handler code ...
   const handleTmapRoute = () => {
     const destination = {
-      name: '토미스퀘어가든',
+      name: uiText.location.venueTitle,
       lat: 36.097854,
       lon: 128.435753
     };
@@ -69,13 +70,13 @@ const Location: React.FC = () => {
           }
         },
         (error) => {
-          console.error('위치 권한 거부:', error);
+          console.error(uiText.location.map.locationDenied, error);
           const tmapWebUrlNoStart = `https://apis.openapi.sk.com/tmap/app/routes?appKey=${import.meta.env.VITE_TMAP_API_KEY}&version=1&format=json&callback=result&goal=${destination.name}&goalY=${destination.lat}&goalX=${destination.lon}`;
           window.open(tmapWebUrlNoStart, '_blank');
         }
       );
     } else {
-      alert('이 브라우저는 위치 서비스를 지원하지 않습니다.');
+      alert(uiText.location.map.browserNotSupported);
     }
   };
 
@@ -139,7 +140,7 @@ const Location: React.FC = () => {
       attempts++;
       if (window.naver && window.naver.maps) initNaverMap();
       else if (attempts < 50) setTimeout(checkNaver, 100);
-      else if (mounted) setError('네이버 지도를 로드하는데 시간이 초과되었습니다.');
+      else if (mounted) setError(uiText.location.map.timeout);
     };
     const timer = setTimeout(checkNaver, 500);
     return () => { mounted = false; clearTimeout(timer); };
@@ -250,7 +251,7 @@ const Location: React.FC = () => {
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <div className="text-center">
               <i className="fa-solid fa-spinner fa-spin text-2xl text-gray-400 mb-2"></i>
-              <p className="text-xs text-gray-500">지도를 불러오는 중...</p>
+              <p className="text-xs text-gray-500">{uiText.location.map.loading}</p>
             </div>
           </div>
         )}
@@ -273,7 +274,7 @@ const Location: React.FC = () => {
       >
         <div className="grid grid-cols-3 gap-2">
           {/* ... Buttons (Naver, Tmap, Kakao) ... */}
-          <a href="https://map.naver.com/p/search/토미스퀘어가든?c=15.00,0,0,0,dh" target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
+          <a href={`https://map.naver.com/p/search/${encodeURIComponent(uiText.location.venueTitle)}?c=15.00,0,0,0,dh`} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('navermap')} alt="네이버지도" className="w-full h-full object-cover" /></div>
             <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.naver}</span>
           </a>
@@ -281,7 +282,7 @@ const Location: React.FC = () => {
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('tmap')} alt="티맵" className="w-full h-full object-cover" /></div>
             <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.tmap}</span>
           </button>
-          <a href="https://map.kakao.com/link/map/토미스퀘어가든,36.097854,128.435753" target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
+          <a href={`https://map.kakao.com/link/map/${encodeURIComponent(uiText.location.venueTitle)},36.097854,128.435753`} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('kakaonav')} alt="카카오내비" className="w-full h-full object-cover" /></div>
             <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.kakao}</span>
           </a>

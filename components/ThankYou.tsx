@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Guestbook from './Guestbook';
 import { weddingData } from '@/data/content';
 import { loadImage } from '@/lib/image-loader';
+import { uiText } from '@/config/ui-text';
 
 /**
  * [NEW] ThankYou - 결혼식 이후 감사 페이지
@@ -114,17 +115,15 @@ const ThankYou: React.FC<ThankYouProps> = ({ onModalStateChange }) => {
 						variants={itemVariants}
 						className="text-white/70 tracking-[0.4em] uppercase text-[10px] mb-4 font-joseon"
 					>
-						Thank You
+						{uiText.thankYou.label}
 					</motion.p>
 
 					{/* 메인 타이틀 */}
 					<motion.h1
 						variants={itemVariants}
-						className="text-3xl md:text-4xl text-white font-myeongjo mb-6 leading-tight text-glow-subtle"
+						className="text-3xl md:text-4xl text-white font-myeongjo mb-6 leading-tight text-glow-subtle whitespace-pre-line"
 					>
-						방문해 주셔서
-						<br />
-						감사합니다
+						{uiText.thankYou.title}
 					</motion.h1>
 
 					{/* 디데이 표시 */}
@@ -133,10 +132,10 @@ const ThankYou: React.FC<ThankYouProps> = ({ onModalStateChange }) => {
 						className="inline-block mb-8 px-8 py-5 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20"
 					>
 						<p className="text-white font-gowoon text-sm md:text-base leading-relaxed">
-							연인으로 시작한 지 <span className="font-bold font-nanumsquare text-lg md:text-xl mx-1">{daysSinceFirstMeet}</span>일째
+							{uiText.thankYou.daysSince.dating} <span className="font-bold font-nanumsquare text-lg md:text-xl mx-1">{daysSinceFirstMeet}</span>{uiText.thankYou.daysSince.unit}
 						</p>
 						<p className="text-white font-gowoon text-sm md:text-base leading-relaxed mt-2">
-							인생을 함께하기 시작한 지 <span className="font-bold font-nanumsquare text-lg md:text-xl mx-1">{daysSinceWedding}</span>일째
+							{uiText.thankYou.daysSince.married} <span className="font-bold font-nanumsquare text-lg md:text-xl mx-1">{daysSinceWedding}</span>{uiText.thankYou.daysSince.unit}
 						</p>
 					</motion.div>
 
@@ -153,8 +152,7 @@ const ThankYou: React.FC<ThankYouProps> = ({ onModalStateChange }) => {
 						variants={itemVariants}
 						className="text-white/90 font-gowoon text-sm md:text-base leading-relaxed whitespace-pre-line"
 					>
-						{`함께해 주신 모든 분들께 진심으로 감사드립니다.
-받은 사랑 잊지 않고 행복하게 잘 살겠습니다.`}
+						{uiText.thankYou.message}
 					</motion.p>
 				</motion.div>
 			</div>
