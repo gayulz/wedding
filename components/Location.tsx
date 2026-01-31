@@ -18,6 +18,16 @@ const Location: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
 
+  // 네이버 지도 SDK 동적 로딩
+  useEffect(() => {
+    if (window.naver && window.naver.maps) return;
+
+    const script = document.createElement('script');
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}`;
+    script.async = true;
+    document.head.appendChild(script);
+  }, []);
+
   // Scroll logic: Stop propagation if scrolling inside, allow if at boundaries
   useEffect(() => {
     const container = containerRef.current;
