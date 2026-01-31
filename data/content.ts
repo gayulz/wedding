@@ -3,18 +3,18 @@ export const weddingData = {
         groom: {
             name: "최봉석",
             firstName: "봉석",
-            phone: "010-4404-1519",
+            phone: import.meta.env.VITE_GROOM_PHONE || "010-****-****",
             parents: {
-                mother: { name: "석명순", phone: "010-5232-9720" },
+                mother: { name: "석명순", phone: import.meta.env.VITE_GROOM_MOTHER_PHONE || "010-****-****" },
                 relation: "아들"
             }
         },
         bride: {
             name: "김가율",
             firstName: "가율",
-            phone: "010-8790-1519",
+            phone: import.meta.env.VITE_BRIDE_PHONE || "010-****-****",
             parents: {
-                father: { name: "김상준", phone: "010-6600-4422" },
+                father: { name: "김상준", phone: import.meta.env.VITE_BRIDE_FATHER_PHONE || "010-****-****" },
                 relation: "딸"
             }
         },
@@ -210,11 +210,11 @@ export const weddingData = {
         toast: "계좌번호가 복사되었습니다.",
         accounts: {
             groom: [
-                { bank: '우리은행', name: '석명순', num: '70820187102001' },
-                { bank: '기업은행', name: '최봉석', num: '01044041519' }
+                { bank: '우리은행', name: '석명순', num: import.meta.env.VITE_GROOM_MOTHER_ACCOUNT || '****************' },
+                { bank: '기업은행', name: '최봉석', num: import.meta.env.VITE_GROOM_ACCOUNT || '****************' }
             ],
             bride: [
-                { bank: '카카오뱅크', name: '김가율', num: '3333326228606' }
+                { bank: '카카오뱅크', name: '김가율', num: import.meta.env.VITE_BRIDE_ACCOUNT || '****************' }
             ]
         },
         footer: `화훼 화환은 정중히 사양합니다.
