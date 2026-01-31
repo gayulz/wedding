@@ -3,6 +3,8 @@
   command = "npm run build"
   # 빌드 결과물이 생성되는 디렉토리
   publish = "dist"
+  # Netlify Functions 디렉토리
+  functions = "netlify/functions"
 
 # 환경 변수
 [build.environment]
@@ -11,6 +13,12 @@
   # 개인정보(전화번호, 계좌번호)도 클라이언트에서 사용되므로 스캔 제외
   SECRETS_SCAN_OMIT_KEYS = "VITE_FIREBASE_API_KEY,VITE_FIREBASE_PROJECT_ID,VITE_FIREBASE_APP_ID,VITE_FIREBASE_AUTH_DOMAIN,VITE_FIREBASE_STORAGE_BUCKET,VITE_FIREBASE_MESSAGING_SENDER_ID,VITE_FIREBASE_MEASUREMENT_ID,GEMINI_API_KEY,VITE_KAKAO_API_KEY,VITE_NAVER_MAP_CLIENT_ID,VITE_TMAP_API_KEY,VITE_GROOM_PHONE,VITE_GROOM_MOTHER_PHONE,VITE_BRIDE_PHONE,VITE_BRIDE_FATHER_PHONE,VITE_GROOM_MOTHER_ACCOUNT,VITE_GROOM_ACCOUNT,VITE_BRIDE_ACCOUNT"
   SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
+# API 리다이렉트 (Functions로 연결)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 # SPA를 위한 리다이렉트 설정
 [[redirects]]
