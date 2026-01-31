@@ -249,6 +249,11 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                         showPrevImage();
                                     }
                                 }}
+                                onContextMenu={(e) => e.preventDefault()}
+                                onTouchStart={(e) => {
+                                    // iOS 롱프레스 방지
+                                    e.currentTarget.style.webkitTouchCallout = 'none';
+                                }}
                                 className="max-w-[95vw] max-h-[85vh] md:max-w-[80vw] lg:max-w-4xl object-contain shadow-2xl"
                                 alt="selected"
                                 style={{
@@ -259,7 +264,8 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                     WebkitTransform: 'translateZ(0)',
                                     WebkitTouchCallout: 'none',
                                     WebkitUserSelect: 'none',
-                                    userSelect: 'none'
+                                    userSelect: 'none',
+                                    pointerEvents: 'auto'
                                 }}
                             />
                         </div>
