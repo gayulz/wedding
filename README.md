@@ -131,6 +131,41 @@ export const imageUrls = {
 
 ---
 
+## Firestore 구조
+
+| 컬렉션 | 용도 | 필드 |
+|--------|------|------|
+| `guestbook` | 방명록 | name, password, message, createdAt |
+| `rsvp` | 참석 여부 | guest, guest_name, guest_phone, visited, adult_count, child_count, timestamp |
+| `bodmin` | 관리자 인증 | id, pwd |
+
+### Firestore Security Rules 예시
+
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /guestbook/{doc} { allow read, write: if true; }
+    match /rsvp/{doc} { allow read, write: if true; }
+    match /bodmin/{doc} { allow read: if true; }
+  }
+}
+```
+
+---
+
+## 관리자 페이지
+
+URL 뒤에 `?admin=true` 추가하여 접근:
+
+```
+https://your-domain.netlify.app?admin=true
+```
+
+Firebase Console에서 `bodmin` 컬렉션에 `admin` 문서 생성 후 `id`, `pwd` 필드 설정 필요.
+
+---
+
 ## License
 
 This project is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
