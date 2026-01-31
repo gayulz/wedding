@@ -22,8 +22,11 @@ const Location: React.FC = () => {
   useEffect(() => {
     if (window.naver && window.naver.maps) return;
 
+    // 환경변수가 없으면 하드코딩된 키(tmyfa04oa3) 사용 (안전장치)
+    const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID || 'tmyfa04oa3';
+
     const script = document.createElement('script');
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
     script.async = true;
     document.head.appendChild(script);
   }, []);
