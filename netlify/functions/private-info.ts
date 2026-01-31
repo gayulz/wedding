@@ -13,6 +13,7 @@ import { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
 // CORS 허용 도메인
 const ALLOWED_ORIGINS = [
     'https://wedding-gayul.netlify.app',
+    'https://bong-yul-invitation.netlify.app',
     'https://wedding-flax-iota.vercel.app',
     'http://localhost:3000',
     'http://localhost:3001',
