@@ -11,7 +11,7 @@
 export const siteConfig = {
     // 결혼 날짜
     date: {
-        full: "2026. 03. 14. 토 PM 2:00",
+        full: "2026. 03. 14. 토요일",
         year: "2026",
         month: "03",
         day: "14",
