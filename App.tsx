@@ -8,6 +8,7 @@ import ShareButton from './components/ShareButton';
 import ForsythiaParticles from './components/ForsythiaParticles';
 import { preloadGalleryImages } from './lib/image-loader';
 import AdminPage from './components/Admin/AdminPage';
+import ThankYou from './components/ThankYou';
 
 const SECTIONS = ['hero', 'main'];
 
@@ -29,6 +30,21 @@ const App: React.FC = () => {
 
   if (isAdminMode) {
     return <AdminPage />;
+  }
+
+  // [NEW] 결혼식 날짜 체크 (2026-03-14 14:00 이후면 감사 페이지 표시)
+  const weddingDate = new Date('2026-03-14T14:00:00');
+  const isAfterWedding = new Date() >= weddingDate;
+
+  // 결혼식 이후면 감사 페이지 렌더링
+  if (isAfterWedding) {
+    return (
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
+        <div className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden">
+          <ThankYou onModalStateChange={setIsAnyModalOpen} />
+        </div>
+      </div>
+    );
   }
 
   const touchStartY = useRef(0);
