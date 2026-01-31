@@ -178,7 +178,10 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                         backfaceVisibility: 'hidden',
                                         WebkitBackfaceVisibility: 'hidden',
                                         transform: 'translateZ(0)',
-                                        WebkitTransform: 'translateZ(0)'
+                                        WebkitTransform: 'translateZ(0)',
+                                        WebkitTouchCallout: 'none',
+                                        WebkitUserSelect: 'none',
+                                        userSelect: 'none'
                                     }}
                                 />
                             </div>
