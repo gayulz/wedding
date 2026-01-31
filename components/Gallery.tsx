@@ -254,7 +254,7 @@ const Gallery: React.FC<GalleryProps> = ({ onModalStateChange }) => {
                                     // iOS 롱프레스 방지
                                     e.currentTarget.style.webkitTouchCallout = 'none';
                                 }}
-                                className="max-w-[95vw] max-h-[85vh] md:max-w-[80vw] lg:max-w-4xl object-contain shadow-2xl"
+                                className="max-w-[95vw] max-h-[85vh] md:max-w-[80vw] lg:max-w-4xl object-contain shadow-2xl no-context-menu"
                                 alt="selected"
                                 style={{
                                     willChange: 'transform',
