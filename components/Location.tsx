@@ -22,9 +22,8 @@ const Location: React.FC = () => {
   useEffect(() => {
     if (window.naver && window.naver.maps) return;
 
-    const apiKey = import.meta.env.VITE_NAVER_MAP_CLIENT_ID || 'tmyfa04oa3';
     const script = document.createElement('script');
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${apiKey}`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}`;
     script.async = true;
     document.head.appendChild(script);
   }, []);
