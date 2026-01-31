@@ -32,7 +32,7 @@ const Location: React.FC = () => {
     console.log('[Naver Map] Loading with Client ID:', clientId);
 
     const script = document.createElement('script');
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
     script.async = true;
     document.head.appendChild(script);
   }, []);
