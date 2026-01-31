@@ -2,13 +2,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
-import { weddingData } from '@/data/content';
+import { useWeddingData } from '@/hooks/useWeddingData';
 
 interface HeroProps {
   startAnimation: boolean;
 }
 
 const Hero: React.FC<HeroProps> = ({ startAnimation }) => {
+  const { weddingData } = useWeddingData();
+
   return (
     <div className="relative h-full w-full flex items-end justify-center pb-32 md:pb-36">
       {/* Background Image - wedding-100.png */}

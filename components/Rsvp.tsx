@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useModalBackHandler } from '@/hooks/useModalBackHandler';
 import { db } from '@/lib/firebase';
 import { collection, addDoc, serverTimestamp, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
-import { weddingData } from '@/data/content';
+import { useWeddingData } from '@/hooks/useWeddingData';
 import { uiText } from '@/config/ui-text';
 
 interface RsvpProps {
@@ -11,6 +11,7 @@ interface RsvpProps {
 }
 
 const Rsvp: React.FC<RsvpProps> = ({ onModalStateChange }) => {
+    const { weddingData } = useWeddingData();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useModalBackHandler(isModalOpen, () => {
