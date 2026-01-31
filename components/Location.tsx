@@ -22,8 +22,14 @@ const Location: React.FC = () => {
   useEffect(() => {
     if (window.naver && window.naver.maps) return;
 
-    // 환경변수가 없으면 하드코딩된 키(tmyfa04oa3) 사용 (안전장치)
-    const clientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID || 'tmyfa04oa3';
+    // 환경변수 가져오기 및 공백 제거
+    const envClientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID?.trim();
+
+    // 유효성 검사: 환경변수가 있고 길이가 5자 이상이면 사용, 아니면 Fallback 키 사용
+    const clientId = (envClientId && envClientId.length > 5) ? envClientId : 'tmyfa04oa3';
+
+    // 디버깅을 위한 로그 (배포 후 콘솔에서 확인 가능)
+    console.log('[Naver Map] Loading with Client ID:', clientId);
 
     const script = document.createElement('script');
     script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
