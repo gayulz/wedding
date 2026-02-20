@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { weddingData } from '@/data/content';
 import { uiText } from '@/config/ui-text';
+import { useWeddingData } from '@/hooks/useWeddingData';
 
 declare global {
     interface Window {
@@ -9,6 +9,7 @@ declare global {
 }
 
 const ShareButton: React.FC = () => {
+    const { weddingData } = useWeddingData();
     const [isKakaoReady, setIsKakaoReady] = useState(false);
 
     useEffect(() => {
