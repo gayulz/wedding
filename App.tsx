@@ -33,7 +33,7 @@ const App: React.FC = () => {
   }
 
   // [NEW] 결혼식 날짜 체크 (2026-03-14 14:00 이후면 감사 페이지 표시)
-  const weddingDate = new Date('2026-03-14T14:00:00');
+  const weddingDate = new Date('2026-04-14T14:00:00');
   const isAfterWedding = new Date() >= weddingDate;
 
   // 결혼식 이후면 감사 페이지 렌더링
