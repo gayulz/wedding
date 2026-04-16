@@ -1,16 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useModalBackHandler } from '@/hooks/useModalBackHandler';
-import { db } from '@/lib/firebase';
-import { collection, addDoc, query, orderBy, onSnapshot, Timestamp, doc, updateDoc } from 'firebase/firestore';
+// Firebase 관련 import 제거 및 로컬 데모 환경 구성
 import { weddingData } from '@/data/content';
+
+// Firestore의 Timestamp 대신 사용할 Mock 객체
+class MockTimestamp {
+  date: Date;
+  constructor(date: Date = new Date()) {
+    this.date = date;
+  }
+  toDate() {
+    return this.date;
+  }
+  static now() {
+    return new MockTimestamp();
+  }
+}
 
 interface GuestbookEntry {
   id: string;
   name: string;
   password: string;
   message: string;
-  createdAt: Timestamp;
+  createdAt: MockTimestamp;
 }
 
 interface GuestbookProps {
@@ -23,7 +36,29 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const [entries, setEntries] = useState<GuestbookEntry[]>([]);
+  const [entries, setEntries] = useState<GuestbookEntry[]>([
+    {
+      id: 'demo1',
+      name: '홍길동',
+      password: '1234',
+      message: '결혼을 진심으로 축하드립니다. 행복하게 잘 사세요!! 😊',
+      createdAt: new MockTimestamp(new Date(Date.now() - 1000 * 60 * 60 * 24))
+    },
+    {
+      id: 'demo2',
+      name: '이개발',
+      password: '1234',
+      message: '오랜 기간 만나온 두 사람의 앞날에 축복만 가득하길 바랍니다!',
+      createdAt: new MockTimestamp(new Date(Date.now() - 1000 * 60 * 60 * 2))
+    },
+    {
+      id: 'demo3',
+      name: '김친구',
+      password: '1234',
+      message: '정말 예쁜 부부네요! 앞으로도 지금처럼 예쁜 사랑하세요 💖',
+      createdAt: new MockTimestamp(new Date(Date.now() - 1000 * 60 * 30))
+    }
+  ]);
   const [loading, setLoading] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -105,25 +140,9 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
     setShowAlert(true);
   };
 
-  // 실시간 방명록 불러오기
+  // 실시간 방명록 불러오기 (데모에서는 초기 더미 데이터로 대체)
   useEffect(() => {
-    const q = query(
-      collection(db, 'guestbook'),
-      orderBy('createdAt', 'desc')
-    );
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const newEntries: GuestbookEntry[] = [];
-      snapshot.forEach((doc) => {
-        newEntries.push({
-          id: doc.id,
-          ...doc.data()
-        } as GuestbookEntry);
-      });
-      setEntries(newEntries);
-    });
-
-    return () => unsubscribe();
+    // 아무 작업 안함 (더미 데이터 사용)
   }, []);
 
   // 스크롤 이벤트 제어
@@ -169,12 +188,17 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
 
     setLoading(true);
     try {
-      await addDoc(collection(db, 'guestbook'), {
+      // 로컬 상태로 로직 대체 (Mock)
+      const newEntry: GuestbookEntry = {
+        id: `demo_new_${Date.now()}`,
         name: name.trim(),
         password: password,
         message: message.trim(),
-        createdAt: Timestamp.now()
-      });
+        createdAt: MockTimestamp.now()
+      };
+      
+      setEntries([newEntry, ...entries]);
+
       setName('');
       setPassword('');
       setMessage('');
@@ -227,8 +251,10 @@ const Guestbook: React.FC<GuestbookProps> = ({ onModalStateChange }) => {
 
     setLoading(true);
     try {
-      const docRef = doc(db, 'guestbook', editingEntry.id);
-      await updateDoc(docRef, { message: editMessage.trim() });
+      setEntries(entries.map(e => 
+        e.id === editingEntry.id ? { ...e, message: editMessage.trim() } : e
+      ));
+
       setEditingEntry(null);
       setEditPassword('');
       setEditMessage('');

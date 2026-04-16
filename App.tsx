@@ -32,30 +32,19 @@ const App: React.FC = () => {
     return <AdminPage />;
   }
 
-  // [NEW] 결혼식 날짜 체크 (2026-03-14 14:00 이후면 감사 페이지 표시)
-  const weddingDate = new Date('2026-03-14T14:00:00');
-  const isAfterWedding = new Date() >= weddingDate;
-
-  // 결혼식 이후면 감사 페이지 렌더링
-  if (isAfterWedding) {
-    return (
-      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
-        <div className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden">
-          <ThankYou onModalStateChange={setIsAnyModalOpen} />
-        </div>
-      </div>
-    );
-  }
+  // [NEW] 데모용 버튼 상태 (결혼식 전/후 토글)
+  const [isAfterWedding, setIsAfterWedding] = useState(false);
 
   const touchStartY = useRef(0);
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // [NEW] 오프닝 시작 시 갤러리 이미지 백그라운드 프리로드
   useEffect(() => {
     preloadGalleryImages();
   }, []);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+
 
   // 카카오톡 웹뷰에서 외부 브라우저로 열기
   const openInExternalBrowser = () => {
@@ -280,6 +269,26 @@ const App: React.FC = () => {
     };
   }, [currentIdx, isAnyModalOpen, showOpening, handleScroll]);
 
+  // [NEW] 결혼식 이후면 감사 페이지 렌더링
+  if (isAfterWedding) {
+    return (
+      <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
+        <div className="relative w-full h-full max-w-[430px] md:max-w-[550px] bg-[#f8f8f8] shadow-2xl overflow-hidden">
+          <ThankYou onModalStateChange={setIsAnyModalOpen} />
+
+          {/* 데모 토글 버튼 (ThankYou 내부) */}
+          <button
+            onClick={() => setIsAfterWedding(false)}
+            className="absolute bottom-6 right-6 z-[9999] bg-gray-800/90 text-white px-5 py-3 rounded-2xl shadow-xl text-xs font-bold tracking-wide hover:bg-black transition-colors flex items-center gap-2 backdrop-blur-md"
+          >
+            <i className="fa-regular fa-envelope"></i>
+            <span>청첩장 보기</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 bg-gray-100 flex justify-center items-center overflow-hidden">
       <div
@@ -343,6 +352,17 @@ const App: React.FC = () => {
         </AnimatePresence>
 
         {currentIdx >= 1 && <ShareButton />}
+
+        {/* 데모 토글 버튼 (청첩장 메인) */}
+        {!isAnyModalOpen && (
+          <button
+            onClick={() => setIsAfterWedding(true)}
+            className="absolute bottom-6 right-6 z-[9999] bg-gray-800/90 text-white px-5 py-3 rounded-2xl shadow-xl text-xs font-bold tracking-wide hover:bg-black transition-colors flex items-center gap-2 backdrop-blur-md"
+          >
+            <i className="fa-solid fa-gift"></i>
+            <span>감사인사 보기</span>
+          </button>
+        )}
       </div>
     </div>
   );

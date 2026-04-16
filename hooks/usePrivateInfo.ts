@@ -78,70 +78,42 @@ export function usePrivateInfo() {
             return;
         }
 
-        // 새로운 요청 시작
+        // [NEW] 데모 포트폴리오를 위한 더미 데이터 반환
         const fetchData = async (): Promise<PrivateInfo> => {
-            // 로컬 개발 환경에서는 환경변수 직접 사용
-            if (import.meta.env.DEV) {
-                return {
-                    groom: {
-                        name: import.meta.env.VITE_GROOM_NAME || '신랑',
-                        firstName: import.meta.env.VITE_GROOM_FIRST_NAME || '신랑',
-                        phone: import.meta.env.VITE_GROOM_PHONE || '010-****-****',
-                        parents: {
-                            mother: {
-                                name: import.meta.env.VITE_GROOM_MOTHER_NAME || '어머니',
-                                phone: import.meta.env.VITE_GROOM_MOTHER_PHONE || '010-****-****'
-                            },
-                            relation: '아들'
-                        }
-                    },
-                    bride: {
-                        name: import.meta.env.VITE_BRIDE_NAME || '신부',
-                        firstName: import.meta.env.VITE_BRIDE_FIRST_NAME || '신부',
-                        phone: import.meta.env.VITE_BRIDE_PHONE || '010-****-****',
-                        parents: {
-                            father: {
-                                name: import.meta.env.VITE_BRIDE_FATHER_NAME || '아버지',
-                                phone: import.meta.env.VITE_BRIDE_FATHER_PHONE || '010-****-****'
-                            },
-                            relation: '딸'
-                        }
-                    },
-                    accounts: {
-                        groom: [
-                            {
-                                bank: import.meta.env.VITE_GROOM_MOTHER_BANK || '은행',
-                                name: import.meta.env.VITE_GROOM_MOTHER_NAME || '어머니',
-                                num: import.meta.env.VITE_GROOM_MOTHER_ACCOUNT || '****************'
-                            },
-                            {
-                                bank: import.meta.env.VITE_GROOM_BANK || '은행',
-                                name: import.meta.env.VITE_GROOM_NAME || '신랑',
-                                num: import.meta.env.VITE_GROOM_ACCOUNT || '****************'
-                            }
-                        ],
-                        bride: [
-                            {
-                                bank: import.meta.env.VITE_BRIDE_BANK || '은행',
-                                name: import.meta.env.VITE_BRIDE_NAME || '신부',
-                                num: import.meta.env.VITE_BRIDE_ACCOUNT || '****************'
-                            }
-                        ]
-                    },
-                    images: {
-                        hero: import.meta.env.VITE_IMAGE_HERO || '',
-                        gallery: [],
-                        closing: import.meta.env.VITE_IMAGE_CLOSING || ''
+            return {
+                groom: {
+                    name: '김철수',
+                    firstName: '철수',
+                    phone: '010-1234-5678',
+                    parents: {
+                        mother: { name: '이영희', phone: '010-1111-2222' },
+                        relation: '아들'
                     }
-                };
-            }
-
-            // 프로덕션 환경에서는 API 호출
-            const response = await fetch('/api/private-info');
-            if (!response.ok) {
-                throw new Error('Failed to fetch private info');
-            }
-            return response.json();
+                },
+                bride: {
+                    name: '박지민',
+                    firstName: '지민',
+                    phone: '010-9876-5432',
+                    parents: {
+                        father: { name: '박기둥', phone: '010-3333-4444' },
+                        relation: '딸'
+                    }
+                },
+                accounts: {
+                    groom: [
+                        { bank: '우리은행', name: '이영희', num: '123-456-789012' },
+                        { bank: '기업은행', name: '김철수', num: '987-654-321098' }
+                    ],
+                    bride: [
+                        { bank: '카카오뱅크', name: '박지민', num: '3333-22-1111111' }
+                    ]
+                },
+                images: {
+                    hero: '',
+                    gallery: [],
+                    closing: ''
+                }
+            };
         };
 
         fetchPromise = fetchData();
