@@ -222,18 +222,18 @@ Firebase 연결을 떼고 `useState`에 데모 글 세 개를 박아둔 상태�
 
 방명록을 빼고 가셔도 됩니다. 요즘은 축하 메시지가 카톡 단톡방에 다 모이더군요.
 
-### (3) 감사 화면 날짜 — `components/ThankYou.tsx`
+### (3) 감사 화면 날짜 — `config/site.ts`
 
-29번, 31번 줄에 제 날짜가 박혀 있습니다.
+`config/site.ts`의 `date.firstMeet`과 `date.iso`가 D+n 계산 기준입니다. 아직 제 날짜가 들어 있습니다.
 
 ```ts
-const firstMeetDate = new Date('2020-03-31T00:00:00');   // 첫 만남
-const weddingDate = new Date('2026-03-14T14:00:00');     // 예식
+iso: "2026-03-14T14:00:00",        // 예식 일시
+firstMeet: "2020-03-31T00:00:00"   // 첫 만남
 ```
 
-이걸 안 고치면 예식이 끝난 뒤 하객들이 제 연애 일수를 보게 됩니다. 설정 파일에 없는 값이라 놓치기 쉽습니다.
+안 고치면 예식이 끝난 뒤 하객들이 제 연애 일수를 보게 됩니다.
 
-같은 파일 147번 줄이 신랑신부 이름을 표시하는데, 여기는 API로 받아온 이름이 아니라 정적 기본값을 씁니다. 그래서 (1)을 고쳐도 감사 화면에는 계속 `신랑 💍 신부`로 뜹니다. Context를 쓰도록 바꾸시거나 이름을 직접 적어 넣으세요.
+`components/ThankYou.tsx` 147번 줄이 신랑신부 이름을 표시하는데, 여기는 API로 받아온 이름이 아니라 정적 기본값을 씁니다. 그래서 (1)을 고쳐도 감사 화면에는 계속 `신랑 💍 신부`로 뜹니다. Context를 쓰도록 바꾸시거나 이름을 직접 적어 넣으세요.
 
 ### (4) 사진 — `config/images.ts`
 
@@ -256,7 +256,7 @@ const isAfterWedding = new Date() > new Date('2026-03-14T17:00:00');
 
 ## 6. 내 청첩장으로 바꾸기
 
-대부분은 `config/` 안에서 끝나지만, 몇 가지는 컴포넌트에 하드코딩돼 있습니다.
+거의 다 `config/` 안에서 끝납니다. 컴포넌트를 직접 열어야 하는 건 네이버 지도 키 한 군데뿐입니다.
 
 ### 결혼식 정보 — `config/site.ts`
 
@@ -268,7 +268,9 @@ export const siteConfig = {
         full: "2026. 03. 14. 토요일",
         year: "2026", month: "03", day: "14",
         weekDay: "토요일",
-        time: "오후 2시"
+        time: "오후 2시",
+        iso: "2026-03-14T14:00:00",        // 감사 화면 D+n 기준
+        firstMeet: "2020-03-31T00:00:00"   // 첫 만남 D+n 기준
     },
     location: {
         name: "구미 토미스퀘어가든",
@@ -276,7 +278,7 @@ export const siteConfig = {
         address: "경상북도 구미시 인동35길 46, 4층",
         addressShort: "경상북도 구미시 인동35길 46",
         tel: "054-473-6799",
-        coordinates: { lat: 36.1234, lng: 128.3456 }   // ← 이 값은 쓰이지 않습니다
+        coordinates: { lat: 36.097854, lng: 128.435753 }
     },
     // ...
 };
@@ -291,17 +293,15 @@ export const siteConfig = {
 
 인사말은 꼭 두 분 말로 바꾸세요. 제가 쓴 벚꽃·바람·눈 이야기는 저희 얘기지 두 분 얘기가 아닙니다. 하객들은 그 부분을 생각보다 꼼꼼히 읽습니다.
 
-### 지도 좌표 — `components/Location.tsx`
+### 지도 좌표
 
-`config/site.ts`의 `coordinates`는 **어디에서도 읽히지 않는 죽은 값입니다.** 고쳐도 지도가 안 움직입니다. 실제 좌표는 `Location.tsx`에 세 군데 박혀 있습니다.
+`config/site.ts`의 `location.coordinates` 한 곳만 고치면 네이버 지도 핀, 카카오맵 링크, 티맵 목적지가 같이 따라옵니다.
 
-| 줄 | 무엇 |
-|----|------|
-| 73~74 | 티맵 길찾기 목적지 (`lat` / `lon`) |
-| 110 | 네이버 지도 중심이자 마커 위치 |
-| 304 | 카카오맵 링크 끝의 `,36.097854,128.435753` |
+```ts
+coordinates: { lat: 36.097854, lng: 128.435753 }
+```
 
-세 곳 다 `36.097854, 128.435753`입니다. 본인 식장 좌표로 바꾸세요. 네이버 지도에서 식장을 검색하고 마커를 우클릭하면 위도·경도가 나옵니다.
+네이버 지도에서 식장을 검색하고 마커를 우클릭하면 위도·경도가 나옵니다.
 
 지도에 뜨는 상호명은 `config/ui-text.ts`의 `location.venueTitle`이고, 말풍선 안 이름·주소·전화번호는 `config/site.ts`의 `location.name`·`addressShort`·`tel`에서 옵니다. 두 파일을 같이 맞춰야 합니다.
 
@@ -328,6 +328,7 @@ URL을 받으셨으면 `config/images.ts`를 채웁니다. 키 이름만 봐서�
 | `wedding-98` | 인터뷰 섹션 — 신부 사진 |
 | `wedding-99` | 인터뷰 섹션 — 신랑 사진 |
 | `wedding-81` | 마지막 마무리 화면 배경 |
+| `share` | 카카오 공유 버튼의 썸네일 |
 | `navermap` `kakaonav` `tmap` | 길찾기 버튼 아이콘 |
 | `webank` `ibkbank` `kakaobank` | 은행 로고 |
 
@@ -358,14 +359,13 @@ URL을 받으셨으면 `config/images.ts`를 채웁니다. 키 이름만 봐서�
 
 `og:image`는 절대 URL이어야 합니다. Cloudinary URL을 그대로 넣으셔도 되고, 저장소에 넣고 싶으시면 `public/` 아래에 두세요 (`public/og.jpg` → `https://내-사이트.netlify.app/og.jpg`). `images/`는 gitignore돼 있어서 안 올라갑니다. 1200×630 정도면 안 잘리고 나옵니다.
 
-**청첩장 안의 카카오 공유 버튼을 눌렀을 때** — og 태그를 안 씁니다. `components/ShareButton.tsx` 61번 줄의 URL을 그대로 씁니다.
+**청첩장 안의 카카오 공유 버튼을 눌렀을 때** — og 태그를 안 씁니다. `config/images.ts`의 `'share'` 키를 씁니다.
 
 ```ts
-// components/ShareButton.tsx:61
-const imageUrl = `https://wedding-gayul.netlify.app/images/wedding-02.jpg?v=2`;
+'share': '/demo-images/hero.png',
 ```
 
-제 도메인이 박혀 있고 `config/images.ts`를 거치지 않습니다. **사진을 전부 갈아끼워도 이 줄을 안 고치면 공유 카드에 제 사진이 나갑니다.** 반드시 바꾸세요.
+절대 URL을 넣으면 그대로 쓰고, `/`로 시작하는 상대 경로면 배포 도메인을 앞에 붙여줍니다. 그래서 `public/` 아래 파일이든 Cloudinary URL이든 둘 다 됩니다.
 
 제목과 설명은 `config/site.ts`와 `PRIVATE_` 환경변수에서 자동으로 조립되니 따로 손댈 필요 없습니다.
 
@@ -436,15 +436,6 @@ VITE_TMAP_API_KEY=
 ```
 
 `MEASUREMENT_ID`는 Analytics용이라 비워두셔도 Firestore는 잘 돕니다.
-
-### `.env.example`에서 무시해도 되는 것
-
-`.env.example`에는 어떤 코드도 읽지 않는 죽은 항목이 섞여 있습니다. 제가 구조를 바꾸면서 정리를 안 한 탓입니다.
-
-- `# ===== 로컬 개발용 환경변수 (VITE_) =====` 블록 전체 (`VITE_GROOM_NAME`, `VITE_BRIDE_PHONE`, `VITE_GROOM_ACCOUNT` 등) — 읽는 코드가 없습니다
-- `PRIVATE_IMAGE_HERO`, `PRIVATE_IMAGE_GALLERY_1~10`, `PRIVATE_IMAGE_CLOSING` — 서버리스 함수가 반환은 하지만 앱이 그 값을 버립니다. 이미지는 `config/images.ts`에서만 관리합니다
-
-시간 나실 때 지우셔도 됩니다.
 
 ### 배포 후 환경변수 등록
 
@@ -593,7 +584,7 @@ RSVP 목록과 방명록 관리 탭이 있고, 각각 삭제가 됩니다. 로�
 `VITE_KAKAO_API_KEY`가 없는 경우입니다. 키는 있는데 "공유 중 오류가 발생했습니다" 알림이 뜨면 도메인 미등록이거나 카카오 링크가 비활성 상태입니다.
 
 **공유 카드에 남의 사진이 나옵니다**
-경로가 둘이라 양쪽을 다 봐야 합니다. 앱 안의 공유 버튼이면 `components/ShareButton.tsx:61`, 주소를 붙여넣은 거면 `index.html`의 `og:image`입니다. 둘 다 제 도메인이 기본값이라 캐시 문제가 아닙니다.
+경로가 둘이라 양쪽을 다 봐야 합니다. 앱 안의 공유 버튼이면 `config/images.ts`의 `'share'` 키, 주소를 붙여넣은 거면 `index.html`의 `og:image`입니다. 캐시 문제가 아닙니다.
 
 **주소 붙여넣기 미리보기가 예전 정보입니다**
 이건 캐시가 맞습니다. [카카오 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 초기화하세요.
@@ -622,12 +613,11 @@ Firestore 규칙과 `VITE_FIREBASE_*`를 확인하세요. 규칙 편집기에서
 
 고칠 시간이 없었던 것들입니다. 고쳐서 PR 주시면 반영하겠습니다.
 
-- **설정값이 컴포넌트에 흩어져 있습니다** — 지도 좌표, 카카오 공유 이미지, 감사 화면 날짜가 `config/`가 아니라 컴포넌트에 하드코딩돼 있습니다. `config/site.ts`의 `coordinates`는 선언만 되고 쓰이지 않습니다
 - **데이터 소스가 두 갈래입니다** — 8개 컴포넌트가 Context 대신 `data/content.ts`의 정적 `weddingData`를 import합니다. 그래서 감사 화면 등에는 API로 받아온 이름이 반영되지 않습니다
 - **카카오톡 인앱 브라우저 안내창이 죽어 있습니다** — `App.tsx`에 모달 UI는 있지만 `setShowBrowserPrompt(true)`를 부르는 곳이 없습니다. 인앱 브라우저를 감지하는 코드도 없고요. 살리시려면 `navigator.userAgent`에 `KAKAOTALK`이 있는지 검사하는 `useEffect`를 넣으면 됩니다
 - **`index.html`에 importmap 잔재가 있습니다** — React 18과 Firebase 10을 가리키는 importmap이 남아 있습니다. Vite가 번들링하므로 실제로는 안 쓰이지만 코드를 읽을 때 헷갈립니다
 - **은행 로고가 세 곳뿐입니다** — `Gift.tsx`의 `getBankIcon`
-- **`LICENSE` 파일이 없습니다** — README에만 적혀 있습니다. 곧 추가하겠습니다
+- **`index.html`의 og 태그는 여전히 수동입니다** — 정적 HTML이라 `config/`를 읽을 수 없습니다. 직접 고치셔야 합니다
 
 ---
 
@@ -645,12 +635,12 @@ Firestore 규칙과 `VITE_FIREBASE_*`를 확인하세요. 규칙 편집기에서
 │   ├── Rsvp.tsx                # 참석 의사
 │   ├── Profiles.tsx            # 인터뷰 Q&A
 │   ├── Gallery.tsx             # 사진첩
-│   ├── Location.tsx            # 지도, 길찾기, 교통편 ← 좌표 하드코딩
+│   ├── Location.tsx            # 지도, 길찾기, 교통편
 │   ├── Gift.tsx                # 계좌
 │   ├── Guestbook.tsx           # 방명록 (현재 데모 모드)
 │   ├── Closing.tsx             # 마무리
-│   ├── ThankYou.tsx            # 예식 후 감사 화면 ← 날짜 하드코딩
-│   ├── ShareButton.tsx         # 카카오 공유 ← 썸네일 URL 하드코딩
+│   ├── ThankYou.tsx            # 예식 후 감사 화면
+│   ├── ShareButton.tsx         # 카카오 공유
 │   ├── ForsythiaParticles.tsx  # 꽃잎 배경
 │   └── Admin/                  # 관리자 화면
 ├── config/
@@ -676,7 +666,7 @@ Firestore 규칙과 `VITE_FIREBASE_*`를 확인하세요. 규칙 편집기에서
 
 ## 사용 범위와 라이선스
 
-이 저장소는 **[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.ko)** 을 따릅니다. 여기에 몇 가지 조건을 덧붙입니다.
+전문은 [`LICENSE`](LICENSE)에 있습니다. **[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.ko)** 에 아래 조건을 더한 형태입니다.
 
 ### 이렇게 쓰셔도 됩니다
 
