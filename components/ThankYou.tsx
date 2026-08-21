@@ -4,6 +4,7 @@ import Guestbook from './Guestbook';
 import { weddingData } from '@/data/content';
 import { loadImage } from '@/lib/image-loader';
 import { uiText } from '@/config/ui-text';
+import { siteConfig } from '@/config/site';
 
 /**
  * [NEW] ThankYou - 결혼식 이후 감사 페이지
@@ -25,10 +26,9 @@ const ThankYou: React.FC<ThankYouProps> = ({ onModalStateChange }) => {
 	const [daysSinceFirstMeet, setDaysSinceFirstMeet] = useState(0);
 	const [daysSinceWedding, setDaysSinceWedding] = useState(0);
 
-	// 첫 만남 날짜: 2020-03-31
-	const firstMeetDate = new Date('2020-03-31T00:00:00');
-	// 결혼식 날짜: 2026-03-14 14:00
-	const weddingDate = new Date('2026-03-14T14:00:00');
+	// 첫 만남 · 예식 일시 (config/site.ts)
+	const firstMeetDate = new Date(siteConfig.date.firstMeet);
+	const weddingDate = new Date(siteConfig.date.iso);
 
 	useEffect(() => {
 		const calculateDays = () => {

@@ -16,7 +16,10 @@ export const siteConfig = {
         month: "03",
         day: "14",
         weekDay: "토요일",
-        time: "오후 2시"
+        time: "오후 2시",
+        // 감사 화면 D+n 계산 기준 (ThankYou)
+        iso: "2026-03-14T14:00:00",
+        firstMeet: "2020-03-31T00:00:00"
     },
 
     // 결혼식장 정보
@@ -26,10 +29,10 @@ export const siteConfig = {
         address: "경상북도 구미시 인동35길 46, 4층",
         addressShort: "경상북도 구미시 인동35길 46",
         tel: "054-473-6799",
-        // 지도 좌표 (네이버맵 사용 시)
+        // 지도 좌표 (네이버 지도 · 카카오맵 · 티맵 공통)
         coordinates: {
-            lat: 36.1234,
-            lng: 128.3456
+            lat: 36.097854,
+            lng: 128.435753
         }
     },
 

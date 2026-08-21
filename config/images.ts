@@ -34,6 +34,10 @@ export const imageUrls: Record<string, string> = {
     'wedding-100': '/demo-images/gallery3.png',
     'wedding-101': '/demo-images/gallery4.png',
 
+    // 카카오톡 공유 카드 썸네일
+    // 절대 URL을 넣으면 그대로 쓰고, 상대 경로면 배포 도메인을 앞에 붙입니다.
+    'share': '/demo-images/hero.png',
+
     // 지도/네비게이션 아이콘 (유지)
     'navermap': 'https://res.cloudinary.com/my-wedding/image/upload/v1769862798/fb1eryzvitquqzhyt6gd.webp',
     'kakaonav': 'https://res.cloudinary.com/my-wedding/image/upload/v1769862798/dlpysmc0dxdem3wzstyo.png',

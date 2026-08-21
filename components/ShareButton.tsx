@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { uiText } from '@/config/ui-text';
+import { loadImage } from '@/lib/image-loader';
 import { useWeddingData } from '@/hooks/useWeddingData';
 
 declare global {
@@ -57,8 +58,10 @@ const ShareButton: React.FC = () => {
 
         try {
             const baseUrl = window.location.origin;
-            // 카카오톡 캐시 우회를 위한 버전 파라미터 추가
-            const imageUrl = `https://wedding-gayul.netlify.app/images/wedding-02.jpg?v=2`;
+            // 공유 썸네일은 config/images.ts의 'share' 키에서 가져옵니다.
+            // 카카오는 절대 URL만 받으므로 상대 경로면 배포 도메인을 앞에 붙입니다.
+            const shareImage = loadImage('share');
+            const imageUrl = shareImage.startsWith('http') ? shareImage : `${baseUrl}${shareImage}`;
 
             window.Kakao.Link.sendDefault({
                 objectType: 'feed',

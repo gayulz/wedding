@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { loadImage } from '@/lib/image-loader.ts';
 import { weddingData } from '@/data/content';
 import { uiText } from '@/config/ui-text';
+import { siteConfig } from '@/config/site';
 
 declare global {
   interface Window {
@@ -70,8 +71,8 @@ const Location: React.FC = () => {
   const handleTmapRoute = () => {
     const destination = {
       name: uiText.location.venueTitle,
-      lat: 36.097854,
-      lon: 128.435753
+      lat: siteConfig.location.coordinates.lat,
+      lon: siteConfig.location.coordinates.lng
     };
 
     if (navigator.geolocation) {
@@ -107,7 +108,7 @@ const Location: React.FC = () => {
         if (!mapRef.current) return;
         if (!window.naver || !window.naver.maps) return;
 
-        const location = new window.naver.maps.LatLng(36.097854, 128.435753);
+        const location = new window.naver.maps.LatLng(siteConfig.location.coordinates.lat, siteConfig.location.coordinates.lng);
         const mapOptions = {
           center: location,
           zoom: 17,
@@ -301,7 +302,7 @@ const Location: React.FC = () => {
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('tmap')} alt="티맵" className="w-full h-full object-cover" /></div>
             <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.tmap}</span>
           </button>
-          <a href={`https://map.kakao.com/link/map/${encodeURIComponent(uiText.location.venueTitle)},36.097854,128.435753`} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
+          <a href={`https://map.kakao.com/link/map/${encodeURIComponent(uiText.location.venueTitle)},${siteConfig.location.coordinates.lat},${siteConfig.location.coordinates.lng}`} target="_blank" rel="noopener noreferrer" className="flex flex-row items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-gray-50 transition-all shadow-sm border border-gray-200">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden"><img src={loadImage('kakaonav')} alt="카카오내비" className="w-full h-full object-cover" /></div>
             <span className="text-[11px] text-gray-700 font-medium">{weddingData.location.navigation.kakao}</span>
           </a>
