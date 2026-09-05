@@ -151,20 +151,20 @@ Netlify와 Vercel 중 하나만 쓰시면 됩니다. 둘 다 서버리스 함수
 3. **Web 서비스 URL**에 사이트 주소와 `http://localhost:3000` 등록
 4. 발급된 Client ID를 `VITE_NAVER_MAP_CLIENT_ID`에 넣기
 
-지금 새로 발급받으시면 **`components/Location.tsx` 35번 줄도 함께 고쳐야 합니다.** 네이버가 콘솔을 개편하면서 SDK 파라미터가 `ncpClientId`에서 `ncpKeyId`로 바뀌었습니다. 이 코드는 아직 옛 파라미터를 씁니다.
+지금 새로 발급받으시면 **`components/Location.tsx` 36번 줄도 함께 고쳐야 합니다.** 네이버가 콘솔을 개편하면서 SDK 파라미터가 `ncpClientId`에서 `ncpKeyId`로 바뀌었습니다. 이 코드는 아직 옛 파라미터를 씁니다.
 
 ```ts
-// components/Location.tsx:35 — 현재
+// components/Location.tsx:36 — 현재
 script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`;
 
 // 새 콘솔에서 발급받았다면
 script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`;
 ```
 
-그리고 **29번 줄의 fallback 키를 반드시 지우세요.**
+그리고 **30번 줄의 fallback 키를 반드시 지우세요.**
 
 ```ts
-// components/Location.tsx:29
+// components/Location.tsx:30
 const clientId = (envClientId && envClientId.length > 5) ? envClientId : 'tmyfa04oa3';
 ```
 
@@ -369,7 +369,7 @@ URL을 받으셨으면 `config/images.ts`를 채웁니다. 키 이름만 봐서�
 
 제목과 설명은 `config/site.ts`와 `PRIVATE_` 환경변수에서 자동으로 조립되니 따로 손댈 필요 없습니다.
 
-카카오톡은 미리보기를 한 번 캐시하면 오래 들고 있습니다. 바꿨는데 반영이 안 되면 [카카오 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 초기화하세요. 다만 **공유 버튼 쪽 이미지가 안 바뀌는 건 캐시 문제가 아니라 위의 61번 줄 문제**일 가능성이 높습니다.
+카카오톡은 미리보기를 한 번 캐시하면 오래 들고 있습니다. 바꿨는데 반영이 안 되면 [카카오 디버거](https://developers.kakao.com/tool/debugger/sharing)에서 초기화하세요. 다만 **공유 버튼 쪽 이미지가 안 바뀌는 건 캐시 문제가 아니라 위의 `config/images.ts` 39번 줄 문제**일 가능성이 높습니다.
 
 ---
 
@@ -578,7 +578,7 @@ RSVP 목록과 방명록 관리 탭이 있고, 각각 삭제가 됩니다. 로�
 ## 자주 막히는 곳
 
 **지도가 안 뜹니다**
-네이버 클라우드 플랫폼에 도메인을 등록하셨는지 보세요. 새 콘솔에서 발급받으셨다면 `Location.tsx:35`의 파라미터를 `ncpKeyId`로 바꿔야 합니다. 브라우저 콘솔에 `[Naver Map] Loading with Client ID:` 로그가 찍히니 어떤 키를 쓰는지 바로 보입니다.
+네이버 클라우드 플랫폼에 도메인을 등록하셨는지 보세요. 새 콘솔에서 발급받으셨다면 `Location.tsx:36`의 파라미터를 `ncpKeyId`로 바꿔야 합니다. 브라우저 콘솔에 `[Naver Map] Loading with Client ID:` 로그가 찍히니 어떤 키를 쓰는지 바로 보입니다.
 
 **카카오 공유 버튼이 무반응입니다**
 `VITE_KAKAO_API_KEY`가 없는 경우입니다. 키는 있는데 "공유 중 오류가 발생했습니다" 알림이 뜨면 도메인 미등록이거나 카카오 링크가 비활성 상태입니다.
